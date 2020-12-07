@@ -1,0 +1,23 @@
+{
+  "name": "scrabble-coursework",
+  "version": "1.0.0",
+  "description": "coursework for application programming",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JakeMeistet/scrabble-coursework.git"
+  },
+  "author": "Jake Bailey (https://www.jaketbailey.co.uk)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JakeMeistet/scrabble-coursework/issues"
+  },
+  "homepage": "https://github.com/JakeMeistet/scrabble-coursework#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "vhost": "^3.0.2"
+  }
+}

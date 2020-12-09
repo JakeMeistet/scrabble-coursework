@@ -23,6 +23,36 @@ h2.title {
 }
 
 .content {
-    background-color: rgb(8, 61, 119);
+    background-color: white(8, 61, 119);
 }
 
+.parent {
+    display: flex;
+    background-color: transparent;
+    flex-flow: row;
+    width: fit-content ;
+    align-content: center;
+    align-items: flex-start;
+    justify-content: flex-start;
+    justify-items: flex-start;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  
+.parent > div {
+    background-color: transparent;
+    /* margin: 10px; */
+    padding: 10px;
+    font-size: 30px;
+    width: 100%;
+    text-align: center;
+
+  }
+
+button {
+    background-color: white;
+}
+
+* { padding: 0; margin: 0; }
+
+canvas { background: #eee; display: block; margin: 0 auto; border: black 1px solid}

@@ -1,6 +1,7 @@
 function loadScrabble() {
     let canvas = document.getElementById("gameboard");
     let ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     ctx.strokeStyle = "black";
     ctx.lineWidth = 2;
@@ -23,7 +24,7 @@ function loadScrabble() {
                 ctx.fillRect(x+1.5,y+1.5,53.3,53.3)
                 ctx.strokeRect(x,y,53.3,53.3)
             }
-            
+    
 
             }
 
@@ -57,6 +58,8 @@ function loadScrabble() {
 function loadCheckersChess() {
     let canvas = document.getElementById("gameboard");
     let ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
 
     ctx.strokeStyle = "black";
     ctx.lineWidth = 2;
@@ -66,9 +69,11 @@ function loadCheckersChess() {
         for(let i = 0; i <= 7; i++) {  
             for(let y = 0; y<=800; y+=100) {    
                 ctx.strokeRect(x,y,100,100)
-                if (i == 0 && y == 100){
+                if (i%2 == 0 && (y == 100 || y == 300 || y == 500 || y == 700)){
                     ctx.fillStyle = "black"
-                }else {
+                } else if (i%2 != 0 && (y == 0 || y == 200 || y == 400 || y == 600 || y == 800)){
+                    ctx.fillStyle = "black"
+                } else {
                     ctx.fillStyle = "white"
                 }
                 ctx.fillRect(x,y,100,100)

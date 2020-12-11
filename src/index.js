@@ -1,6 +1,3 @@
-  
-const http = require('http') //Imports HTTP module
-const fs =  require('fs').promises;
 const express = require('express') //Imports Express.js for use with the web application 
 const vhost = require("vhost");
 const serveStatic = require('serve-static') 

@@ -55,33 +55,33 @@ function loadScrabble() {
         };
 }
 
-function loadCheckersChess() {
-    let canvas = document.getElementById("gameboard");
-    let ctx = canvas.getContext("2d");
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+// function loadCheckersChess() {
+//     let canvas = document.getElementById("gameboard");
+//     let ctx = canvas.getContext("2d");
+//     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 
-    ctx.strokeStyle = "black";
-    ctx.lineWidth = 2;
+//     ctx.strokeStyle = "black";
+//     ctx.lineWidth = 2;
     
-    let x = 0;    
-    let p = 0
-        for(let i = 0; i <= 7; i++) {  
-            for(let y = 0; y<=800; y+=100) {    
-                ctx.strokeRect(x,y,100,100)
-                if (i%2 == 0 && (y == 100 || y == 300 || y == 500 || y == 700)){
-                    ctx.fillStyle = "black"
-                } else if (i%2 != 0 && (y == 0 || y == 200 || y == 400 || y == 600 || y == 800)){
-                    ctx.fillStyle = "black"
-                } else {
-                    ctx.fillStyle = "white"
-                }
-                ctx.fillRect(x,y,100,100)
-            }
-            if (x >= 0 && x <= 800) {
-                x += 100
-                p += 1
-            } 
+//     let x = 0;    
+//     let p = 0
+//         for(let i = 0; i <= 7; i++) {  
+//             for(let y = 0; y<=800; y+=100) {    
+//                 ctx.strokeRect(x,y,100,100)
+//                 if (i%2 == 0 && (y == 100 || y == 300 || y == 500 || y == 700)){
+//                     ctx.fillStyle = "black"
+//                 } else if (i%2 != 0 && (y == 0 || y == 200 || y == 400 || y == 600 || y == 800)){
+//                     ctx.fillStyle = "black"
+//                 } else {
+//                     ctx.fillStyle = "white"
+//                 }
+//                 ctx.fillRect(x,y,100,100)
+//             }
+//             if (x >= 0 && x <= 800) {
+//                 x += 100
+//                 p += 1
+//             } 
                  
-        };
-}
+//         };
+// }

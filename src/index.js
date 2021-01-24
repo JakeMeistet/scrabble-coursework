@@ -9,7 +9,7 @@ scrabble.use(serveStatic('app'))
 const app = express();
 
 app.use(vhost('localhost', scrabble))
-app.use(vhost('10.210.67.43', scrabble))
+app.use(vhost('10.210.73.204', scrabble))
 
 app.use(function(req, res, next) {
     var err = new Error('Not Found');

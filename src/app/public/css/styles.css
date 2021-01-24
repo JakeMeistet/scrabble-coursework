@@ -75,3 +75,105 @@ canvas {
     left: 0;
     right: 0;
 }
+
+.container {
+    width: 50%;
+    min-height: 6.5em;
+    margin: 1rem 0 0 1rem;
+    background-color: red;
+    color: white;
+    border-radius: 0.75em;
+    padding: 4%;
+    touch-action: none;
+    user-select: none;
+    -webkit-transform: translate(0px, 0px);
+            transform: translate(0px, 0px);
+}
+
+.item {
+    width: 25%;
+    min-height: 6.5em;
+    margin: 1rem 0 0 1rem;
+    background-color: #29e;
+    color: white;
+    border-radius: 0.75em;
+    padding: 4%;
+    touch-action: none;
+    user-select: none;
+    -webkit-transform: translate(0px, 0px);
+            transform: translate(0px, 0px);
+}
+  
+.drop-active {
+  border-color: #aaa;
+}
+
+.drop-target {
+  background-color: #29e;
+  border-color: #fff;
+  border-style: solid;
+}
+
+.drag-drop {
+  display: inline-block;
+  width: 65px;
+  height: 65px;
+  color: #fff;
+  background-color: #29e;
+  border: solid 2px #fff;
+
+  touch-action: none;
+  -webkit-transform: translate(0px, 0px);
+          transform: translate(0px, 0px);
+
+  transition: background-color 0.3s;
+}
+  
+.drag-drop.can-drop {
+  color: #000;
+  background-color: #4e4;
+}
+
+.game-board{ 
+  display: grid;
+  grid-template-columns: 75px 75px 75px 75px 75px 75px 75px 75px 75px 75px 75px 75px 75px 75px 75px; 
+  grid-template-rows: 75px 75px 75px 75px 75px 75px 75px 75px 75px 75px 75px 75px 75px 75px 75px;
+  justify-content: center;
+}
+
+.box {
+  background-color: #d9d9d9;
+  border: 2px solid black;
+}
+
+#dark-pink {
+  background-color: hotpink;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 300;
+  font-size: 35px;
+}
+
+#light-pink {
+  background-color: lightpink;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 300;
+  font-size: 35px;
+}
+
+#dark-blue {
+  background-color: blue;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 300;
+  font-size: 35px;
+}
+
+#light-blue {
+  background-color: lightblue;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 300;
+  font-size: 35px;
+}

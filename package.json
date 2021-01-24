@@ -17,8 +17,8 @@
   },
   "homepage": "https://github.com/JakeMeistet/scrabble-coursework#readme",
   "dependencies": {
-    "draggable": "^4.2.0",
     "express": "^4.17.1",
+    "interactjs": "^1.10.2",
     "jquery": "^3.5.1",
     "vhost": "^3.0.2"
   },

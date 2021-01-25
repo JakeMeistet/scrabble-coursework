@@ -1,74 +1,71 @@
-/* The dragging code for '.draggable' from the demo above
- * applies to this demo as well so it doesn't have to be repeated. */
-// enable draggables to be dropped into this
 
+// Drag move listener function - listens to movements when a drag event occurs and keeps the position of the x and y positioning
 function dragMoveListener (event) {
-  var target = event.target,
-      // keep the dragged position in the data-x/data-y attributes
-      x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
-      y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+  const target = event.target
+  // keep the dragged position in the data-x/data-y attributes
+  const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx
+  const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy
 
-  // translate the element
+  // Translate the element to pixels
   target.style.webkitTransform =
   target.style.transform =
-    'translate(' + x + 'px, ' + y + 'px)';
+    'translate(' + x + 'px, ' + y + 'px)'
 
-  // update the posiion attributes
-  target.setAttribute('data-x', x);
-  target.setAttribute('data-y', y);
+  // Update the position attributes
+  target.setAttribute('data-x', x)
+  target.setAttribute('data-y', y)
 }
 
-
-
 interact('.box').dropzone({
-    // only accept elements matching this CSS selector
-    accept: '#yes-drop',
-    // Require a 75% element overlap for a drop to be possible
-    overlap: 0.75,
-  
-    // listen for drop related events:
-  
-    ondropactivate: function (event) {
-      // add active dropzone feedback
-      event.target.classList.add('drop-active')
-    },
-    ondragenter: function (event) {
-      var draggableElement = event.relatedTarget
-      var dropzoneElement = event.target
-  
-      // feedback the possibility of a drop
-      dropzoneElement.classList.add('drop-target')
-      draggableElement.classList.add('can-drop')
-      // draggableElement.textContent = 'In'
-    },
-    ondragleave: function (event) {
-      // remove the drop feedback style
-      event.target.classList.remove('drop-target')
-      event.relatedTarget.classList.remove('can-drop')
-      // event.relatedTarget.textContent = 'Out'
-    },
-    ondrop: function (event) {
-      event.target.classList.remove('drop-target')
-      event.relatedTarget.classList.remove('can-drop')
-      // event.relatedTarget.textContent = 'Drop'
-    },
-    ondropdeactivate: function (event) {
-      // remove active dropzone feedback
-      event.target.classList.remove('drop-active')
-      event.target.classList.remove('drop-target')
-    }
+  // Only accepts elements with id 'droppable' to be dropped into the dropzone
+  accept: '#droppable',
+  // Require a 75% element overlap for a drop to be possible
+  overlap: 0.75,
+
+  // Listens for drop events e.g. drag enters a dropzone, drag leaves a dropzone
+
+  ondropactivate: function (event) {
+    // add active dropzone feedback
+    event.target.classList.add('drop-active')
+  },
+
+  ondragenter: function (event) {
+    const draggableElement = event.relatedTarget
+    const dropzoneElement = event.target
+
+    // Changes styling of div on posibility of a drop occuring (feedback from possible drop)
+    dropzoneElement.classList.add('drop-target')
+    draggableElement.classList.add('can-drop')
+  },
+
+  ondragleave: function (event) {
+    // When target leaves dropzone, the possible drop feedback styling is removed
+    event.target.classList.remove('drop-target')
+    event.relatedTarget.classList.remove('can-drop')
+  },
+
+  ondrop: function (event) {
+    // When target is dropped, the possible drop feedback styling is removed
+    event.target.classList.remove('drop-target')
+    event.relatedTarget.classList.remove('can-drop')
+  },
+
+  ondropdeactivate: function (event) {
+    // // When target is no longer being dragged, the drop active feedback styling is removed
+    event.target.classList.remove('drop-active')
+    event.target.classList.remove('drop-target')
+  }
+})
+
+interact('.drag-drop')
+  .draggable({
+    inertia: true,
+    modifiers: [
+      interact.modifiers.restrictRect({
+        restriction: 'parent',
+        endOnly: true
+      })
+    ],
+    autoScroll: true,
+    listeners: { move: dragMoveListener }
   })
-  
-  interact('.drag-drop')
-    .draggable({
-      inertia: true,
-      modifiers: [
-        interact.modifiers.restrictRect({
-          restriction: 'parent',
-          endOnly: true
-        })
-      ],
-      autoScroll: true,
-      // dragMoveListener from the dragging demo above
-      listeners: { move: dragMoveListener }
-    })

@@ -2,7 +2,7 @@
 
 This is the coursework set for Application Programming, it will be a web application game of scrabble
 
-##Installation
+## Installation
 
 Use the package manager [npm](https://www.npmjs.com/get-npm) to install relevant packages
 
@@ -10,7 +10,7 @@ Use the package manager [npm](https://www.npmjs.com/get-npm) to install relevant
 npm install
 ```
 
-##Usage
+## Usage
 
 Enter ./src directory
 

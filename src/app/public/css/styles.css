@@ -119,8 +119,12 @@ canvas {
   width: 65px;
   height: 65px;
   color: #fff;
-  background-color: #29e;
-  border: solid 2px #fff;
+  background-color: #C8A165;
+  border: solid 3px #B48D51;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 300;
+  font-size: 35px;
 
   touch-action: none;
   -webkit-transform: translate(0px, 0px);
@@ -130,8 +134,8 @@ canvas {
 }
   
 .drag-drop.can-drop {
-  color: #000;
-  background-color: #4e4;
+  color: #ffffff;
+  background-color: #A0793D;
 }
 
 .game-board{ 
@@ -176,4 +180,8 @@ canvas {
   font-family: 'Poppins', sans-serif;
   font-weight: 300;
   font-size: 35px;
+}
+
+#tile {
+  font-size: 10px;
 }

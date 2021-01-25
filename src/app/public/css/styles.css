@@ -7,15 +7,15 @@
 @media screen and (min-width: 1101px) {
   .drag-drop {
     display: inline-block;
-    width: 65px;
-    height: 65px;
+    width: 55px;
+    height: 55px;
     color: #fff;
     background-color: #C8A165;
     border: solid 3px #B48D51;
     text-align: center;
     font-family: 'Poppins', sans-serif;
     font-weight: 300;
-    font-size: 35px;
+    font-size: 30px;
   
     touch-action: none;
     -webkit-transform: translate(0px, 0px);
@@ -26,8 +26,8 @@
 
   .game-board{ 
     display: grid;
-    grid-template-columns: 75px 75px 75px 75px 75px 75px 75px 75px 75px 75px 75px 75px 75px 75px 75px; 
-    grid-template-rows: 75px 75px 75px 75px 75px 75px 75px 75px 75px 75px 75px 75px 75px 75px 75px;
+    grid-template-columns: 65px 65px 65px 65px 65px 65px 65px 65px 65px 65px 65px 65px 65px 65px 65px; 
+    grid-template-rows: 65px 65px 65px 65px 65px 65px 65px 65px 65px 65px 65px 65px 65px 65px 65px;
     justify-content: center;
   }
 
@@ -36,7 +36,7 @@
     text-align: center;
     font-family: 'Poppins', sans-serif;
     font-weight: 300;
-    font-size: 35px;
+    font-size: 30px;
   }
   
   #light-pink {
@@ -44,7 +44,7 @@
     text-align: center;
     font-family: 'Poppins', sans-serif;
     font-weight: 300;
-    font-size: 35px;
+    font-size: 30px;
   }
   
   #dark-blue {
@@ -52,7 +52,7 @@
     text-align: center;
     font-family: 'Poppins', sans-serif;
     font-weight: 300;
-    font-size: 35px;
+    font-size: 30px;
   }
   
   #light-blue {
@@ -60,11 +60,11 @@
     text-align: center;
     font-family: 'Poppins', sans-serif;
     font-weight: 300;
-    font-size: 35px;
+    font-size: 30px;
   }
   
   #tile {
-    font-size: 10px;
+    font-size: 8px;
   }
 }
 

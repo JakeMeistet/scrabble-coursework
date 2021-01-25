@@ -62,7 +62,7 @@ interact('.drag-drop')
     inertia: true,
     modifiers: [
       interact.modifiers.restrictRect({
-        restriction: 'parent',
+        // restriction: 'parent',
         endOnly: true
       })
     ],

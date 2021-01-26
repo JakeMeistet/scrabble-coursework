@@ -23,12 +23,146 @@ interact('.box').dropzone({
   overlap: 0.75,
 
   // Listens for drop events e.g. drag enters a dropzone, drag leaves a dropzone
+  ondragenter: function (event) {
+    const draggableElement = event.relatedTarget
+    const dropzoneElement = event.target
 
-  ondropactivate: function (event) {
-    // add active dropzone feedback
-    event.target.classList.add('drop-active')
+    // Changes styling of div on posibility of a drop occuring (feedback from possible drop)
+    dropzoneElement.classList.add('drop-target')
+    draggableElement.classList.add('can-drop')
   },
 
+  ondragleave: function (event) {
+    // When target leaves dropzone, the possible drop feedback styling is removed
+    event.target.classList.remove('drop-target')
+    event.relatedTarget.classList.remove('can-drop')
+  },
+
+  ondrop: function (event) {
+    // When target is dropped, the possible drop feedback styling is removed
+    event.target.classList.remove('drop-target')
+    event.relatedTarget.classList.remove('can-drop')
+  },
+
+  ondropdeactivate: function (event) {
+    // // When target is no longer being dragged, the drop active feedback styling is removed
+    event.target.classList.remove('drop-active')
+    event.target.classList.remove('drop-target')
+  }
+})
+
+interact('.box-light-pink').dropzone({
+  // Only accepts elements with id 'droppable' to be dropped into the dropzone
+  accept: '#droppable',
+  // Require a 75% element overlap for a drop to be possible
+  overlap: 0.75,
+
+  // Listens for drop events e.g. drag enters a dropzone, drag leaves a dropzone
+  ondragenter: function (event) {
+    const draggableElement = event.relatedTarget
+    const dropzoneElement = event.target
+
+    // Changes styling of div on posibility of a drop occuring (feedback from possible drop)
+    dropzoneElement.classList.add('drop-target')
+    draggableElement.classList.add('can-drop')
+  },
+
+  ondragleave: function (event) {
+    // When target leaves dropzone, the possible drop feedback styling is removed
+    event.target.classList.remove('drop-target')
+    event.relatedTarget.classList.remove('can-drop')
+  },
+
+  ondrop: function (event) {
+    // When target is dropped, the possible drop feedback styling is removed
+    event.target.classList.remove('drop-target')
+    event.relatedTarget.classList.remove('can-drop')
+  },
+
+  ondropdeactivate: function (event) {
+    // // When target is no longer being dragged, the drop active feedback styling is removed
+    event.target.classList.remove('drop-active')
+    event.target.classList.remove('drop-target')
+  }
+})
+
+interact('.box-light-blue').dropzone({
+  // Only accepts elements with id 'droppable' to be dropped into the dropzone
+  accept: '#droppable',
+  // Require a 75% element overlap for a drop to be possible
+  overlap: 0.75,
+
+  // Listens for drop events e.g. drag enters a dropzone, drag leaves a dropzone
+  ondragenter: function (event) {
+    const draggableElement = event.relatedTarget
+    const dropzoneElement = event.target
+
+    // Changes styling of div on posibility of a drop occuring (feedback from possible drop)
+    dropzoneElement.classList.add('drop-target')
+    draggableElement.classList.add('can-drop')
+  },
+
+  ondragleave: function (event) {
+    // When target leaves dropzone, the possible drop feedback styling is removed
+    event.target.classList.remove('drop-target')
+    event.relatedTarget.classList.remove('can-drop')
+  },
+
+  ondrop: function (event) {
+    // When target is dropped, the possible drop feedback styling is removed
+    event.target.classList.remove('drop-target')
+    event.relatedTarget.classList.remove('can-drop')
+  },
+
+  ondropdeactivate: function (event) {
+    // // When target is no longer being dragged, the drop active feedback styling is removed
+    event.target.classList.remove('drop-active')
+    event.target.classList.remove('drop-target')
+  }
+})
+
+interact('.box-dark-pink').dropzone({
+  // Only accepts elements with id 'droppable' to be dropped into the dropzone
+  accept: '#droppable',
+  // Require a 75% element overlap for a drop to be possible
+  overlap: 0.75,
+
+  // Listens for drop events e.g. drag enters a dropzone, drag leaves a dropzone
+  ondragenter: function (event) {
+    const draggableElement = event.relatedTarget
+    const dropzoneElement = event.target
+
+    // Changes styling of div on posibility of a drop occuring (feedback from possible drop)
+    dropzoneElement.classList.add('drop-target')
+    draggableElement.classList.add('can-drop')
+  },
+
+  ondragleave: function (event) {
+    // When target leaves dropzone, the possible drop feedback styling is removed
+    event.target.classList.remove('drop-target')
+    event.relatedTarget.classList.remove('can-drop')
+  },
+
+  ondrop: function (event) {
+    // When target is dropped, the possible drop feedback styling is removed
+    event.target.classList.remove('drop-target')
+    event.relatedTarget.classList.remove('can-drop')
+  },
+
+  ondropdeactivate: function (event) {
+    // // When target is no longer being dragged, the drop active feedback styling is removed
+    event.target.classList.remove('drop-active')
+    event.target.classList.remove('drop-target')
+  }
+})
+
+interact('.box-dark-blue').dropzone({
+  // Only accepts elements with id 'droppable' to be dropped into the dropzone
+  accept: '#droppable',
+  // Require a 75% element overlap for a drop to be possible
+  overlap: 0.75,
+
+  // Listens for drop events e.g. drag enters a dropzone, drag leaves a dropzone
   ondragenter: function (event) {
     const draggableElement = event.relatedTarget
     const dropzoneElement = event.target

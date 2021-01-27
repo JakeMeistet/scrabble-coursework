@@ -53,7 +53,7 @@ interact('.box').dropzone({
 
 interact('.box-light-pink').dropzone({
   // Only accepts elements with id 'droppable' to be dropped into the dropzone
-  accept: '#droppable',
+  accept: '.drag-drop',
   // Require a 75% element overlap for a drop to be possible
   overlap: 0.75,
 
@@ -88,7 +88,7 @@ interact('.box-light-pink').dropzone({
 
 interact('.box-light-blue').dropzone({
   // Only accepts elements with id 'droppable' to be dropped into the dropzone
-  accept: '#droppable',
+  accept: '.drag-drop',
   // Require a 75% element overlap for a drop to be possible
   overlap: 0.75,
 
@@ -123,7 +123,7 @@ interact('.box-light-blue').dropzone({
 
 interact('.box-dark-pink').dropzone({
   // Only accepts elements with id 'droppable' to be dropped into the dropzone
-  accept: '#droppable',
+  accept: '.drag-drop',
   // Require a 75% element overlap for a drop to be possible
   overlap: 0.75,
 
@@ -158,7 +158,7 @@ interact('.box-dark-pink').dropzone({
 
 interact('.box-dark-blue').dropzone({
   // Only accepts elements with id 'droppable' to be dropped into the dropzone
-  accept: '#droppable',
+  accept: '.drag-drop',
   // Require a 75% element overlap for a drop to be possible
   overlap: 0.75,
 

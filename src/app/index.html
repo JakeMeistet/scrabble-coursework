@@ -9,155 +9,28 @@
     <!-- <script type="text/javascript" src="public/js/index.js"></script> -->
     <script src="https://unpkg.com/interactjs/dist/interact.min.js"></script>
     <script src="./public/js/draggable.js"></script>
-    <script src="./public/js/loadScrabble.mjs"></script>
+    <script src="./public/js/loadScrabble.js"></script>
 
     <title>Scrabble by Jake Bailey</title>
 </head>
 
 
-<body class="content">
-
-    <div class="parent">
+<body id="body" class="content">
+    
+    <div id="form" class="parent2">
         <div>
-            <div id="game-board-id" class="game-board">
-                <div id="form" class="parent2">
-                    <div>
-                        <input name="email" type="text" value="Email Address" size="40" maxlength="150" class="credentials" style="margin-top: 150px;"/>
-                    </div>
-                    <div>
-                        <input name="password" type="password" maxlength="50" size="18" value="Password" class="credentials"/>
-                    </div>
-                    <div>
-                        <button class="submit" onclick="loadScrabble()">Submit</button>
-                    </div>
-                </div>
-                <!-- <script>loadScrabble()</script> -->
-            </div>
+            <h1 class='title'>Scrabble by Jake Bailey</h1>
+            
         </div>
-        <div style="width: 5%;">
-            <div id="droppable" class="drag-drop"> A <p id="tile" class="1">1</p> </div>
-            <!-- <div id="droppable" class="drag-drop"> A <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> A <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> A <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> A <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> A <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> A <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> A <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> A <p id="tile" class="1">1</p> </div> -->
-
-            <!-- <div id="droppable" class="drag-drop"> B <p id="tile" class="3">3</p> </div>
-            <div id="droppable" class="drag-drop"> B <p id="tile" class="3">3</p> </div> -->
-
-            <div id="droppable" class="drag-drop"> C <p id="tile" class="3">3</p> </div>
-            <!-- <div id="droppable" class="drag-drop"> C <p id="tile" class="3">3</p> </div> -->
-
-            <!-- <div id="droppable" class="drag-drop"> D <p id="tile" class="2">2</p> </div>
-            <div id="droppable" class="drag-drop"> D <p id="tile" class="2">2</p> </div>
-            <div id="droppable" class="drag-drop"> D <p id="tile" class="2">2</p> </div>
-            <div id="droppable" class="drag-drop"> D <p id="tile" class="2">2</p> </div> -->
-
-            <div id="droppable" class="drag-drop"> E <p id="tile" class="1">1</p> </div>
-            <!-- <div id="droppable" class="drag-drop"> E <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> E <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> E <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> E <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> E <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> E <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> E <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> E <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> E <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> E <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> E <p id="tile" class="1">1</p> </div> -->
-
-            <!-- <div id="droppable" class="drag-drop"> F <p id="tile" class="4">4</p> </div>
-            <div id="droppable" class="drag-drop"> F <p id="tile" class="4">4</p> </div>
-
-            <div id="droppable" class="drag-drop"> G <p id="tile" class="2">2</p> </div>
-            <div id="droppable" class="drag-drop"> G <p id="tile" class="2">2</p> </div>
-            <div id="droppable" class="drag-drop"> G <p id="tile" class="2">2</p> </div>
-
-            <div id="droppable" class="drag-drop"> H <p id="tile" class="4">4</p> </div>
-            <div id="droppable" class="drag-drop"> H <p id="tile" class="4">4</p> </div>
-
-            <div id="droppable" class="drag-drop"> I <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> I <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> I <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> I <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> I <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> I <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> I <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> I <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> I <p id="tile" class="1">1</p> </div> -->
-            
-            <div id="droppable" class="drag-drop"> J <p id="tile" class="8">8</p> </div>
-
-            <div id="droppable" class="drag-drop"> K <p id="tile" class="5">5</p> </div>
-            
-            <div id="droppable" class="drag-drop"> L <p id="tile" class="1">1</p> </div>
-            <!-- <div id="droppable" class="drag-drop"> L <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> L <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> L <p id="tile" class="1">1</p> </div> -->
-
-            <div id="droppable" class="drag-drop"> M <p id="tile" class="3">3</p> </div>
-            <!-- <div id="droppable" class="drag-drop"> M <p id="tile" class="3">3</p> </div>
-
-            <div id="droppable" class="drag-drop"> N <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> N <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> N <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> N <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> N <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> N <p id="tile" class="1">1</p> </div>
-
-            <div id="droppable" class="drag-drop"> O <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> O <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> O <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> O <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> O <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> O <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> O <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> O <p id="tile" class="1">1</p> </div>
-
-            <div id="droppable" class="drag-drop"> P <p id="tile" class="3">3</p> </div>
-            <div id="droppable" class="drag-drop"> P <p id="tile" class="3">3</p> </div>
-
-            <div id="droppable" class="drag-drop"> Q <p id="tile" class="10">10</p> </div>
-            
-            <div id="droppable" class="drag-drop"> R <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> R <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> R <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> R <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> R <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> R <p id="tile" class="1">1</p> </div>
-
-            <div id="droppable" class="drag-drop"> S <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> S <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> S <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> S <p id="tile" class="1">1</p> </div>
-
-            <div id="droppable" class="drag-drop"> T <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> T <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> T <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> T <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> T <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> T <p id="tile" class="1">1</p> </div>
-
-            <div id="droppable" class="drag-drop"> U <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> U <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> U <p id="tile" class="1">1</p> </div>
-            <div id="droppable" class="drag-drop"> U <p id="tile" class="1">1</p> </div>
-
-            <div id="droppable" class="drag-drop"> V <p id="tile" class="4">4</p> </div>
-            <div id="droppable" class="drag-drop"> V <p id="tile" class="4">4</p> </div>
-
-            <div id="droppable" class="drag-drop"> W <p id="tile" class="4">4</p> </div>
-            <div id="droppable" class="drag-drop"> W <p id="tile" class="4">4</p> </div>
-
-            <div id="droppable" class="drag-drop"> X <p id="tile" class="8">8</p> </div>
-
-            <div id="droppable" class="drag-drop"> Y <p id="tile" class="4">4</p> </div>
-            <div id="droppable" class="drag-drop"> Y <p id="tile" class="4">4</p> </div>
-
-            <div id="droppable" class="drag-drop"> Z <p id="tile" class="10">10</p> </div> -->
+        <div>
+            <p class='login'>Log in:</p>
+            <input name="email" type="text" value="Email Address" size="40" maxlength="150" class="credentials""/>
+        </div>
+        <div>
+            <input name="password" type="password" maxlength="50" size="18" value="Password" class="credentials"/>
+        </div>
+        <div>
+            <button class="submit" onclick="flexCreate()">Submit</button>
         </div>
     </div>
 </body>

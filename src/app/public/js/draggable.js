@@ -18,7 +18,7 @@ function dragMoveListener (event) {
 
 interact('.box').dropzone({
   // Only accepts elements with id 'droppable' to be dropped into the dropzone
-  accept: '#droppable',
+  accept: '.drag-drop',
   // Require a 75% element overlap for a drop to be possible
   overlap: 0.75,
 

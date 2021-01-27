@@ -184,8 +184,17 @@ h2.title {
     margin-right: auto;
 }
 
+p.login {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 200;
+  font-size: 25px;
+  color: white;
+  text-align: center;
+  padding-bottom: 10px;
+}
+
 .content {
-    background-color: white(8, 61, 119);
+    background-color: rgb(8, 61, 119);
 }
 
 .parent {
@@ -318,4 +327,8 @@ canvas {
   font-family: 'Poppins', sans-serif;
   font-weight: 200;
   font-size: 20px;
+}
+
+#flex-tile {
+  width: 5%;
 }

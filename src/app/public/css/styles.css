@@ -33,8 +33,7 @@
 
 
   .box-dark-pink {
-    background-color: #d9d9d9;
-    border: 2px solid black;
+    border: 2px solid #B48D51;
     background-color: hotpink;
     text-align: center;
     font-family: 'Poppins', sans-serif;
@@ -43,8 +42,7 @@
   }
   
   .box-light-pink {
-    background-color: #d9d9d9;
-    border: 2px solid black;
+    border: 2px solid #B48D51;
     background-color: lightpink;
     text-align: center;
     font-family: 'Poppins', sans-serif;
@@ -53,8 +51,7 @@
   }
   
   .box-dark-blue {
-    background-color: #d9d9d9;
-    border: 2px solid black;
+    border: 2px solid #B48D51;
     background-color: blue;
     text-align: center;
     font-family: 'Poppins', sans-serif;
@@ -63,8 +60,7 @@
   }
   
   .box-light-blue {
-    background-color: #d9d9d9;
-    border: 2px solid black;
+    border: 2px solid #B48D51;
     background-color: lightblue;
     text-align: center;
     font-family: 'Poppins', sans-serif;
@@ -73,13 +69,10 @@
   }
 
   .box {
-    background-color: #d9d9d9;
-    border: 2px solid black;
+    background-color: #C8A165;
+    border: 2px solid #B48D51;
   }
   
-  #tile {
-    font-size: 8px;
-  }
 }
 
 @media screen and (max-width:1100px) {
@@ -110,8 +103,7 @@
   }
 
   .box-dark-pink {
-    background-color: #d9d9d9;
-    border: 2px solid black;
+    border: 2px solid #B48D51;
     background-color: hotpink;
     text-align: center;
     font-family: 'Poppins', sans-serif;
@@ -120,8 +112,7 @@
   }
   
   .box-light-pink {
-    background-color: #d9d9d9;
-    border: 2px solid black;
+    border: 2px solid #B48D51;
     background-color: lightpink;
     text-align: center;
     font-family: 'Poppins', sans-serif;
@@ -130,8 +121,7 @@
   }
   
   .box-dark-blue {
-    background-color: #d9d9d9;
-    border: 2px solid black;
+    border: 2px solid #B48D51;
     background-color: blue;
     text-align: center;
     font-family: 'Poppins', sans-serif;
@@ -140,8 +130,7 @@
   }
   
   .box-light-blue {
-    background-color: #d9d9d9;
-    border: 2px solid black;
+    border: 2px solid #B48D51;
     background-color: lightblue;
     text-align: center;
     font-family: 'Poppins', sans-serif;
@@ -150,13 +139,10 @@
   }
   
   .box {
-    background-color: #d9d9d9;
-    border: 2px solid black;
+    background-color:#C8A165;
+    border: 2px solid #B48D51;
   }
 
-  #tile {
-    font-size: 5px;
-  }
 }
 
 

@@ -1,4 +1,3 @@
-
 // Drag move listener function - listens to movements when a drag event occurs and keeps the position of the x and y positioning
 function dragMoveListener (event) {
   const target = event.target
@@ -20,7 +19,7 @@ interact('.box').dropzone({
   // Only accepts elements with id 'droppable' to be dropped into the dropzone
   accept: '.drag-drop',
   // Require a 75% element overlap for a drop to be possible
-  overlap: 0.75,
+  overlap: 1,
 
   // Listens for drop events e.g. drag enters a dropzone, drag leaves a dropzone
   ondragenter: function (event) {
@@ -42,6 +41,7 @@ interact('.box').dropzone({
     // When target is dropped, the possible drop feedback styling is removed
     event.target.classList.remove('drop-target')
     event.relatedTarget.classList.remove('can-drop')
+    findPlacement(event.target.classList[0])
   },
 
   ondropdeactivate: function (event) {
@@ -55,7 +55,7 @@ interact('.box-light-pink').dropzone({
   // Only accepts elements with id 'droppable' to be dropped into the dropzone
   accept: '.drag-drop',
   // Require a 75% element overlap for a drop to be possible
-  overlap: 0.75,
+  overlap: 1,
 
   // Listens for drop events e.g. drag enters a dropzone, drag leaves a dropzone
   ondragenter: function (event) {
@@ -77,6 +77,7 @@ interact('.box-light-pink').dropzone({
     // When target is dropped, the possible drop feedback styling is removed
     event.target.classList.remove('drop-target')
     event.relatedTarget.classList.remove('can-drop')
+    findPlacement(event.target.classList[0])
   },
 
   ondropdeactivate: function (event) {
@@ -90,7 +91,7 @@ interact('.box-light-blue').dropzone({
   // Only accepts elements with id 'droppable' to be dropped into the dropzone
   accept: '.drag-drop',
   // Require a 75% element overlap for a drop to be possible
-  overlap: 0.75,
+  overlap: 1,
 
   // Listens for drop events e.g. drag enters a dropzone, drag leaves a dropzone
   ondragenter: function (event) {
@@ -112,6 +113,7 @@ interact('.box-light-blue').dropzone({
     // When target is dropped, the possible drop feedback styling is removed
     event.target.classList.remove('drop-target')
     event.relatedTarget.classList.remove('can-drop')
+    findPlacement(event.target.classList[0])
   },
 
   ondropdeactivate: function (event) {
@@ -125,7 +127,7 @@ interact('.box-dark-pink').dropzone({
   // Only accepts elements with id 'droppable' to be dropped into the dropzone
   accept: '.drag-drop',
   // Require a 75% element overlap for a drop to be possible
-  overlap: 0.75,
+  overlap: 1,
 
   // Listens for drop events e.g. drag enters a dropzone, drag leaves a dropzone
   ondragenter: function (event) {
@@ -147,6 +149,7 @@ interact('.box-dark-pink').dropzone({
     // When target is dropped, the possible drop feedback styling is removed
     event.target.classList.remove('drop-target')
     event.relatedTarget.classList.remove('can-drop')
+    findPlacement(event.target.classList[0], event.target.textContent)
   },
 
   ondropdeactivate: function (event) {
@@ -160,7 +163,7 @@ interact('.box-dark-blue').dropzone({
   // Only accepts elements with id 'droppable' to be dropped into the dropzone
   accept: '.drag-drop',
   // Require a 75% element overlap for a drop to be possible
-  overlap: 0.75,
+  overlap: 1,
 
   // Listens for drop events e.g. drag enters a dropzone, drag leaves a dropzone
   ondragenter: function (event) {
@@ -182,6 +185,7 @@ interact('.box-dark-blue').dropzone({
     // When target is dropped, the possible drop feedback styling is removed
     event.target.classList.remove('drop-target')
     event.relatedTarget.classList.remove('can-drop')
+    findPlacement(event.target.classList[0])
   },
 
   ondropdeactivate: function (event) {

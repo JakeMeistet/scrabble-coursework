@@ -1,7 +1,16 @@
 const express = require('express') // Imports Express.js for use with the web application
 const vhost = require('vhost')
 const serveStatic = require('serve-static')
+const bodyParser = require('body-parser')
+const jwt = require('jsonwebtoken')
+const colour = require('colour')
 const port = 80 // HTTP Port
+
+colour.setTheme({
+  startup: 'yellow',
+  running: 'blue',
+  error: 'red',
+})
 
 const scrabble = express()
 scrabble.use(serveStatic('app'))
@@ -35,11 +44,32 @@ app.use(function (err, req, res, next) {
   }
 })
 
+app.use(bodyParser.urlencoded({ extended: true }))
+
+app.post('/game', (req, res) => {
+  res.render('index.html', {username: req.body.username})
+})
+
 // Listens to port 80, and if an error occurs, logs it to console
 app.listen(port, err => {
   if (err) {
     s
   } else {
-    console.log('Server running on port:', port)
+    console.log(`
+    ███████╗ ██████╗██████╗  █████╗ ██████╗ ██████╗ ██╗     ███████╗                                     
+    ██╔════╝██╔════╝██╔══██╗██╔══██╗██╔══██╗██╔══██╗██║     ██╔════╝                                     
+    ███████╗██║     ██████╔╝███████║██████╔╝██████╔╝██║     █████╗                                       
+    ╚════██║██║     ██╔══██╗██╔══██║██╔══██╗██╔══██╗██║     ██╔══╝                                       
+    ███████║╚██████╗██║  ██║██║  ██║██████╔╝██████╔╝███████╗███████╗                                     
+    ╚══════╝ ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚═════╝ ╚══════╝╚══════╝                                     
+                                                                                                         
+    ██████╗ ██╗   ██╗         ██╗ █████╗ ██╗  ██╗███████╗    ██████╗  █████╗ ██╗██╗     ███████╗██╗   ██╗
+    ██╔══██╗╚██╗ ██╔╝         ██║██╔══██╗██║ ██╔╝██╔════╝    ██╔══██╗██╔══██╗██║██║     ██╔════╝╚██╗ ██╔╝
+    ██████╔╝ ╚████╔╝          ██║███████║█████╔╝ █████╗      ██████╔╝███████║██║██║     █████╗   ╚████╔╝ 
+    ██╔══██╗  ╚██╔╝      ██   ██║██╔══██║██╔═██╗ ██╔══╝      ██╔══██╗██╔══██║██║██║     ██╔══╝    ╚██╔╝  
+    ██████╔╝   ██║       ╚█████╔╝██║  ██║██║  ██╗███████╗    ██████╔╝██║  ██║██║███████╗███████╗   ██║   
+    ╚═════╝    ╚═╝        ╚════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝    ╚═════╝ ╚═╝  ╚═╝╚═╝╚══════╝╚══════╝   ╚═╝      
+    `.startup)
+    console.log('Server running on port:'.running, port)
   }
 })

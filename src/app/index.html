@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/public/css/styles.css">
-    <!-- <script type="text/javascript" src="public/js/index.js"></script> -->
     <script src="https://unpkg.com/interactjs/dist/interact.min.js"></script>
     <script src="./public/js/draggable.js"></script>
     <script src="./public/js/loadScrabble.js"></script>
     <script src="./public/js/scores.js"></script>
+    <script src="./public/js/userCredentials.js"></script>
 
     <title>Scrabble by Jake Bailey</title>
 </head>
@@ -20,18 +20,15 @@
     
     <div id="form" class="parent2">
         <div>
-            <h1 class='title'>Scrabble by Jake Bailey</h1>
-            
+            <h1 class='title'>Scrabble by Jake Bailey</h1>  
         </div>
         <div>
-            <p class='login'>Log in:</p>
-            <input name="email" type="text" value="Email Address" size="40" maxlength="150" class="credentials""/>
-        </div>
-        <div>
-            <input name="password" type="password" maxlength="50" size="18" value="Password" class="credentials"/>
-        </div>
-        <div>
-            <button class="submit" onclick="flexCreate()">Submit</button>
+            <p class='login'>Enter a username</p>
+            <form action="/game" action="GET">
+                <input id="username" name="username" type="text" value="Username" size="40" maxlength="150" class="credentials"/>
+                <input type="submit" class="submit">
+            </form>
+
         </div>
     </div>
 </body>

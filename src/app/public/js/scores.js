@@ -3,16 +3,22 @@ function findPlacement (boxClass, text) {
   let currentPlacement = ''
   if (boxClass === 'box') {
     currentPlacement = 'plain'
-    console.log('this is a plain box')
+    console.log(currentPlacement)
   } else if (boxClass === 'box-dark-pink' && text != '★') {
-    console.log('3W')
+    currentPlacement = '3W'
+    console.log(currentPlacement)
   } else if (boxClass === 'box-light-pink') {
-    console.log('2W')
+    currentPlacement = '2W'
+    console.log(currentPlacement)
   } else if (boxClass === 'box-dark-blue') {
-    console.log('3L')
+    currentPlacement = '3L'
+    console.log(currentPlacement)
   } else if (boxClass === 'box-light-blue') {
-    console.log('2L')
+    currentPlacement = '2L'
+    console.log(currentPlacement)
   } else {
-    console.log('★')
+    currentPlacement = '★'
+    console.log(currentPlacement)
   }
 }
+

@@ -31,8 +31,6 @@ function loadScrabble () {
 }
 
 function flexCreate () {
-  const form = document.getElementById('form')
-  form.remove()
   console.log('Board Generated - loadScrabble')
 
   const body = document.getElementById('body')

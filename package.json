@@ -21,8 +21,6 @@
     "colour": "^0.7.1",
     "express": "^4.17.1",
     "interactjs": "^1.10.2",
-    "jquery": "^3.5.1",
-    "jsonwebtoken": "^8.5.1",
     "vhost": "^3.0.2"
   },
   "devDependencies": {}

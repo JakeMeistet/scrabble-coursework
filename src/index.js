@@ -2,7 +2,6 @@ const express = require('express') // Imports Express.js for use with the web ap
 const vhost = require('vhost')
 const serveStatic = require('serve-static')
 const bodyParser = require('body-parser')
-const jwt = require('jsonwebtoken')
 const colour = require('colour')
 const port = 80 // HTTP Port
 

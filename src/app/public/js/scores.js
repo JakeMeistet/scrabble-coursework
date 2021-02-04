@@ -21,4 +21,3 @@ function findPlacement (boxClass, text) {
     console.log(currentPlacement)
   }
 }
-

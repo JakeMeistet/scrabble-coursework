@@ -20,10 +20,17 @@ const app = express()
 app.use(vhost('localhost', scrabble))
 app.use(vhost('10.210.70.53', scrabble))
 
-app.post('/game', (req, res) => {
+app.post('/game', async(req, res) => {
+  const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`
   const id = Crypto.randomBytes(32).toString('hex')
+  let params = new URLSearchParams(fullUrl)
+  let username = ''
+  for (const param of params){
+    username = param[1]
+  }
+  console.log(username)
+  console.log(id)
   res.send(id)
-  // res.render('index.html', {username: req.body.username})
 })
 
 app.use(function (req, res, next) {
@@ -54,9 +61,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 // Listens to port 80, and if an error occurs, logs it to console
 app.listen(port, err => {
-  if (err) {
-    s
-  } else {
+  if (!err) {
     console.log('Server Starting'.startup)
     console.log('Server running on port:'.running, port)
   }

@@ -16,6 +16,7 @@ ip('https://www.cloudflare.com/cdn-cgi/trace').then(data => {
   }
   console.log(credentials)
   const url = window.location.href
+  console.log(url)
   if (url.includes('game')) {
     generateID(credentials)
   }
@@ -30,7 +31,7 @@ function generateID (credentials) {
     const div = document.getElementById('body')
     div.insertAdjacentHTML('afterbegin', `<p id="clientID" class="credentials"> Username: ${credentials.username}  ClientID: ${credentials.id}</p>`)
   }
-  xhr.open('POST', '/game')
+  xhr.open('POST', window.location.href)
   xhr.responseType = 'text'
   xhr.send()
 }

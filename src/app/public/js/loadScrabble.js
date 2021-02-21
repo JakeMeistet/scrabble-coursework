@@ -1,6 +1,7 @@
 
 function loadScrabble () {
   // Loop to generate the gameboard to start the game
+
   for (i = 0; i <= 224; i++) {
     const grid = document.getElementById('game-board-id')
     const box = document.createElement('div')
@@ -31,6 +32,8 @@ function loadScrabble () {
 }
 
 function flexCreate () {
+  const form = document.getElementById('form')
+  form.remove()
   console.log('Board Generated - loadScrabble')
 
   const body = document.getElementById('body')

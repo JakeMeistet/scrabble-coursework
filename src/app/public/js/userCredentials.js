@@ -16,14 +16,12 @@ ip('https://www.cloudflare.com/cdn-cgi/trace').then(data => {
   }
   console.log(credentials)
   const url = window.location.href
-  console.log(url)
-  if (url.includes('game')) {
-    generateID(credentials)
-  }
+  generateID(credentials)
 })
 
 function generateID (credentials) {
   const xhr = new XMLHttpRequest()
+  console.log('test')
   xhr.onload = function () {
     const id = this.responseText
     console.log(id)

@@ -6,11 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/public/css/styles.css">
+    <script src="https://cdn.socket.io/3.1.1/socket.io.min.js" integrity="sha384-gDaozqUvc4HTgo8iZjwth73C6dDDeOJsAgpxBcMpZYztUfjHXpzrpdrHRdVp8ySO" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/interactjs/dist/interact.min.js"></script>
     <script src="./public/js/draggable.js"></script>
     <script src="./public/js/loadScrabble.js"></script>
     <script src="./public/js/scores.js"></script>
+    <script src="./public/js/socket.js"></script>
     <script src="./public/js/userCredentials.js"></script>
+    
 
     <title>Scrabble by Jake Bailey</title>
 </head>
@@ -24,11 +27,10 @@
         </div>
         <div>
             <p class='login'>Enter a username</p>
-            <form action="/game" action="GET">
+            <form onsubmit="socket()">
                 <input id="username" name="username" type="text" value="Username" size="40" maxlength="150" class="credentials"/>
                 <input type="submit" class="submit">
             </form>
-
         </div>
     </div>
 </body>

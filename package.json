@@ -22,7 +22,10 @@
     "crypto": "^1.0.1",
     "express": "^4.17.1",
     "interactjs": "^1.10.2",
+    "socket.io": "^3.1.1",
     "vhost": "^3.0.2"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
 }

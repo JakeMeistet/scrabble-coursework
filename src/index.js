@@ -1,8 +1,10 @@
 const express = require('express') // Imports Express.js for use with the web application
+const fs = require('fs')
 const vhost = require('vhost')
 const serveStatic = require('serve-static')
 const bodyParser = require('body-parser')
 const Crypto = require('crypto')
+const socket = require('socket.io')
 const colour = require('colour')
 const port = 80 // HTTP Port
 
@@ -20,17 +22,21 @@ const app = express()
 app.use(vhost('localhost', scrabble))
 app.use(vhost('10.210.70.53', scrabble))
 
-app.post('/game', async(req, res) => {
+app.post('/', (req, res) => {
   const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`
-  const id = Crypto.randomBytes(32).toString('hex')
-  let params = new URLSearchParams(fullUrl)
-  let username = ''
-  for (const param of params){
-    username = param[1]
+  if (fullUrl.includes('username')) {
+    const uid = Crypto.randomBytes(32).toString('hex')
+    const params = new URLSearchParams(fullUrl)
+    let username = ''
+    for (const param of params) {
+      username = param[1]
+    }
+    const ip = req.socket.remoteAddress
+    const credentials = { uid, username, ip }
+    const currentUser = JSON.stringify(credentials)
+    write(currentUser, 'users.json')
+    res.send(currentUser)
   }
-  console.log(username)
-  console.log(id)
-  res.send(id)
 })
 
 app.use(function (req, res, next) {
@@ -60,9 +66,28 @@ app.use(function (err, req, res, next) {
 app.use(bodyParser.urlencoded({ extended: true }))
 
 // Listens to port 80, and if an error occurs, logs it to console
-app.listen(port, err => {
+const server = app.listen(port, err => {
   if (!err) {
     console.log('Server Starting'.startup)
     console.log('Server running on port:'.running, port)
   }
 })
+
+const io = socket(server)
+
+io.on('connection', (socket) => {
+  console.log('A user just connected.')
+  console.log('ID: ')
+  console.log('Username: ')
+  socket.on('disconnect', () => {
+    console.log('A user has disconnected.')
+  })
+})
+
+function write (currentUser, file) {
+  if (fs.existsSync(file)) {
+    fs.appendFileSync(file, currentUser)
+  } else {
+    fs.writeFileSync(file, currentUser)
+  }
+}

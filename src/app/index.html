@@ -27,9 +27,10 @@
         </div>
         <div>
             <p class='login'>Enter a username</p>
-            <form onsubmit="socket()">
-                <input id="username" name="username" type="text" value="Username" size="40" maxlength="150" class="credentials"/>
-                <input type="submit" class="submit">
+            
+            <form method='post' action='/user'>
+                <input id="username" name='username'required>
+                <input type="button" id="submit" value="Submit" onclick="connect() ">
             </form>
         </div>
     </div>

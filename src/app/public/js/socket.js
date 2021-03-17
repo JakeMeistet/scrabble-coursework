@@ -1,5 +1,19 @@
+const socketConnect = io.connect('ws://localhost/')
+function connect () {
 
-function socket () {
-  const socketConnect = io.connect('ws://localhost/')
-  // flexCreate()
+  const socket = io('http://localhost')
+  
+
+  const username = document.getElementById('username')
+  const submit = document.getElementById('submit')
+  console.log(submit)
+
+  socket.emit('startGame');
+
+
+  socket.on('startGame', () => {
+    flexCreate()
+  })
+  
 }
+

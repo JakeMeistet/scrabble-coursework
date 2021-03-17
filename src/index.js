@@ -6,6 +6,7 @@ const bodyParser = require('body-parser')
 const Crypto = require('crypto')
 const socket = require('socket.io')
 const colour = require('colour')
+const { format } = require('path')
 const port = 80 // HTTP Port
 
 colour.setTheme({
@@ -14,30 +15,30 @@ colour.setTheme({
   error: 'red'
 })
 
-const scrabble = express()
-scrabble.use(serveStatic('app'))
-
 const app = express()
 
-app.use(vhost('localhost', scrabble))
-app.use(vhost('10.210.70.53', scrabble))
+
+
+app.use(express.static('app'))
+
 
 app.post('/', (req, res) => {
-  const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`
-  if (fullUrl.includes('username')) {
-    const uid = Crypto.randomBytes(32).toString('hex')
-    const params = new URLSearchParams(fullUrl)
-    let username = ''
-    for (const param of params) {
-      username = param[1]
-    }
-    const ip = req.socket.remoteAddress
-    const credentials = { uid, username, ip }
-    const currentUser = JSON.stringify(credentials)
-    write(currentUser, 'users.json')
-    res.send(currentUser)
-  }
+  const uid = Crypto.randomBytes(32).toString('hex')
+  let username = ''
+  const ip = req.socket.remoteAddress
+  const credentials = { uid, username, ip }
+  res.send(credentials)
 })
+
+app.post('/user', (req, res) => {
+  const uid = Crypto.randomBytes(32).toString('hex')
+  let username = req.body.username
+  console.log(username)
+  const ip = req.socket.remoteAddress
+  const credentials = { uid, username, ip }
+  res.send(credentials)
+})
+
 
 app.use(function (req, res, next) {
   const err = new Error('Not Found')
@@ -77,17 +78,22 @@ const io = socket(server)
 
 io.on('connection', (socket) => {
   console.log('A user just connected.')
-  console.log('ID: ')
-  console.log('Username: ')
   socket.on('disconnect', () => {
     console.log('A user has disconnected.')
   })
+  socket.on('startGame', () => {
+    io.emit('startGame')
+  })
 })
 
-function write (currentUser, file) {
-  if (fs.existsSync(file)) {
-    fs.appendFileSync(file, currentUser)
-  } else {
-    fs.writeFileSync(file, currentUser)
-  }
-}
+
+
+
+
+// function write (currentUser, file) {
+//   if (fs.existsSync(file)) {
+//     fs.appendFileSync(file, currentUser)
+//   } else {
+//     fs.writeFileSync(file, currentUser)
+//   }
+// }

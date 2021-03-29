@@ -24,20 +24,13 @@ app.use(express.static('app'))
 
 app.post('/', (req, res) => {
   const uid = Crypto.randomBytes(32).toString('hex')
-  let username = ''
   const ip = req.socket.remoteAddress
-  const credentials = { uid, username, ip }
-  res.send(credentials)
+
+  
+  // const credentials = { uid, username, ip }
+  // res.send(credentials)
 })
 
-app.post('/user', (req, res) => {
-  const uid = Crypto.randomBytes(32).toString('hex')
-  let username = req.body.username
-  console.log(username)
-  const ip = req.socket.remoteAddress
-  const credentials = { uid, username, ip }
-  res.send(credentials)
-})
 
 
 app.use(function (req, res, next) {
@@ -74,18 +67,22 @@ const server = app.listen(port, err => {
   }
 })
 
+
 const io = socket(server)
 
-io.on('connection', (socket) => {
-  console.log('A user just connected.')
-  socket.on('disconnect', () => {
-    console.log('A user has disconnected.')
-  })
-  socket.on('startGame', () => {
-    io.emit('startGame')
-  })
-})
+  io.on('connection', (socket) => {
+    console.log('A user just connected.')
 
+    socket.on('disconnect', () => {
+      console.log('A user has disconnected.')
+    })
+    const uid = Crypto.randomBytes(32).toString('hex')
+    const ip = socket.request.connection.remoteAddress
+    console.log(ip)
+    socket.on('startGame', () => {
+      io.emit('startGame', {uid: uid, ip: ip})
+    })
+  })
 
 
 

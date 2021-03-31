@@ -26,8 +26,7 @@ function start () {
     socket.emit('pastPlayer', credentials)
     socket.on('pastPlayer', (newCredentials) => {
       console.log(newCredentials)
-      lobbyPage(newCredentials)
-      
+      lobbyPage(newCredentials)   
     })
     
   }
@@ -51,12 +50,14 @@ function lobbyPage(credentials) {
 
       const createBtn = document.createElement('button')
       createBtn.innerText = 'Create'
+      createBtn.id = 'createBtn'
       createBtn.className = 'btn'
       login.appendChild(createBtn)
     
       
       const joinBtn = document.createElement('button')
       joinBtn.innerText = 'Join'
+      joinBtn.id = 'joinBtn'
       joinBtn.className = 'btn'
       login.appendChild(joinBtn)
       

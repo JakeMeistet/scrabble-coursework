@@ -172,7 +172,7 @@ h2.title {
     margin-right: auto;
 }
 
-p.login {
+p.login, p.lobby {
   font-family: 'Poppins', sans-serif;
   font-weight: 200;
   font-size: 25px;
@@ -328,4 +328,11 @@ canvas {
 
 #flex-tile {
   width: 5%;
+}
+
+.client {
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 200;
+  font-size: 15px;
 }

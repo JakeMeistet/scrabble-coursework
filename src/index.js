@@ -17,21 +17,15 @@ colour.setTheme({
 
 const app = express()
 
-
-
 app.use(express.static('app'))
-
 
 app.post('/', (req, res) => {
   const uid = Crypto.randomBytes(32).toString('hex')
   const ip = req.socket.remoteAddress
 
-  
   // const credentials = { uid, username, ip }
   // res.send(credentials)
 })
-
-
 
 app.use(function (req, res, next) {
   const err = new Error('Not Found')
@@ -67,25 +61,34 @@ const server = app.listen(port, err => {
   }
 })
 
-
 const io = socket(server)
 
-  io.on('connection', (socket) => {
-    console.log('A user just connected.')
+io.on('connection', (socket) => {
+  console.log('A user just connected.')
 
-    socket.on('disconnect', () => {
-      console.log('A user has disconnected.')
-    })
-    const uid = Crypto.randomBytes(32).toString('hex')
-    const ip = socket.request.connection.remoteAddress
-    console.log(ip)
-    socket.on('startGame', () => {
-      io.emit('startGame', {uid: uid, ip: ip})
-    })
+  socket.on('disconnect', () => {
+    console.log('A user has disconnected.')
+  })
+  const uid = Crypto.randomBytes(32).toString('hex')
+  const ip = socket.request.connection.remoteAddress
+  console.log(ip)
+  // socket.on('startGame', (username) => {
+
+  socket.on('newPlayer', (username) => {
+    console.log(username)
+    const credentials = { username: username, uid: uid, ip: ip }
+    console.log(credentials)
+    io.emit('newPlayer', credentials)
   })
 
-
-
+  socket.on('pastPlayer', (credentials) => {
+    const newCredentials = { username: credentials.username, uid: credentials.uid, ip: ip }
+    console.log(credentials)
+    io.emit('pastPlayer', newCredentials)
+    // io.emit('pastPlayer')
+  })
+})
+// })
 
 // function write (currentUser, file) {
 //   if (fs.existsSync(file)) {

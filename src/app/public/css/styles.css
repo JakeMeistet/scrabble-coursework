@@ -312,14 +312,14 @@ canvas {
 
 .credentials {
   height: 30px;
-  width: 300px;
+  width: 200px;
   resize: none;
   font-family: 'Poppins', sans-serif;
   font-weight: 200;
   font-size: 20px;
 }
 
-.submit {
+.btn {
   height: 35px;
   font-family: 'Poppins', sans-serif;
   font-weight: 200;

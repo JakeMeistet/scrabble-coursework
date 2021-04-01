@@ -89,10 +89,10 @@ io.on('connection', (socket) => {
   })
 
   socket.on('joinLobby', (data) => {
+    console.log(data)
     const lookUp = io.sockets.adapter.rooms.get(data.gameId)
     console.log(data.gameId)
     console.log(lookUp)
-    console.log(lookUp.size)
     if (lookUp === undefined) {
       io.to(socket.id).emit('noLobby', data.gameId)
     } else {
@@ -116,6 +116,18 @@ io.on('connection', (socket) => {
   socket.on('p2', (data) => {
     const lookUp = io.sockets.adapter.rooms.get(data.gameId)
     const arr = Array.from(lookUp)
-    io.to(arr[1]).emit('p2', data.host)
+    io.to(arr[1]).emit('p2', data)
+  })
+
+
+  socket.on('beginLoad', (data) => {
+    const lookUp = io.sockets.adapter.rooms.get(data.gameId)
+    const arr = Array.from(lookUp)
+    io.to(arr[0]).emit('startGame', data)
+  })
+
+  socket.on('startGame', (data) => {
+    console.log(data.gameId)
+    io.to(data.gameId).emit('loadBoard', data)
   })
 })

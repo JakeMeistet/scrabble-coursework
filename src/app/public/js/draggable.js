@@ -40,13 +40,13 @@ interact('.box').dropzone({
 
     event.draggable.draggable({
       modifiers: [
-        interact.modifiers.snap({
-          targets: [
-            dropCenter
-          ],
-          range: Infinity,
-          relativePoints: [{ x: 0, y: 0 }]
-        })
+        // interact.modifiers.snap({
+        //   targets: [
+        //     dropCenter
+        //   ],
+        //   range: Infinity,
+        //   relativePoints: [{ x: 0, y: 0 }]
+        // })
       ]
 
     })
@@ -262,13 +262,13 @@ interact('.drag-drop').draggable({
       restriction: '.parent',
       endOnly: true
     }),
-    interact.modifiers.snap({
-      targets: [
-        interact.snappers.grid({ x: 30, y: 30 })
-      ],
-      range: Infinity,
-      relativePoints: [{ x: 0, y: 0 }]
-    })
+    // interact.modifiers.snap({
+    //   // targets: [
+    //   //   interact.snappers.grid({ x: 30, y: 30 })
+    //   // ],
+    //   range: Infinity,
+    //   relativePoints: [{ x: 0, y: 0 }]
+    // })
   ],
   autoScroll: true,
   listeners: { move: dragMoveListener }

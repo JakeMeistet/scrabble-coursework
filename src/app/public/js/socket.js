@@ -26,47 +26,6 @@ function start () {
     })
   }
 
-  socket.on('playerJoined', (data) => {
-    const login = document.getElementById('loginPage')
-    login.innerHTML = ''
-    const lobby = document.createElement('p')
-    lobby.className = 'lobby'
-    lobby.innerText = `You are in lobby: ${data.gameId}`
-    login.appendChild(lobby)
-
-    const playerJoin = document.createElement('p')
-    playerJoin.id = 'player'
-    playerJoin.className = 'credentials'
-    playerJoin.innerText = `${data.username} just joined.`
-    login.appendChild(playerJoin)
-  })
-
-  socket.on('host', (data) => {
-    const login = document.getElementById('loginPage')
-    const host = document.createElement('p')
-    host.id = 'host'
-    host.className = 'credentials'
-    host.innerText = `1. ${localStorage.getItem('username')}\n 2. ${data.username}`
-    login.appendChild(host)
-
-    const startBtn = document.createElement('button')
-    startBtn.id = 'start'
-    startBtn.innerText = 'Start'
-    startBtn.className = 'btn'
-    login.appendChild(startBtn)
-
-    socket.emit('p2', ({ host: localStorage.getItem('username'), gameId: data.gameId }))
-  })
-
-  socket.on('p2', (host) => {
-    const login = document.getElementById('loginPage')
-    const p2 = document.createElement('p')
-    p2.id = 'p2'
-    p2.className = 'credentials'
-    p2.innerText = `1. ${host}\n 2. ${localStorage.getItem('username')}`
-    login.appendChild(p2)
-  })
-
   socket.on('noLobby', (gameId) => {
     const login = document.getElementById('loginPage')
     const fail = document.createElement('p')
@@ -85,6 +44,21 @@ function start () {
     login.appendChild(lobby)
   })
 
+  socket.on('playerJoined', (data) => {
+    const login = document.getElementById('loginPage')
+    login.innerHTML = ''
+    const lobby = document.createElement('p')
+    lobby.className = 'lobby'
+    lobby.innerText = `You are in lobby: ${data.gameId}`
+    login.appendChild(lobby)
+
+    const playerJoin = document.createElement('p')
+    playerJoin.id = 'player'
+    playerJoin.className = 'credentials'
+    playerJoin.innerText = `${data.username} just joined.`
+    login.appendChild(playerJoin)
+  })
+
   socket.on('fullLobby', (gameId) => {
     const login = document.getElementById('loginPage')
     const fail = document.createElement('p')
@@ -93,7 +67,49 @@ function start () {
     fail.innerText = `${gameId} is full, either create or join another lobby.`
     login.appendChild(fail)
   })
+
+  socket.on('host', (data) => {
+    const login = document.getElementById('loginPage')
+    const host = document.createElement('p')
+    host.id = 'host'
+    host.className = 'credentials'
+    host.innerText = `1. ${localStorage.getItem('username')}\n 2. ${data.username}`
+    login.appendChild(host)
+  
+    const startBtn = document.createElement('button')
+    startBtn.id = 'start'
+    startBtn.innerText = 'Start'
+    startBtn.className = 'btn'
+    login.appendChild(startBtn)
+  
+    socket.emit('p2', ({ host: localStorage.getItem('username'), gameId: data.gameId }))
+  })
+  
+  socket.on('p2', (data) => {
+    const login = document.getElementById('loginPage')
+    const p2 = document.createElement('p')
+    p2.id = 'p2'
+    p2.className = 'credentials'
+    p2.innerText = `1. ${data.host}\n 2. ${localStorage.getItem('username')}`
+    login.appendChild(p2)
+    socket.emit('beginLoad', data)
+  })
+  
+  socket.on('startGame', (data) => {
+    let startBtn = document.getElementById('start')
+    startBtn.addEventListener('click', () => {
+      console.log(data)
+      socket.emit('startGame', data)
+    })
+  })
+
+  socket.on('loadBoard', (data) => {
+    console.log('clickhere')
+    flexCreate()
+  })
 }
+
+
 
 function lobbyPage (socket) {
   const login = document.getElementById('loginPage')
@@ -133,23 +149,4 @@ function createLobby (socket) {
 function joinLobby (socket, gameId) {
   const username = localStorage.getItem('username')
   socket.emit('joinLobby', { gameId: gameId, username: username })
-
-  // socket.on('playerJoined', () => {
-  //   let user = localStorage.getItem('username')
-  //   const login = document.getElementById('loginPage')
-  //   const playerJoin = document.createElement('p')
-  //   playerJoin.id = 'player'
-  //   playerJoin.className = 'credentials'
-  //   playerJoin.innerText = `${user} just joined.`
-  //   login.appendChild(playerJoin)
-  // })
-
-  // socket.on ('noLobby', (gameId) => {
-  //   const login = document.getElementById('loginPage')
-  //   const fail = document.createElement('p')
-  //   fail.id = 'fail'
-  //   fail.className = 'credentials'
-  //   fail.innerText = `No such lobby: ${gameId}`
-  //   login.appendChild(fail)
-  // })
 }

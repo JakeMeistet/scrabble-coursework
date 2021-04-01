@@ -1,12 +1,8 @@
 const express = require('express') // Imports Express.js for use with the web application
 const fs = require('fs')
-const vhost = require('vhost')
-const serveStatic = require('serve-static')
-const bodyParser = require('body-parser')
 const Crypto = require('crypto')
 const socket = require('socket.io')
 const colour = require('colour')
-const { format } = require('path')
 const port = 80 // HTTP Port
 
 colour.setTheme({
@@ -88,7 +84,7 @@ io.on('connection', (socket) => {
     console.log(socketId)
     socket.join(gameId)
     console.log(io.sockets.adapter.rooms)
-    io.to(gameId).emit('lobbyJoined', {gameId: gameId, socketId: socketId})
+    io.to(gameId).emit('lobbyJoined', { gameId: gameId, socketId: socketId })
     // io.emit('createLobby', {gameId: gameId, socketId: socketId})
   })
 
@@ -100,27 +96,26 @@ io.on('connection', (socket) => {
     if (lookUp === undefined) {
       io.to(socket.id).emit('noLobby', data.gameId)
     } else {
-      if (lookUp.size == 2){
+      if (lookUp.size == 2) {
         io.to(socket.id).emit('fullLobby', data.gameId)
       } else {
         const socketId = socket.id
-        console.log(data.gameId)   
+        console.log(data.gameId)
         socket.join(data.gameId)
         console.log(io.sockets.adapter.rooms)
         console.log(lookUp.size)
-
+        const arr = Array.from(lookUp)
+        console.log(arr[0])
+        console.log(arr[1])
         io.in(data.gameId).emit('playerJoined', data)
+        io.to(arr[0]).emit('host', data)
       }
     }
   })
 
+  socket.on('p2', (data) => {
+    const lookUp = io.sockets.adapter.rooms.get(data.gameId)
+    const arr = Array.from(lookUp)
+    io.to(arr[1]).emit('p2', data.host)
+  })
 })
-// })
-
-// function write (currentUser, file) {
-//   if (fs.existsSync(file)) {
-//     fs.appendFileSync(file, currentUser)
-//   } else {
-//     fs.writeFileSync(file, currentUser)
-//   }
-// }

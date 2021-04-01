@@ -19,14 +19,6 @@ const app = express()
 
 app.use(express.static('app'))
 
-app.post('/', (req, res) => {
-  const uid = Crypto.randomBytes(32).toString('hex')
-  const ip = req.socket.remoteAddress
-
-  // const credentials = { uid, username, ip }
-  // res.send(credentials)
-})
-
 app.use(function (req, res, next) {
   const err = new Error('Not Found')
   err.status = 404
@@ -51,7 +43,7 @@ app.use(function (err, req, res, next) {
   }
 })
 
-app.use(bodyParser.urlencoded({ extended: true }))
+// app.use(bodyParser.urlencoded({ extended: true }))
 
 // Listens to port 80, and if an error occurs, logs it to console
 const server = app.listen(port, err => {
@@ -78,15 +70,50 @@ io.on('connection', (socket) => {
     console.log(username)
     const credentials = { username: username, uid: uid, ip: ip }
     console.log(credentials)
-    io.emit('newPlayer', credentials)
+    io.to(socket.id).emit('newPlayer', credentials)
+    // io.emit('newPlayer', credentials)
   })
 
   socket.on('pastPlayer', (credentials) => {
     const newCredentials = { username: credentials.username, uid: credentials.uid, ip: ip }
     console.log(credentials)
-    io.emit('pastPlayer', newCredentials)
+    io.to(socket.id).emit('pastPlayer', newCredentials)
     // io.emit('pastPlayer')
   })
+
+  socket.on('createLobby', () => {
+    const gameId = Crypto.randomBytes(4).toString('hex').toUpperCase()
+    const socketId = socket.id
+    console.log(gameId)
+    console.log(socketId)
+    socket.join(gameId)
+    console.log(io.sockets.adapter.rooms)
+    io.to(gameId).emit('lobbyJoined', {gameId: gameId, socketId: socketId})
+    // io.emit('createLobby', {gameId: gameId, socketId: socketId})
+  })
+
+  socket.on('joinLobby', (data) => {
+    const lookUp = io.sockets.adapter.rooms.get(data.gameId)
+    console.log(data.gameId)
+    console.log(lookUp)
+    console.log(lookUp.size)
+    if (lookUp === undefined) {
+      io.to(socket.id).emit('noLobby', data.gameId)
+    } else {
+      if (lookUp.size == 2){
+        io.to(socket.id).emit('fullLobby', data.gameId)
+      } else {
+        const socketId = socket.id
+        console.log(data.gameId)   
+        socket.join(data.gameId)
+        console.log(io.sockets.adapter.rooms)
+        console.log(lookUp.size)
+
+        io.in(data.gameId).emit('playerJoined', data)
+      }
+    }
+  })
+
 })
 // })
 

@@ -28,7 +28,7 @@ function loadScrabble () {
     }
     grid.appendChild(box)
   }
-  pieces()
+  // pieces()
 }
 
 function flexCreate () {
@@ -59,21 +59,9 @@ function flexCreate () {
   loadScrabble()
 }
 
-function pieces () {
-  let pieceArr = ['A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'B', 'B', 'C', 'C', 'D', 'D', 'D', 'D', 'E', 'E', 'E', 'E', 'E',
-    'E', 'E', 'E', 'E', 'E', 'E', 'E', 'F', 'F', 'G', 'G', 'G', 'H', 'H', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'J',
-    'K', 'L', 'L', 'L', 'L', 'M', 'M', 'N', 'N', 'N', 'N', 'N', 'N', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'P', 'P', 'Q',
-    'R', 'R', 'R', 'R', 'R', 'R', 'S', 'S', 'S', 'S', 'T', 'T', 'T', 'T', 'T', 'T', 'U', 'U', 'U', 'U', 'V', 'V', 'W', 'W',
-    'X', 'Y', 'Y', 'Z', ' ', ' ']
-
-    for(let i = pieceArr.length - 1; i > 0; i--){
-      const j = Math.floor(Math.random() * i)
-      const temp = pieceArr[i]
-      pieceArr[i] = pieceArr[j]
-      pieceArr[j] = temp
-    }
-
-    console.log(pieceArr)
+function pieces (pieceArr) {
+  console.log(pieceArr)
+  console.log(pieceArr.length)
   const pieces = document.getElementById('flex-tile')
   for (let i = 0; i <= 6; i++) {
     const piece = document.createElement('div')
@@ -83,8 +71,8 @@ function pieces () {
     piece.textContent = random[0]
     pieceArr = random[1]
     pieces.append(piece)
-    console.log(pieceArr.length)
   }
+  return pieceArr
 }
 
 function getRandomPiece (min, max, arr) {

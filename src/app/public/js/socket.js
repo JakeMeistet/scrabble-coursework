@@ -106,10 +106,26 @@ function start () {
   socket.on('loadBoard', (data) => {
     console.log('clickhere')
     flexCreate()
+    socket.emit('loadPieces', data)
   })
+
+  socket.on('loadBoard2', (data) => {
+    console.log('clickhere')
+    flexCreate()
+    socket.emit('loadPieces2', data)
+  })
+
+  socket.on('p1Pieces', (data) => {  
+    console.log('test')
+    socket.emit('p1PiecesDone', {gameId: data.gameId, pieceArr: pieces(data.pieceArr)})
+  })
+
+  socket.on('p2Pieces', (data) => {  
+    console.log('testp2')
+    socket.emit('p2PiecesDone', {gameId: data.gameId, pieceArr: pieces(data.pieceArr)})
+  })
+
 }
-
-
 
 function lobbyPage (socket) {
   const login = document.getElementById('loginPage')
@@ -150,3 +166,4 @@ function joinLobby (socket, gameId) {
   const username = localStorage.getItem('username')
   socket.emit('joinLobby', { gameId: gameId, username: username })
 }
+

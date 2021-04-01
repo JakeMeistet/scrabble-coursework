@@ -127,7 +127,54 @@ io.on('connection', (socket) => {
   })
 
   socket.on('startGame', (data) => {
+    const lookUp = io.sockets.adapter.rooms.get(data.gameId) 
+    const arr = Array.from(lookUp)
     console.log(data.gameId)
-    io.to(data.gameId).emit('loadBoard', data)
+    io.to(arr[0]).emit('loadBoard', data)
   })
+
+  socket.on('loadPieces', (data) => {
+    let pieceArr = ['A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'B', 'B', 'C', 'C', 'D', 'D', 'D', 'D', 'E', 'E', 'E', 'E', 'E',
+  'E', 'E', 'E', 'E', 'E', 'E', 'E', 'F', 'F', 'G', 'G', 'G', 'H', 'H', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'J',
+  'K', 'L', 'L', 'L', 'L', 'M', 'M', 'N', 'N', 'N', 'N', 'N', 'N', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'P', 'P', 'Q',
+  'R', 'R', 'R', 'R', 'R', 'R', 'S', 'S', 'S', 'S', 'T', 'T', 'T', 'T', 'T', 'T', 'U', 'U', 'U', 'U', 'V', 'V', 'W', 'W',
+  'X', 'Y', 'Y', 'Z', ' ', ' ']
+
+    //https://medium.com/@nitinpatel_20236/how-to-shuffle-correctly-shuffle-an-array-in-javascript-15ea3f84bfb
+    for(let i = pieceArr.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * i)
+      const tempval = pieceArr[i]
+      pieceArr[i] = pieceArr[j]
+      pieceArr[j] = tempval
+    }
+    const lookUp = io.sockets.adapter.rooms.get(data.gameId) 
+    const arr = Array.from(lookUp)
+    console.log('test')
+    io.to(arr[0]).emit('p1Pieces', {gameId: data.gameId, pieceArr: pieceArr})
+  })
+
+  socket.on('p1PiecesDone', (data) => {
+    console.log(data)
+    console.log(data.pieceArr)
+    console.log(data.pieceArr.length)
+    const lookUp = io.sockets.adapter.rooms.get(data.gameId)
+    const arr = Array.from(lookUp)
+    io.to(arr[1]).emit('loadBoard2', data)
+  })
+
+  socket.on('loadPieces2', (data) => {
+    const lookUp = io.sockets.adapter.rooms.get(data.gameId)
+    const arr = Array.from(lookUp)
+    io.to(arr[1]).emit('p2Pieces', data)
+  })
+
+  socket.on('p2PiecesDone', (data) => {
+    console.log(data.pieceArr.length)
+  })
+
 })
+
+function piece() {
+  
+  return pieceArr
+}

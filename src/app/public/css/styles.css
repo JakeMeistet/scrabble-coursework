@@ -31,7 +31,7 @@
   grid-template-columns: repeat(15, 40px);
   grid-template-rows: repeat(15, 40px);
   justify-content: center;
-  margin-right: -200px;
+  margin-right: 50px;
 }
 
 .inner-text {
@@ -43,6 +43,7 @@
   border: 1px solid black;
   background-color: hotpink;
   text-align: center;
+
   font-family: 'Poppins', sans-serif;
   font-weight: 300;
   font-size: 15px;
@@ -89,6 +90,13 @@
   padding-top: 7px;
 }
   
+.drop-box {
+  background-color: white;
+  border: 1px solid black;
+  height: 40px;
+  width: 40px;
+  margin-top: 5px;
+}
 
 h1.title {
     font-family: 'Poppins', sans-serif;
@@ -268,7 +276,7 @@ button {
 }
 
 #flex-tile {
-  width: 5%;
+  width: 40px;
   background-color: white;
   border: dotted 2px black;
   padding: 20px;

@@ -77,16 +77,18 @@ function pieces (pieceArr) {
   for (let i = 0; i <= 6; i++) {
     const text = document.createElement('p')
     const piece = document.createElement('div')
+    const drop = document.createElement('div')
     const random = getRandomPiece(0, pieceArr.length, pieceArr)
     piece.id = (i + random[0])
     piece.className = 'drag-drop'
     text.className = 'inner-text'
     text.innerText = random[0]
-    // piece.textContent = random[0]
-    
+    drop.className = 'drop-box'
     pieceArr = random[1]
-    pieces.append(piece)
+    pieces.appendChild(drop)
+    drop.append(piece)
     piece.appendChild(text)
+    
   }
   return pieceArr
 }

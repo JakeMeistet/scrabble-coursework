@@ -72,7 +72,6 @@ interact('.box').dropzone({
   }
 })
 
-
 interact('.box-light-pink').dropzone({
   // Only accepts elements with id 'droppable' to be dropped into the dropzone
   accept: '.drag-drop',
@@ -146,6 +145,30 @@ interact('.box-dark-pink').dropzone({
 })
 
 interact('.box-dark-blue').dropzone({
+  // Only accepts elements with id 'droppable' to be dropped into the dropzone
+  accept: '.drag-drop',
+  // Require a 75% element overlap for a drop to be possible
+  overlap: 0.5,
+
+  // Listens for drop events e.g. drag enters a dropzone, drag leaves a dropzone
+  ondragenter: function (event) {
+    dragEnter(event)
+  },
+
+  ondragleave: function (event) {
+    dragLeave(event)
+  },
+
+  ondrop: function (event) {
+    onDrop(event)
+  },
+
+  ondropdeactivate: function (event) {
+    dropDeactivate(event)
+  }
+})
+
+interact('.drop-box').dropzone({
   // Only accepts elements with id 'droppable' to be dropped into the dropzone
   accept: '.drag-drop',
   // Require a 75% element overlap for a drop to be possible

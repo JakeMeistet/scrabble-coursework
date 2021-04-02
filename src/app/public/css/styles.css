@@ -7,8 +7,8 @@
 /* @media screen and (min-width: 1101px) { */
 .drag-drop {
   display: inline-block;
-  width: 30px;
-  height: 30px;
+  width: 34px;
+  height: 34px;
   color: #fff;
   background-color: #C8A165;
   border: solid 2px #B48D51;
@@ -16,8 +16,7 @@
   font-family: 'Poppins', sans-serif;
   font-weight: 300;
   font-size: 15px;
-  margin-top: auto;
-  margin-bottom: auto;
+  margin-top: 5px;
 
   touch-action: none;
   -webkit-transform: translate(0px, 0px);
@@ -32,8 +31,12 @@
   grid-template-columns: repeat(15, 40px);
   grid-template-rows: repeat(15, 40px);
   justify-content: center;
+  margin-right: -200px;
 }
 
+.inner-text {
+  padding-top: 6px;
+}
 
 .box-dark-pink {
   /* border: 2px solid #B48D51; */
@@ -43,6 +46,7 @@
   font-family: 'Poppins', sans-serif;
   font-weight: 300;
   font-size: 15px;
+  padding-top: 7px;
 }
 
 .box-light-pink {
@@ -53,6 +57,7 @@
   font-family: 'Poppins', sans-serif;
   font-weight: 300;
   font-size: 15px;
+  padding-top: 7px;
 }
 
 .box-dark-blue {
@@ -64,6 +69,7 @@
   font-family: 'Poppins', sans-serif;
   font-weight: 300;
   font-size: 15px;
+  padding-top: 7px;
 }
 
 .box-light-blue {
@@ -74,13 +80,13 @@
   font-family: 'Poppins', sans-serif;
   font-weight: 300;
   font-size: 15px;
+  padding-top: 7px;
 }
 
 .box {
-  /* background-color: #C8A165; */
   background-color: white;
   border: 1px solid black;
-  /* border: 1px solid #B48D51; */
+  padding-top: 7px;
 }
   
 
@@ -94,6 +100,18 @@ h1.title {
     padding-top: 40px;
     margin-left: auto;
     margin-right: auto;
+}
+
+h1.title2 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 40px;
+  color: white;
+  text-align: center;  
+  margin: 0px;
+  padding-top: 20px; padding-bottom: 20px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 h2.title {
@@ -127,8 +145,12 @@ p.credentials {
   height: fit-content;
 }
 
+.head {
+  background: rgb(8, 61, 119)  ;
+}
+
 .content {
-    background-color: rgb(8, 61, 119);
+    background: rgb(8, 61, 119) ;
 }
 
 .parent {
@@ -185,23 +207,6 @@ button {
 }
 
 * { padding: 0; margin: 0; }
-
-canvas { 
-    background: #eee; 
-    display: block; 
-    margin: 0 auto; 
-    border: black 1px solid;
-    max-width: 98%;
-    max-height: 98%;
-    height: auto;
-    width: auto;
-    margin:auto;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-}
 
 .container {
     width: 50%;
@@ -264,6 +269,10 @@ canvas {
 
 #flex-tile {
   width: 5%;
+  background-color: white;
+  border: dotted 2px black;
+  padding: 20px;
+  margin-top: auto; margin-bottom: auto;
 }
 
 .client {

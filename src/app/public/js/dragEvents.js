@@ -1,34 +1,34 @@
 // Drag move listener function - listens to movements when a drag event occurs and keeps the position of the x and y positioning
 function dragMoveListener (event) {
-    const target = event.target
-    // keep the dragged position in the data-x/data-y attributes
-    const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx
-    const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy
-  
-    // Translate the element to pixels
-    target.style.webkitTransform =
-    target.style.transform =
-      'translate(' + x + 'px, ' + y + 'px)'
-  
-    // Update the position attributes
-    target.setAttribute('data-x', x)
-    target.setAttribute('data-y', y)
+  const target = event.target
+  // keep the dragged position in the data-x/data-y attributes
+  const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx
+  const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy
+
+  // Translate the element to pixels
+  target.style.webkitTransform =
+  target.style.transform =
+    'translate(' + x + 'px, ' + y + 'px)'
+
+  // Update the position attributes
+  target.setAttribute('data-x', x)
+  target.setAttribute('data-y', y)
+}
+
+function snapEvent(event) {
+  let dropRect = interact.getElementRect(event.target)
+  dropCenter = {
+    x: dropRect.left + dropRect.width / 2,
+    y: dropRect.top + dropRect.height / 2
   }
-  
-  function snapEvent(event) {
-    let dropRect = interact.getElementRect(event.target)
-    dropCenter = {
-      x: dropRect.left + dropRect.width / 2,
-      y: dropRect.top + dropRect.height / 2
+  console.log(dropCenter)
+  console.log(event)
+  event.draggable.draggable({
+    snap: {
+      targets: [dropCenter]
     }
-    console.log(dropCenter)
-    console.log(event)
-    event.draggable.draggable({
-      snap: {
-        targets: [dropCenter]
-      }
-    });
-  }
+  });
+}
 
 function dragEnter(event) {
     const draggableElement = event.relatedTarget

@@ -1,7 +1,7 @@
 
-function start () {
-  const socket = io('ws://10.210.70.53/')
+const socket = io('ws://10.210.70.53/')
 
+function start () {
   const username = document.getElementById('username')
   const submit = document.getElementById('submit')
   console.log(username)
@@ -117,13 +117,40 @@ function start () {
 
   socket.on('p1Pieces', (data) => {  
     console.log('test')
-    socket.emit('p1PiecesDone', {gameId: data.gameId, pieceArr: pieces(data.pieceArr)})
+    socket.emit('p1PiecesDone', {gameId: data.gameId, pieceArr: pieces(data.pieceArr, data.gameId)})
   })
 
   socket.on('p2Pieces', (data) => {  
     console.log('testp2')
-    socket.emit('p2PiecesDone', {gameId: data.gameId, pieceArr: pieces(data.pieceArr)})
+    socket.emit('p2PiecesDone', {gameId: data.gameId, pieceArr: pieces(data.pieceArr, data.gameId)})
   })
+
+  socket.on('drop', (data) => {
+    console.log(data)
+    const body = document.body
+    const dropCoords = document.getElementById(data.coords)
+    let dropRect = dropCoords.getBoundingClientRect();
+    const droppedPiece = document.createElement('div')
+    droppedPiece.classList.add(data.tile)
+    droppedPiece.classList.add('no-drop')
+    // droppedPiece.classList.add('dropped-tile')
+    droppedPiece.style.position = 'absolute'
+    dropCenter = {
+      x: dropRect.left + dropRect.width / 2,
+      y: dropRect.top + dropRect.height / 2
+    }
+    droppedPiece.style.top = (dropRect.top - 4) + 'px'
+    droppedPiece.style.left = (dropRect.left + 1) + 'px'
+    
+    droppedPiece.innerText = data.tile
+    
+    body.appendChild(droppedPiece)
+    dropCoords.classList.add('occupied')
+  })
+
+  // socket.on('drop-remove', (data) => {
+
+  // })
 
 }
 
@@ -167,3 +194,8 @@ function joinLobby (socket, gameId) {
   socket.emit('joinLobby', { gameId: gameId, username: username })
 }
 
+function dropSocket(details) {
+  const gameId = document.getElementById('gameId')
+  let completeDetails = {top: details.top, left: details.left, tile: details.tile, placement: details.placement, coords: details.coords, gameId: gameId.textContent}
+  socket.emit('itemDropped', completeDetails)
+}

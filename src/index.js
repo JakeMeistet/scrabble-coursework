@@ -138,7 +138,7 @@ io.on('connection', (socket) => {
   'E', 'E', 'E', 'E', 'E', 'E', 'E', 'F', 'F', 'G', 'G', 'G', 'H', 'H', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'J',
   'K', 'L', 'L', 'L', 'L', 'M', 'M', 'N', 'N', 'N', 'N', 'N', 'N', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'P', 'P', 'Q',
   'R', 'R', 'R', 'R', 'R', 'R', 'S', 'S', 'S', 'S', 'T', 'T', 'T', 'T', 'T', 'T', 'U', 'U', 'U', 'U', 'V', 'V', 'W', 'W',
-  'X', 'Y', 'Y', 'Z', ' ', ' ']
+  'X', 'Y', 'Y', 'Z', '_', '_']
 
     //https://medium.com/@nitinpatel_20236/how-to-shuffle-correctly-shuffle-an-array-in-javascript-15ea3f84bfb
     for(let i = pieceArr.length - 1; i > 0; i--){
@@ -172,7 +172,15 @@ io.on('connection', (socket) => {
     console.log(data.pieceArr.length)
   })
 
+  socket.on('itemDropped', (data) => {
+    console.log(data)
+    console.log(data.gameId)
+    io.to(data.gameId).emit('drop', data)
+    // io.to(socket.id).emit('drop-remove', data)
+  })
+
 })
+
 
 function piece() {
   

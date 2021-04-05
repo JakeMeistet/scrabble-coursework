@@ -1,15 +1,28 @@
 
 function loadScrabble () {
   // Loop to generate the gameboard to start the game
-
+  let row = 1
+  let coordArr = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O']
+  let y = 0
   for (i = 0; i <= 224; i++) {
     const grid = document.getElementById('game-board-id')
     const box = document.createElement('div')
     const text = document.createElement('p')
 
+    if (i == 0) {
+      y = y
+    } else {
+      if (y == 14) {
+        y = 0
+        row += 1
+      } else {
+        y += 1
+      }
+    }
+    box.id = coordArr[y] + row
+
     if (i === 0 || i === 7 || i === 14 || i === 105 || i === 112 || i === 119 || i === 210 || i === 217 || i === 224) {
       if (i === 112) {
-        box.id = 'centre-id'
         box.innerText = '★'
       } else {
         box.innerText = '3W'
@@ -27,10 +40,13 @@ function loadScrabble () {
     } else {
       box.className = 'box'
     }
+    box.classList.add(coordArr[y] + row)
+
     grid.appendChild(box)
     box.appendChild(text)
+
   }
-  // pieces()
+  userDetails()
 }
 
 function flexCreate () {
@@ -69,18 +85,50 @@ function flexCreate () {
   loadScrabble()
 }
 
-function pieces (pieceArr) {
+function userDetails() {
+  let name = localStorage.getItem('username')
+  let score = 0
+  const flex = document.getElementById('flex-tile')
+  const details = document.createElement('div')
+  const p = document.createElement('p')
+  const rules = document.createElement('a')
+  const scorePara = document.createElement('p')
+  const click = document.createElement('p')
+  click.className = 'score'
+  click.innerText = 'Rules'
+  details.className = 'details'
+  flex.appendChild(details)
+  rules.href = 'https://scrabble.hasbro.com/en-us/rules'
+  rules.target = '_blank'
+  details.appendChild(rules)
+  rules.appendChild(click)
+  p.className = 'score'
+  p.innerText = `Username: ${name}`
+  scorePara.className = 'score'
+  scorePara.id = 'score'
+  scorePara.innerText = `Score: ${score}`
+  details.appendChild(p)
+  details.appendChild(scorePara)
+
+}
+
+function pieces (pieceArr, gameId) {
   console.log(pieceArr)
   console.log(pieceArr.length)
   const pieces = document.getElementById('flex-tile')
-  
+  const gameIdText = document.createElement('p')
+  gameIdText.id = 'gameId'
+  gameIdText.className = 'score'
+  gameIdText.innerText = gameId
+  pieces.appendChild(gameIdText)
   for (let i = 0; i <= 6; i++) {
     const text = document.createElement('p')
     const piece = document.createElement('div')
     const drop = document.createElement('div')
+
     const random = getRandomPiece(0, pieceArr.length, pieceArr)
-    piece.id = (i + random[0])
-    piece.className = 'drag-drop'
+    piece.classList.add(random[0])
+    piece.classList.add('drag-drop')
     text.className = 'inner-text'
     text.innerText = random[0]
     drop.className = 'drop-box'
@@ -88,8 +136,15 @@ function pieces (pieceArr) {
     pieces.appendChild(drop)
     drop.append(piece)
     piece.appendChild(text)
+
+
     
   }
+  const finishTurn = document.createElement('button')
+  finishTurn.id = 'finishBtn'
+  finishTurn.className = 'btn2'
+  finishTurn.innerText = 'Finish Turn'
+  pieces.append(finishTurn)
   return pieceArr
 }
 

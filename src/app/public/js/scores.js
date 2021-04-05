@@ -1,23 +1,24 @@
 
-function findPlacement (boxClass, text) {
+function findPlacement (target) {
+  let boxClass = target.classList[0]
+  let coord = target.classList[1]
   let currentPlacement = ''
+  
   if (boxClass === 'box') {
-    currentPlacement = 'plain'
-    console.log(currentPlacement)
-  } else if (boxClass === 'box-dark-pink' && text != '★') {
-    currentPlacement = '3W'
-    console.log(currentPlacement)
+    currentPlacement = 'plain'   
+  } else if (boxClass === 'box-dark-pink' && coord != 'H8') {
+    currentPlacement = '3W'    
   } else if (boxClass === 'box-light-pink') {
-    currentPlacement = '2W'
-    console.log(currentPlacement)
+    currentPlacement = '2W'    
   } else if (boxClass === 'box-dark-blue') {
-    currentPlacement = '3L'
-    console.log(currentPlacement)
+    currentPlacement = '3L'    
   } else if (boxClass === 'box-light-blue') {
-    currentPlacement = '2L'
-    console.log(currentPlacement)
+    currentPlacement = '2L'  
   } else {
-    currentPlacement = '★'
-    console.log(currentPlacement)
+    currentPlacement = '★'    
   }
+  console.log(currentPlacement)
+  console.log(coord)
+
+  return ({placement: currentPlacement, coords: coord})
 }

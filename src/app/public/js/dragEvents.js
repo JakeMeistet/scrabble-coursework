@@ -21,7 +21,7 @@ function snapEvent(event) {
     x: dropRect.left + dropRect.width / 2,
     y: dropRect.top + dropRect.height / 2
   }
-  console.log(dropCenter)
+  console.log(dropRect.top, dropRect.left)
   console.log(event)
   event.draggable.draggable({
     snap: {
@@ -58,11 +58,25 @@ function dragEnter(event) {
     event.relatedTarget.classList.remove('can-drop')
     event.target.classList.add('occupied')
     event.relatedTarget.classList.add('dropped-tile')
-    findPlacement(event.target.classList[0])
+    let dropDetails = findPlacement(event.target)
+    let dropRect = interact.getElementRect(event.relatedTarget)
+    if (event.target.classList[0] != 'drop-box') {
+      event.relatedTarget.style.visibility = "hidden"
+      dropSocket({top: dropRect.top, left: dropRect.left, tile: event.relatedTarget.classList[0], placement: dropDetails.placement, coords: dropDetails.coords})
+    }
+
   }
   
   function dropDeactivate(event) {
     // // When target is no longer being dragged, the drop active feedback styling is removed
     event.target.classList.remove('drop-active')
     event.target.classList.remove('drop-target')
+  }
+
+  function finishTurn() {
+    const turnEnd = document.getElementById = 'finishBtn'
+    turnEnd.addEventListener('click', () => {
+
+    })
+    
   }

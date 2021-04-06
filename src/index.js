@@ -173,10 +173,10 @@ io.on('connection', (socket) => {
     io.to(data.gameId).emit('waitOnFinish', data)
   })
 
-  socket.on('itemDropped', (droppedItems) => {
-    console.log(io.sockets.manager.roomClients[socket.id])
-    console.log(droppedItems)
-    io.to(io.sockets.manager.roomClients[socket.id]).emit('drop', gameId)
+  socket.on('itemDropped', (data) => {
+    console.log(data.gameId)
+    console.log(data.droppedItems)
+    io.to(data.gameId).emit('drop', data)
     // io.to(socket.id).emit('drop-remove', data)
   })
 

@@ -59,11 +59,11 @@ function dropDeactivate (event) {
   event.target.classList.remove('drop-target')
 }
 
-function finishGo () {
+function finishGo (gameId) {
   const turnEnd = document.getElementById('finishBtn')
   console.log(turnEnd)
   turnEnd.addEventListener('click', () => {
     console.log('hello')
-    dropSocket()
+    dropSocket(gameId)
   })
 }

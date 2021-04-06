@@ -1,5 +1,5 @@
 
-const socket = io('ws://localhost/')
+const socket = io('ws://10.210.70.53/')
 
 function start () {
   const username = document.getElementById('username')
@@ -127,17 +127,17 @@ function start () {
   })
 
   socket.on('waitOnFinish', (data) => {
-    finishGo()
+    finishGo(data.gameId)
   })
 
-  socket.on('drop', (gameId) => {
-    console.log(gameId)
-    for (let i = 0; i < droppedItems.length; i++) {
+  socket.on('drop', (data) => {
+    console.log(data.gameId)
+    for (let i = 0; i < data.droppedItems.length; i++) {
       const body = document.body
-    const dropCoords = document.getElementById(droppedItems[i].dropZone)
+    const dropCoords = document.getElementById(data.droppedItems[i].dropZone)
     const dropRect = dropCoords.getBoundingClientRect()
     const droppedPiece = document.createElement('div')
-    droppedPiece.classList.add(data.tile)
+    droppedPiece.classList.add(data.droppedItems[i].tile)
     droppedPiece.classList.add('no-drop')
     droppedPiece.classList.add('dropped-tile')
     droppedPiece.style.position = 'absolute'
@@ -147,8 +147,14 @@ function start () {
     }
     droppedPiece.style.top = (dropRect.top - 4) + 'px'
     droppedPiece.style.left = (dropRect.left + 1) + 'px'
-
-    droppedPiece.innerText = droppedItems[i].tile
+    let tile = data.droppedItems[i].tile.split('')
+    let tileLetter = null
+    if (tile.length === 3) {
+      tileLetter = tile[2]
+    } else {
+      tileLetter = tile[1]
+    }
+    droppedPiece.innerText = tileLetter
 
     body.appendChild(droppedPiece)
     dropCoords.classList.add('occupied')
@@ -202,7 +208,6 @@ function joinLobby (socket, gameId) {
   socket.emit('joinLobby', { gameId: gameId, username: username })
 }
 
-function dropSocket () {
-  const gameId = document.getElementById('gameId')
-  socket.emit('itemDropped', droppedItems)
+function dropSocket (gameId) {
+  socket.emit('itemDropped', {gameId, droppedItems})
 }

@@ -75,16 +75,16 @@ function start () {
     host.className = 'credentials'
     host.innerText = `1. ${localStorage.getItem('username')}\n 2. ${data.username}`
     login.appendChild(host)
-  
+
     const startBtn = document.createElement('button')
     startBtn.id = 'start'
     startBtn.innerText = 'Start'
     startBtn.className = 'btn'
     login.appendChild(startBtn)
-  
+
     socket.emit('p2', ({ host: localStorage.getItem('username'), gameId: data.gameId }))
   })
-  
+
   socket.on('p2', (data) => {
     const login = document.getElementById('loginPage')
     const p2 = document.createElement('p')
@@ -94,9 +94,9 @@ function start () {
     login.appendChild(p2)
     socket.emit('beginLoad', data)
   })
-  
+
   socket.on('startGame', (data) => {
-    let startBtn = document.getElementById('start')
+    const startBtn = document.getElementById('start')
     startBtn.addEventListener('click', () => {
       console.log(data)
       socket.emit('startGame', data)
@@ -115,21 +115,21 @@ function start () {
     socket.emit('loadPieces2', data)
   })
 
-  socket.on('p1Pieces', (data) => {  
+  socket.on('p1Pieces', (data) => {
     console.log('test')
-    socket.emit('p1PiecesDone', {gameId: data.gameId, pieceArr: pieces(data.pieceArr, data.gameId)})
+    socket.emit('p1PiecesDone', { gameId: data.gameId, pieceArr: pieces(data.pieceArr, data.gameId) })
   })
 
-  socket.on('p2Pieces', (data) => {  
+  socket.on('p2Pieces', (data) => {
     console.log('testp2')
-    socket.emit('p2PiecesDone', {gameId: data.gameId, pieceArr: pieces(data.pieceArr, data.gameId)})
+    socket.emit('p2PiecesDone', { gameId: data.gameId, pieceArr: pieces(data.pieceArr, data.gameId) })
   })
 
   socket.on('drop', (data) => {
     console.log(data)
     const body = document.body
     const dropCoords = document.getElementById(data.coords)
-    let dropRect = dropCoords.getBoundingClientRect();
+    const dropRect = dropCoords.getBoundingClientRect()
     const droppedPiece = document.createElement('div')
     droppedPiece.classList.add(data.tile)
     droppedPiece.classList.add('no-drop')
@@ -141,9 +141,9 @@ function start () {
     }
     droppedPiece.style.top = (dropRect.top - 4) + 'px'
     droppedPiece.style.left = (dropRect.left + 1) + 'px'
-    
+
     droppedPiece.innerText = data.tile
-    
+
     body.appendChild(droppedPiece)
     dropCoords.classList.add('occupied')
   })
@@ -151,7 +151,6 @@ function start () {
   // socket.on('drop-remove', (data) => {
 
   // })
-
 }
 
 function lobbyPage (socket) {
@@ -194,8 +193,8 @@ function joinLobby (socket, gameId) {
   socket.emit('joinLobby', { gameId: gameId, username: username })
 }
 
-function dropSocket(details) {
+function dropSocket (details) {
   const gameId = document.getElementById('gameId')
-  let completeDetails = {top: details.top, left: details.left, tile: details.tile, placement: details.placement, coords: details.coords, gameId: gameId.textContent}
+  const completeDetails = { top: details.top, left: details.left, tile: details.tile, placement: details.placement, coords: details.coords, gameId: gameId.textContent }
   socket.emit('itemDropped', completeDetails)
 }

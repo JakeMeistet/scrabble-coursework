@@ -127,7 +127,9 @@ function pieces (pieceArr, gameId) {
     const drop = document.createElement('div')
 
     const random = getRandomPiece(0, pieceArr.length, pieceArr)
+    let data = random[0].split('')
     piece.classList.add(random[0])
+    piece.id = random[0]
     piece.classList.add('drag-drop')
     text.className = 'inner-text'
     text.innerText = random[0]

@@ -46,7 +46,6 @@ function onDrop (event) {
   // const dropDetails = findPlacement(event.target)
   if (event.target.classList[0] != 'drop-box') {
     const data = {tile: event.relatedTarget.classList[0], dropZone: event.target.classList[1]}
-    // event.relatedTarget.style.visibility = 'hidden'
     droppedItems.push(data)
     console.log(droppedItems)
     
@@ -64,6 +63,12 @@ function finishGo (gameId) {
   console.log(turnEnd)
   turnEnd.addEventListener('click', () => {
     console.log('hello')
+    console.log(droppedItems.length)
+    for (let i = 0; i < droppedItems.length; i++) {
+      let droppedItem = document.getElementById(droppedItems[i].tile)
+      console.log(droppedItem)
+      droppedItem.remove()
+    }
     dropSocket(gameId)
   })
 }

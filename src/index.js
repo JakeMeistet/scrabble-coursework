@@ -173,9 +173,11 @@ io.on('connection', (socket) => {
     io.to(data.gameId).emit('waitOnFinish', data)
   })
 
+  let allDroppedPieces = []
   socket.on('itemDropped', (data) => {
     console.log(data.gameId)
     console.log(data.droppedItems)
+    allDroppedPieces.push(data.droppedItems)
     io.to(data.gameId).emit('drop', data)
     // io.to(socket.id).emit('drop-remove', data)
   })

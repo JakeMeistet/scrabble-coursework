@@ -154,9 +154,12 @@ function start () {
     } else {
       tileLetter = tile[1]
     }
-    droppedPiece.innerText = tileLetter
+    const p = document.createElement('p')
+    p.innerText = tileLetter
+    p.className = 'inner-text'
 
     body.appendChild(droppedPiece)
+    droppedPiece.appendChild(p)
     dropCoords.classList.add('occupied')
     console.log('element')
     }

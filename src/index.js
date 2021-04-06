@@ -169,13 +169,14 @@ io.on('connection', (socket) => {
   })
 
   socket.on('p2PiecesDone', (data) => {
-    console.log8(data.pieceArr.length)
+    console.log(data.pieceArr.length)
+    io.to(data.gameId).emit('waitOnFinish', data)
   })
 
-  socket.on('itemDropped', (data) => {
-    console.log(data)
-    console.log(data.gameId)
-    io.to(data.gameId).emit('drop', data)
+  socket.on('itemDropped', (droppedItems) => {
+    console.log(io.sockets.manager.roomClients[socket.id])
+    console.log(droppedItems)
+    io.to(io.sockets.manager.roomClients[socket.id]).emit('drop', gameId)
     // io.to(socket.id).emit('drop-remove', data)
   })
 

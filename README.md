@@ -19,3 +19,5 @@ npm start
 ```
 
 The webserver will be hosted on localhost port 80 (Change to 8080 to submit)
+
+https://scrabblecheck.com/

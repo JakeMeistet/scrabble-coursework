@@ -36,17 +36,20 @@ function dragLeave (event) {
   }
 }
 
+
 function onDrop (event) {
   // When target is dropped, the possible drop feedback styling is removed
   event.target.classList.remove('drop-target')
   event.relatedTarget.classList.remove('can-drop')
   event.target.classList.add('occupied')
   event.relatedTarget.classList.add('dropped-tile')
-  const dropDetails = findPlacement(event.target)
-  const dropRect = interact.getElementRect(event.relatedTarget)
+  // const dropDetails = findPlacement(event.target)
   if (event.target.classList[0] != 'drop-box') {
-    event.relatedTarget.style.visibility = 'hidden'
-    dropSocket({ top: dropRect.top, left: dropRect.left, tile: event.relatedTarget.classList[0], placement: dropDetails.placement, coords: dropDetails.coords })
+    const data = {tile: event.relatedTarget.classList[0], dropZone: event.target.classList[1]}
+    // event.relatedTarget.style.visibility = 'hidden'
+    droppedItems.push(data)
+    console.log(droppedItems)
+    
   }
 }
 
@@ -56,9 +59,11 @@ function dropDeactivate (event) {
   event.target.classList.remove('drop-target')
 }
 
-function finishTurn () {
-  const turnEnd = document.getElementById = 'finishBtn'
+function finishGo () {
+  const turnEnd = document.getElementById('finishBtn')
+  console.log(turnEnd)
   turnEnd.addEventListener('click', () => {
-
+    console.log('hello')
+    dropSocket()
   })
 }

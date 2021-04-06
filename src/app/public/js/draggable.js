@@ -1,4 +1,4 @@
-
+let droppedItems = []
 let startPos = null
 interact('.drag-drop').draggable({
   snap: {
@@ -9,7 +9,21 @@ interact('.drag-drop').draggable({
   },
   onstart: function (event) {
     const rect = interact.getElementRect(event.target)
+    console.log(droppedItems)
+    if (droppedItems.length !== 0) {
+      for (let i = 0; i < droppedItems.length; i++) {
+        if (droppedItems[i].tile === event.target.classList[0]){
+          removeElement(droppedItems, droppedItems[i])
+        }
+      }
+    }
 
+    console.log(droppedItems)
+    // if (droppedItems.includes(event.target.classList[0])) {
+    //   console.log(droppedItems)
+    //   removeElement(droppedItems, event.target.classList[0])
+    //   console.log(droppedItems)
+    // }
     // record center point when starting the very first a drag
     startPos = {
       x: rect.left + rect.width / 2,

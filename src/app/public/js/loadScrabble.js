@@ -127,12 +127,20 @@ function pieces (pieceArr, gameId) {
     const drop = document.createElement('div')
 
     const random = getRandomPiece(0, pieceArr.length, pieceArr)
-    let data = random[0].split('')
+    const data = random[0].split('')
+    let letter = null
+    console.log(data)
+
+    if (data.length === 3) {
+      letter = data[2]
+    } else {
+      letter = data[1]
+    }
     piece.classList.add(random[0])
     piece.id = random[0]
     piece.classList.add('drag-drop')
     text.className = 'inner-text'
-    text.innerText = random[0]
+    text.innerText = letter
     drop.className = 'drop-box'
     pieceArr = random[1]
     pieces.appendChild(drop)

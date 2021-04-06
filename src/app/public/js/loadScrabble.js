@@ -142,6 +142,7 @@ function pieces (pieceArr, gameId) {
     text.className = 'inner-text'
     text.innerText = letter
     drop.className = 'drop-box'
+    drop.id = i + 'dropBox'
     pieceArr = random[1]
     pieces.appendChild(drop)
     drop.append(piece)

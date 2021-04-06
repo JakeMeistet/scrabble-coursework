@@ -166,9 +166,28 @@ function start () {
     
   })
 
-  // socket.on('drop-remove', (data) => {
+  socket.on('addPiece', (data) => {
+    const dropBox = document.getElementById(data.element)
+    const text = document.createElement('p')
+    const piece = document.createElement('div')
+    const strData = data.piece.split('')
+    let letter = null
+    console.log(data)
 
-  // })
+    if (data.length == 3) {
+      letter = strData[2]
+    } else {
+      letter = strData[1]
+    }
+    piece.classList.add(data.piece)
+    piece.id = data.piece
+    piece.classList.add('drag-drop')
+    text.className = 'inner-text'
+    text.innerText = letter
+    console.log(data.element)
+    dropBox.appendChild(piece)
+    piece.appendChild(text)
+  })
 }
 
 function lobbyPage (socket) {
@@ -213,4 +232,9 @@ function joinLobby (socket, gameId) {
 
 function dropSocket (gameId) {
   socket.emit('itemDropped', {gameId, droppedItems})
+}
+
+function replacePieces (element) {
+  console.log(element + 'test1')
+  socket.emit('addPiece', element)
 }

@@ -170,6 +170,8 @@ io.on('connection', (socket) => {
 
   socket.on('p2PiecesDone', (data) => {
     console.log(data.pieceArr.length)
+    pieceArr = data.pieceArr
+    console.log(pieceArr)
     io.to(data.gameId).emit('waitOnFinish', data)
   })
 
@@ -182,7 +184,30 @@ io.on('connection', (socket) => {
     // io.to(socket.id).emit('drop-remove', data)
   })
 
+  socket.on('addPiece', (element) => {
+    console.log('addPiece')
+    console.log(element)
+    let random = getRandomPiece(0, pieceArr.length, pieceArr)
+    console.log(pieceArr.length)
+    io.to(socket.id).emit('addPiece', {element: element, piece: random[0]})
+  })
+
 })
+
+function getRandomPiece (min, max, arr) {
+  const ranNum = Math.floor(Math.random() * (max - min) + min)
+  const piece = arr[ranNum]
+  removeElement(arr, piece)
+  const ret = [piece, arr]
+  return ret
+}
+
+function removeElement (arr, elem) {
+  const index = arr.indexOf(elem)
+  if (index > -1) {
+    arr.splice(index, 1)
+  }
+}
 
 
 function piece() {

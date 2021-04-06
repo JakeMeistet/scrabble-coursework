@@ -69,6 +69,29 @@ function finishGo (gameId) {
       console.log(droppedItem)
       droppedItem.remove()
     }
+
+    for (let i = 0; i < 7; i++) {
+      const id = i + 'dropBox'
+      const dropBox = document.getElementById(i + 'dropBox')
+      console.log(dropBox.childNodes)
+      if(dropBox.childNodes.length === 0) {
+        replacePieces(id)
+      } else {
+        console.log('Node full')
+      }
+    }
+    // const dropBox = document.querySelectorAll('.drop-box')
+    // const dropBoxArr = Array.from(dropBox)
+    // console.log(dropBoxArr)
+    // for (let i = 0; i < dropBox.length; i++) {
+    //   if (dropBox[i].hasChildNodes) {
+    //     replacePieces(dropBoxArr[i])
+    //   } else {
+    //     console.log('Node full')
+    //   }
+    // }
+    
+
     dropSocket(gameId)
   })
 }

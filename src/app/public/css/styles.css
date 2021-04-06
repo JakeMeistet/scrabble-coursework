@@ -47,7 +47,7 @@
   font-family: 'Poppins', sans-serif;
   font-weight: 300;
   font-size: 15px;
-  
+  padding-top: 7px;
 }
 
 .box-light-pink {
@@ -58,7 +58,7 @@
   font-family: 'Poppins', sans-serif;
   font-weight: 300;
   font-size: 15px;
-  
+  padding-top: 7px;
 }
 
 .box-dark-blue {
@@ -70,7 +70,7 @@
   font-family: 'Poppins', sans-serif;
   font-weight: 300;
   font-size: 15px;
-  
+  padding-top: 7px;
 }
 
 .box-light-blue {
@@ -81,13 +81,13 @@
   font-family: 'Poppins', sans-serif;
   font-weight: 300;
   font-size: 15px;
-  
+  padding-top: 7px;
 }
 
 .box {
   background-color: white;
   border: 1px solid black;
-  
+  padding-top: 7px;
 }
   
 .drop-box {

@@ -189,7 +189,11 @@ io.on('connection', (socket) => {
     console.log(element)
     let random = getRandomPiece(0, pieceArr.length, pieceArr)
     console.log(pieceArr.length)
-    io.to(socket.id).emit('addPiece', {element: element, piece: random[0]})
+    if (pieceArr.length > 0) {
+      io.to(socket.id).emit('addPiece', {element: element, piece: random[0]})
+    } else {
+      console.log('No remaining tiles')
+    }
   })
 
 })
@@ -207,10 +211,4 @@ function removeElement (arr, elem) {
   if (index > -1) {
     arr.splice(index, 1)
   }
-}
-
-
-function piece() {
-  
-  return pieceArr
 }

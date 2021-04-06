@@ -150,7 +150,7 @@ function start () {
     let tile = data.droppedItems[i].tile.split('')
     let tileLetter = null
     if (tile.length === 3) {
-      tileLetter = tile[2]
+      tileLetter = tile[3]
     } else {
       tileLetter = tile[1]
     }
@@ -163,6 +163,7 @@ function start () {
     dropCoords.classList.add('occupied')
     console.log('element')
     }
+    droppedItems = []
     
   })
 
@@ -173,8 +174,9 @@ function start () {
     const strData = data.piece.split('')
     let letter = null
     console.log(data)
-
-    if (data.length == 3) {
+    console.log(strData)
+    if (strData.length == 3) {
+      console.log(strData[2])
       letter = strData[2]
     } else {
       letter = strData[1]

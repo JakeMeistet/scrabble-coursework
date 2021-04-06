@@ -130,7 +130,6 @@ function pieces (pieceArr, gameId) {
     const data = random[0].split('')
     let letter = null
     console.log(data)
-
     if (data.length === 3) {
       letter = data[2]
     } else {
@@ -147,8 +146,6 @@ function pieces (pieceArr, gameId) {
     pieces.appendChild(drop)
     drop.append(piece)
     piece.appendChild(text)
-
-
     
   }
   const finishTurn = document.createElement('button')

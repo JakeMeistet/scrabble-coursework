@@ -1,5 +1,5 @@
 
-const socket = io('ws://10.210.70.53/')
+const socket = io('ws://localhost/')
 
 function start () {
   const username = document.getElementById('username')
@@ -123,48 +123,58 @@ function start () {
   socket.on('p2Pieces', (data) => {
     console.log('testp2')
     socket.emit('p2PiecesDone', { gameId: data.gameId, pieceArr: pieces(data.pieceArr, data.gameId) })
-  
   })
 
   socket.on('waitOnFinish', (data) => {
     finishGo(data.gameId)
   })
 
+  const allDropped = []
+  let round = 0
   socket.on('drop', (data) => {
     console.log(data.gameId)
+    if (allDropped === []) {
+      round = 1
+    } else {
+      round += 1
+    }
+    socket.emit('saveDropped', data)
+
+    checkDropped(data.gameId, data.droppedItems)
     for (let i = 0; i < data.droppedItems.length; i++) {
       const body = document.body
-    const dropCoords = document.getElementById(data.droppedItems[i].dropZone)
-    const dropRect = dropCoords.getBoundingClientRect()
-    const droppedPiece = document.createElement('div')
-    droppedPiece.classList.add(data.droppedItems[i].tile)
-    droppedPiece.classList.add('no-drop')
-    droppedPiece.classList.add('dropped-tile')
-    droppedPiece.style.position = 'absolute'
-    dropCenter = {
-      x: dropRect.left + dropRect.width / 2,
-      y: dropRect.top + dropRect.height / 2
-    }
-    droppedPiece.style.top = (dropRect.top - 4) + 'px'
-    droppedPiece.style.left = (dropRect.left + 1) + 'px'
-    let tile = data.droppedItems[i].tile.split('')
-    let tileLetter = null
-    if (tile.length === 3) {
-      tileLetter = tile[3]
-    } else {
-      tileLetter = tile[1]
-    }
-    const p = document.createElement('p')
-    p.innerText = tileLetter
-    p.className = 'inner-text'
+      const dropCoords = document.getElementById(data.droppedItems[i].dropZone)
+      const dropRect = dropCoords.getBoundingClientRect()
+      const droppedPiece = document.createElement('div')
+      droppedPiece.classList.add(data.droppedItems[i].tile)
+      droppedPiece.classList.add('no-drop')
+      droppedPiece.classList.add('dropped-tile')
+      droppedPiece.style.position = 'absolute'
+      dropCenter = {
+        x: dropRect.left + dropRect.width / 2,
+        y: dropRect.top + dropRect.height / 2
+      }
+      droppedPiece.style.top = (dropRect.top - 4) + 'px'
+      droppedPiece.style.left = (dropRect.left + 1) + 'px'
+      const tile = data.droppedItems[i].tile.split('')
+      let tileLetter = null
+      if (tile.length === 3) {
+        tileLetter = tile[2]
+      } else {
+        tileLetter = tile[1]
+      }
+      const p = document.createElement('p')
+      p.innerText = tileLetter
+      p.className = 'inner-text'
 
-    body.appendChild(droppedPiece)
-    droppedPiece.appendChild(p)
-    dropCoords.classList.add('occupied')
-    console.log('element')
+      body.appendChild(droppedPiece)
+      droppedPiece.appendChild(p)
+      dropCoords.classList.add('occupied')
+      console.log('element')
     }
+    console.log(data)
+
     droppedItems = []
-    
   })
 
   socket.on('addPiece', (data) => {
@@ -189,6 +199,17 @@ function start () {
     console.log(data.element)
     dropBox.appendChild(piece)
     piece.appendChild(text)
+  })
+
+  socket.on('checkDropped', (data) => {
+    console.log(data)
+    console.log('test here')
+    const allDroppedSorted = data.allDropped.sort(compare)
+    console.log(allDroppedSorted)
+
+    for (let i = 0; i < allDroppedSorted.length; i++) {
+
+    }
   })
 }
 
@@ -233,10 +254,27 @@ function joinLobby (socket, gameId) {
 }
 
 function dropSocket (gameId) {
-  socket.emit('itemDropped', {gameId, droppedItems})
+  socket.emit('itemDropped', { gameId, droppedItems })
 }
 
 function replacePieces (element) {
   console.log(element + 'test1')
   socket.emit('addPiece', element)
+}
+
+function checkDropped (gameId, droppedItems) {
+  socket.emit('checkDropped', { gameId: gameId, droppedItems: droppedItems })
+}
+
+function compare (a, b) {
+  const dropZoneA = a.dropZone
+  const dropZoneB = b.dropZone
+
+  let comparison = 0
+  if (dropZoneA > dropZoneB) {
+    comparison = 1
+  } else if (dropZoneA < dropZoneB) {
+    comparison = -1
+  }
+  return comparison
 }

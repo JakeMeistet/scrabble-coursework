@@ -36,7 +36,6 @@ function dragLeave (event) {
   }
 }
 
-
 function onDrop (event) {
   // When target is dropped, the possible drop feedback styling is removed
   event.target.classList.remove('drop-target')
@@ -45,10 +44,9 @@ function onDrop (event) {
   event.relatedTarget.classList.add('dropped-tile')
   // const dropDetails = findPlacement(event.target)
   if (event.target.classList[0] != 'drop-box') {
-    const data = {tile: event.relatedTarget.classList[0], dropZone: event.target.classList[1]}
+    const data = { tile: event.relatedTarget.classList[0], dropZone: event.target.classList[1] }
     droppedItems.push(data)
     console.log(droppedItems)
-    
   }
 }
 
@@ -65,7 +63,7 @@ function finishGo (gameId) {
     console.log('hello')
     console.log(droppedItems.length)
     for (let i = 0; i < droppedItems.length; i++) {
-      let droppedItem = document.getElementById(droppedItems[i].tile)
+      const droppedItem = document.getElementById(droppedItems[i].tile)
       console.log(droppedItem)
       droppedItem.remove()
     }
@@ -74,24 +72,12 @@ function finishGo (gameId) {
       const id = i + 'dropBox'
       const dropBox = document.getElementById(i + 'dropBox')
       console.log(dropBox.childNodes)
-      if(dropBox.childNodes.length === 0) {
+      if (dropBox.childNodes.length === 0) {
         replacePieces(id)
       } else {
-        console.log('Node full')
+        console.log('Parent full')
       }
     }
-    // const dropBox = document.querySelectorAll('.drop-box')
-    // const dropBoxArr = Array.from(dropBox)
-    // console.log(dropBoxArr)
-    // for (let i = 0; i < dropBox.length; i++) {
-    //   if (dropBox[i].hasChildNodes) {
-    //     replacePieces(dropBoxArr[i])
-    //   } else {
-    //     console.log('Node full')
-    //   }
-    // }
-    
-
     dropSocket(gameId)
   })
 }

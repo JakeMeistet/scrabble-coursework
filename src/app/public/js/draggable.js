@@ -1,4 +1,4 @@
-let droppedItems = []
+const droppedItems = []
 let startPos = null
 interact('.drag-drop').draggable({
   snap: {
@@ -12,7 +12,7 @@ interact('.drag-drop').draggable({
     console.log(droppedItems)
     if (droppedItems.length !== 0) {
       for (let i = 0; i < droppedItems.length; i++) {
-        if (droppedItems[i].tile === event.target.classList[0]){
+        if (droppedItems[i].tile === event.target.classList[0]) {
           removeElement(droppedItems, droppedItems[i])
         }
       }

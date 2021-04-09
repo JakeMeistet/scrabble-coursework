@@ -2,7 +2,7 @@
 function loadScrabble () {
   // Loop to generate the gameboard to start the game
   let row = 1
-  let coordArr = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O']
+  const coordArr = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O']
   let y = 0
   for (i = 0; i <= 224; i++) {
     const grid = document.getElementById('game-board-id')
@@ -44,13 +44,11 @@ function loadScrabble () {
 
     grid.appendChild(box)
     box.appendChild(text)
-
   }
   userDetails()
 }
 
 function flexCreate () {
-
   const head = document.getElementById('head')
   const heading = document.createElement('h1')
   heading.className = 'title2'
@@ -85,9 +83,9 @@ function flexCreate () {
   loadScrabble()
 }
 
-function userDetails() {
-  let name = localStorage.getItem('username')
-  let score = 0
+function userDetails () {
+  const name = localStorage.getItem('username')
+  const score = 0
   const flex = document.getElementById('flex-tile')
   const details = document.createElement('div')
   const p = document.createElement('p')
@@ -109,7 +107,6 @@ function userDetails() {
   scorePara.innerText = `Score: ${score}`
   details.appendChild(p)
   details.appendChild(scorePara)
-
 }
 
 function pieces (pieceArr, gameId) {
@@ -146,7 +143,6 @@ function pieces (pieceArr, gameId) {
     pieces.appendChild(drop)
     drop.append(piece)
     piece.appendChild(text)
-    
   }
   const finishTurn = document.createElement('button')
   finishTurn.id = 'finishBtn'

@@ -138,7 +138,9 @@ function start () {
     } else {
       round += 1
     }
+    if (data.count !== 0) {
     socket.emit('saveDropped', data)
+    }
 
     checkDropped(data.gameId, data.droppedItems)
     for (let i = 0; i < data.droppedItems.length; i++) {
@@ -206,10 +208,70 @@ function start () {
     console.log('test here')
     const allDroppedSorted = data.allDropped.sort(compare)
     console.log(allDroppedSorted)
-
+    let placement = []
+    
     for (let i = 0; i < allDroppedSorted.length; i++) {
-
+      const coords = allDroppedSorted[i].dropZone.split('')
+      const tiles = allDroppedSorted[i].tile.split('')
+      if (coords.length === 2) {
+        placement[i] = {row: allDroppedSorted[i].dropZone.split('')[0], column: allDroppedSorted[i].dropZone.split('')[1], tile: tiles}
+      } else {
+        console.log(tiles)
+        placement[i] = {row: allDroppedSorted[i].dropZone.split('')[0], column: (allDroppedSorted[i].dropZone.split('')[1] + allDroppedSorted[i].dropZone.split('')[2]), tile: tiles}
+      }
     }
+    console.log(placement) 
+
+    let word = []
+    let previousColumn = null
+    let previousRow = null
+    let currentColumn = null
+    let currentRow = null
+    let nextColumn = null
+    let nextRow = null
+    let wordCount = 0
+    for (let i = 0; i < placement.length; i++) {
+      const tile = placement[i].tile
+      console.log(tile)
+      if (i === 0) {
+        previousColumn = placement[i].column
+        previousRow = placement[i].row
+        if (tile.length === 3) {
+          word[wordCount] = tile[2]
+        } else {
+          word[wordCount] = tile[1]
+        }
+        
+      } else {
+        currentColumn = placement[i].column
+        currentRow = placement[i].row
+        if (placement[i+1] !== undefined) {
+        nextColumn = placement[i+1].column
+        nextRow = placement[i+1].row
+        } 
+        if (currentColumn === previousColumn || currentRow === previousRow) {
+
+          if (tile.length === 3) {
+            word[wordCount] = word[wordCount] + tile[2]
+          } else {
+            word[wordCount] = word[wordCount] + tile[1]
+          }
+
+        } else {
+          if (tile.length === 3) {
+            word[wordCount] = tile[2]
+          } else {
+            word[wordCount] = tile[1]
+          }
+        }
+        if (currentColumn !== nextColumn || currentRow !== nextRow) {
+          wordCount += 1
+        }
+      }
+      console.log(word)
+    }
+    placement = []
+    
   })
 }
 
@@ -253,8 +315,8 @@ function joinLobby (socket, gameId) {
   socket.emit('joinLobby', { gameId: gameId, username: username })
 }
 
-function dropSocket (gameId) {
-  socket.emit('itemDropped', { gameId, droppedItems })
+function dropSocket (gameId, count) {
+  socket.emit('itemDropped', { gameId, droppedItems, count })
 }
 
 function replacePieces (element) {
@@ -274,6 +336,19 @@ function compare (a, b) {
   if (dropZoneA > dropZoneB) {
     comparison = 1
   } else if (dropZoneA < dropZoneB) {
+    comparison = -1
+  }
+  return comparison
+}
+
+function compareRows (a, b) {
+  const columnA = a.row
+  const columnB = b.row
+
+  let comparison = 0
+  if (columnA > columnB) {
+    comparison = 1
+  } else if (columnA < columnB) {
     comparison = -1
   }
   return comparison

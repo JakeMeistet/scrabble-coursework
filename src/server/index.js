@@ -178,7 +178,7 @@ io.on('connection', (socket) => {
   socket.on('itemDropped', (data) => {
     console.log(data.gameId)
     console.log(data.droppedItems)
-    io.to(data.gameId).emit('drop', { gameId: data.gameId, droppedItems: data.droppedItems, allDropped: allDropped })
+    io.to(data.gameId).emit('drop', { gameId: data.gameId, droppedItems: data.droppedItems, allDropped: allDropped, count: data.count })
   })
 
   socket.on('saveDropped', (data) => {
@@ -202,11 +202,11 @@ io.on('connection', (socket) => {
 
   socket.on('checkDropped', (data) => {
     const dictionary = fs.readFileSync('./dictionary.txt', 'utf-8')
-    const textByLine = dictionary.split('\n')
-    console.log(textByLine.length)
-
+    const dictionaryArr = dictionary.split('\n')
+    console.log(dictionaryArr.length)
+    
   
-    io.to(socket.id).emit('checkDropped', { gameId: data.gameId, droppedItems: data.droppedItems, allDropped: allDropped })
+    io.to(socket.id).emit('checkDropped', { gameId: data.gameId, droppedItems: data.droppedItems, allDropped: allDropped, dictionaryArr: dictionaryArr})
   })
 })
 

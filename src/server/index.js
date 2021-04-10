@@ -174,7 +174,7 @@ io.on('connection', (socket) => {
     io.to(data.gameId).emit('waitOnFinish', data)
   })
 
-  const allDropped = []
+  let allDropped = []
   socket.on('itemDropped', (data) => {
     console.log(data.gameId)
     console.log(data.droppedItems)
@@ -183,9 +183,21 @@ io.on('connection', (socket) => {
 
   socket.on('saveDropped', (data) => {
     for (let i = 0; i < data.droppedItems.length; i++) {
-      allDropped.push(data.droppedItems[i])
+      console.log(data.droppedItems[i])
+      console.log(allDropped[i])
+        allDropped.push(data.droppedItems[i])
     }
-    console.log(allDropped)
+    const map = {};
+    const tempArr = []
+    allDropped.forEach(element => {
+      if(!map[JSON.stringify(element)]){
+         map[JSON.stringify(element)] = true;
+         tempArr.push(element);
+      }
+    });
+    allDropped = tempArr
+    console.log(allDropped);
+    io.to(socket.id).emit('dropSaved', {allDropped: allDropped, droppedItems: data.droppedItems, gameId: data.gameId})
   })
 
   socket.on('addPiece', (element) => {
@@ -224,3 +236,14 @@ function removeElement (arr, elem) {
     arr.splice(index, 1)
   }
 }
+
+
+function removeDuplicates(arr){
+  let x = {};
+  arr.forEach(function(i) {
+    if(!x[i]) {
+      x[i] = true
+    }
+  })
+  return Object.keys(x)
+};

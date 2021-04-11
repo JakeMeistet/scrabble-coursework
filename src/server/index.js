@@ -3,4 +3,3 @@ const Socket = require('./socketServer.js')
 
 const server = Server.initWebServer()
 Socket.initSocketServer(server)
-

@@ -60,31 +60,8 @@ function finishGo (gameId) {
   const turnEnd = document.getElementById('finishBtn')
   console.log(turnEnd)
   turnEnd.addEventListener('click', () => {
-    console.log('hello')
-    console.log(droppedItems.length)
-    console.log(droppedItems)
-    for (let i = 0; i < droppedItems.length; i++) {
-      const droppedItem = document.getElementById(droppedItems[i].tile)
-      console.log(droppedItem)
-      if (droppedItem !== null){
-        droppedItem.remove()
-      } else {
-        continue
-      }
-    }
-    let count = 0
-    for (let i = 0; i < 7; i++) {
-      const id = i + 'dropBox'
-      
-      const dropBox = document.getElementById(i + 'dropBox')
-      console.log(dropBox.childNodes)
-      if (dropBox.childNodes.length === 0) {
-        replacePieces(id)
-        count += 1
-      } else {
-        console.log('Parent full')
-      }
-    }
-    dropSocket(gameId, count)
+    socket.emit('saveDropped', { droppedItems: droppedItems, gameId: gameId })
+
+    // dropSocket(gameId, count)
   })
 }

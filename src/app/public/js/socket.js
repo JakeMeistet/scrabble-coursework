@@ -98,30 +98,25 @@ function start () {
   socket.on('startGame', (data) => {
     const startBtn = document.getElementById('start')
     startBtn.addEventListener('click', () => {
-      console.log(data)
       socket.emit('startGame', data)
     })
   })
 
   socket.on('loadBoard', (data) => {
-    console.log('clickhere')
     flexCreate()
     socket.emit('loadPieces', data)
   })
 
   socket.on('loadBoard2', (data) => {
-    console.log('clickhere')
     flexCreate()
     socket.emit('loadPieces2', data)
   })
 
   socket.on('p1Pieces', (data) => {
-    console.log('test')
     socket.emit('p1PiecesDone', { gameId: data.gameId, pieceArr: pieces(data.pieceArr, data.gameId) })
   })
 
   socket.on('p2Pieces', (data) => {
-    console.log('testp2')
     socket.emit('p2PiecesDone', { gameId: data.gameId, pieceArr: pieces(data.pieceArr, data.gameId) })
   })
 
@@ -129,23 +124,72 @@ function start () {
     finishGo(data.gameId)
   })
 
-  const allDropped = []
-  let round = 0
-  socket.on('drop', (data) => {
-    console.log(data.gameId)
-    if (allDropped === []) {
-      round = 1
-    } else {
-      round += 1
-    }
-
-    console.log('this test')
-    console.log(allDropped)
-    socket.emit('saveDropped', data)
-  })
-
   socket.on('dropSaved', (data) => {
     checkDropped(data.gameId, data.droppedItems)
+  })
+
+  socket.on('addPiece', (data) => {
+    const dropBox = document.getElementById(data.element)
+    const text = document.createElement('p')
+    const piece = document.createElement('div')
+    const strData = data.piece.split('')
+    let letter = null
+    if (strData.length == 3) {
+      letter = strData[2]
+    } else {
+      letter = strData[1]
+    }
+    piece.classList.add(data.piece)
+    piece.id = data.piece
+    piece.classList.add('drag-drop')
+    text.className = 'inner-text'
+    text.innerText = letter
+    dropBox.appendChild(piece)
+    piece.appendChild(text)
+  })
+
+  socket.on('checkDropped', (data) => {
+    wordSearch(data)
+  })
+
+  socket.on('searchComplete', (data) => {
+    console.log(data.allEqual)
+    if (data.allEqual === true) {
+      console.log('hello')
+      console.log(data.droppedItems.length)
+      console.log(data.droppedItems)
+      for (let i = 0; i < data.droppedItems.length; i++) {
+        const droppedItem = document.getElementById(data.droppedItems[i].tile)
+        console.log(droppedItem)
+        if (droppedItem !== null) {
+          droppedItem.remove()
+        } else {
+          continue
+        }
+      }
+      let count = 0
+      for (let i = 0; i < 7; i++) {
+        const id = i + 'dropBox'
+
+        const dropBox = document.getElementById(i + 'dropBox')
+        console.log(dropBox.childNodes)
+        if (dropBox.childNodes.length === 0) {
+          replacePieces(id)
+          count += 1
+        } else {
+          console.log('Parent full')
+        }
+      }
+      console.log(data)
+      console.log('dataAbove')
+      socket.emit('piecesRemoved', { allEqual: data.allEqual, droppedItems: data.droppedItems, gameId: data.gameId })
+    } else {
+      console.log('A word is incorrect')
+    }
+  })
+
+  socket.on('placePieces', (data) => {
+    console.log(data.droppedItems)
     for (let i = 0; i < data.droppedItems.length; i++) {
       const body = document.body
       const dropCoords = document.getElementById(data.droppedItems[i].dropZone)
@@ -175,39 +219,9 @@ function start () {
       body.appendChild(droppedPiece)
       droppedPiece.appendChild(p)
       dropCoords.classList.add('occupied')
-      console.log('element')
     }
-    console.log(data)
 
     droppedItems = []
-  })
-
-  socket.on('addPiece', (data) => {
-    const dropBox = document.getElementById(data.element)
-    const text = document.createElement('p')
-    const piece = document.createElement('div')
-    const strData = data.piece.split('')
-    let letter = null
-    console.log(data)
-    console.log(strData)
-    if (strData.length == 3) {
-      console.log(strData[2])
-      letter = strData[2]
-    } else {
-      letter = strData[1]
-    }
-    piece.classList.add(data.piece)
-    piece.id = data.piece
-    piece.classList.add('drag-drop')
-    text.className = 'inner-text'
-    text.innerText = letter
-    console.log(data.element)
-    dropBox.appendChild(piece)
-    piece.appendChild(text)
-  })
-
-  socket.on('checkDropped', (data) => {
-    wordSearch(data)
   })
 }
 
@@ -223,7 +237,7 @@ function lobbyPage (socket) {
   const textBox = document.createElement('input')
   textBox.id = 'lobbyId'
   textBox.className = 'credentials'
-  textBox.value = 'Enter a lobby ID here'
+  textBox.placeholder = 'Enter Lobby Id'
   login.appendChild(textBox)
 
   const createBtn = document.createElement('button')
@@ -258,4 +272,8 @@ function dropSocket (gameId, count) {
 function replacePieces (element) {
   console.log(element + 'test1')
   socket.emit('addPiece', element)
+}
+
+function searchSocket (allWords, droppedItems, gameId) {
+  socket.emit('dictionarySearch', { allWords: allWords, gameId: gameId, droppedItems: droppedItems })
 }

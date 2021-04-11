@@ -211,14 +211,28 @@ io.on('connection', (socket) => {
       console.log('No remaining tiles')
     }
   })
-
+  const dictionary = fs.readFileSync('./dictionary.txt', 'utf-8')
+  const dictionaryArr = dictionary.split('\r\n')
   socket.on('checkDropped', (data) => {
-    const dictionary = fs.readFileSync('./dictionary.txt', 'utf-8')
-    const dictionaryArr = dictionary.split('\n')
     console.log(dictionaryArr.length)
-    
-  
     io.to(socket.id).emit('checkDropped', { gameId: data.gameId, droppedItems: data.droppedItems, allDropped: allDropped, dictionaryArr: dictionaryArr})
+  })
+
+  let exists = []
+  socket.on('dictionarySearch', (data) => {
+    for (let i = 0; i < data.allWords.length; i++) {
+      exists.push({word: data.allWords[i], exists: (binarySearch(dictionaryArr, data.allWords[i]))})
+    }
+    console.log('check if all equal')
+    let allEqual
+    if (exists[0].exists === false) {
+      allEqual = false
+    } else {
+      allEqual = arr => arr.every( v => v.exists === arr[0].exists )
+    }
+    console.log(allEqual(exists))
+    console.log(data.allDropped)
+    io.to(socket.id).emit('searchComplete', {allEqual: allEqual, gameId: data.gameId, droppedItems: data.droppedItems})
   })
 })
 
@@ -247,3 +261,19 @@ function removeDuplicates(arr){
   })
   return Object.keys(x)
 };
+
+function binarySearch(dictionaryArr, word) {
+  let start = 0;
+  let end = dictionaryArr.length - 1;
+  while (start <= end) {
+    let middle = Math.floor((start + end) / 2)
+    if (dictionaryArr[middle] === word) {
+      return true;
+    } else if (dictionaryArr[middle] < word) {
+      start = middle + 1
+    } else {
+      end = middle -1
+    }
+  }
+  return false
+}

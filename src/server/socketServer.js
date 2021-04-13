@@ -2,6 +2,8 @@ const socket = require('socket.io')
 const Crypto = require('crypto')
 const fs = require('fs')
 const colour = require('colour')
+const { execSync } = require('child_process')
+const e = require('express')
 
 function initSocketServer (server) {
   colour.setTheme({
@@ -21,14 +23,12 @@ function initSocketServer (server) {
     const uid = Crypto.randomBytes(32).toString('hex')
     const ip = socket.request.connection.remoteAddress
     console.log(ip)
-    // socket.on('startGame', (username) => {
 
     socket.on('newPlayer', (username) => {
       console.log(username)
       const credentials = { username: username, uid: uid, ip: ip }
       console.log(credentials)
       io.to(socket.id).emit('newPlayer', credentials)
-      // io.emit('newPlayer', credentials)
     })
 
     socket.on('pastPlayer', (credentials) => {
@@ -179,23 +179,42 @@ function initSocketServer (server) {
       io.to(socket.id).emit('checkDropped', { gameId: data.gameId, droppedItems: data.droppedItems, allDropped: allDropped, dictionaryArr: dictionaryArr })
     })
 
-    const exists = []
+    let exists = []
+    let previousWords = []
     socket.on('dictionarySearch', (data) => {
+
+      for (let i = 0; i < previousWords.length; i++) {
+        removeElement(data.allWords, previousWords[i])
+      }
+
       for (let i = 0; i < data.allWords.length; i++) {
         exists.push({ word: data.allWords[i], exists: (binarySearch(dictionaryArr, data.allWords[i])) })
       }
       console.log('check if all equal')
-      const checkEqual = arr => arr.every(v => v.exists === arr[0].exists)
-      let allEqual
-      if (exists[0].exists === false) {
-        allEqual = false
+      console.log(exists)
+      const allEqual = boolCheck(exists)
+      console.log(allEqual)
+
+      if (allEqual === true) {
+          for (let i = 0; i < data.allWords.length; i++) {
+            previousWords.push(data.allWords[i])
+          }
       } else {
-        allEqual = checkEqual(exists)
+          console.log('not all words exist')
       }
-      console.log(checkEqual(exists))
-      console.log(data.allDropped)
-      io.to(socket.id).emit('searchComplete', { allEqual: allEqual, gameId: data.gameId, droppedItems: data.droppedItems })
+
+      removeDuplicates(previousWords)
+      console.log(previousWords)
+      console.log('previous')
+      console.log(previousWords)
+      console.log(data.allWords)
+      io.to(socket.id).emit('searchComplete', { allEqual: allEqual, gameId: data.gameId, droppedItems: data.droppedItems, previousWords: previousWords })
+      exists = []
     })
+
+    // socket.on('getPrevious', () => {
+    //   io.to(socket.id).emit('getPrevious', previousWords)
+    // })
 
     socket.on('piecesRemoved', (data) => {
       console.log(data.gameId)
@@ -248,4 +267,18 @@ function binarySearch (dictionaryArr, word) {
 
 module.exports = {
   initSocketServer: initSocketServer
+}
+
+function boolCheck (arr) {
+  let bool = true
+  let i = 0
+  while (i < arr.length || bool === false) {
+    if (arr[i].exists === true){
+      bool = true
+      i += 1
+    } else {
+      bool = false
+    }
+  }
+  return bool
 }

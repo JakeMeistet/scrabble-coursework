@@ -1,4 +1,4 @@
-const droppedItems = []
+let droppedItems = []
 let startPos = null
 interact('.drag-drop').draggable({
   snap: {

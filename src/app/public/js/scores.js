@@ -19,20 +19,32 @@ function wordSearch (data) {
   const rowNum = 0
   sortByCol.sort(sortObjArr('column', false, parseInt))
   sortByRow.sort(compareRows)
+  console.log('here')
+  console.log(sortByRow)
   let testArr = []
   const completeArr = []
   let lastRow
+  debugger
   for (let i = 0; i < sortByRow.length; i++) {
     if (i === sortByRow.length - 1) {
-      testArr.push(sortByRow[i])
-      console.log('finish')
-      testArr.sort(sortObjArr('column', false, parseInt))
-      for (let j = 0; j < testArr.length; j++) {
-        completeArr.push(testArr[j])
-        console.log(completeArr)
+      if (sortByRow[i].row === lastRow) {
+        testArr.push(sortByRow[i])
+        console.log('finish')
+        testArr.sort(sortObjArr('column', false, parseInt))
+        console.log(testArr)
+        for (let j = 0; j < testArr.length; j++) {
+          completeArr.push(testArr[j])
+          console.log(completeArr)
+        }
+        testArr = []
+      } else {
+        testArr.push(sortByRow[i])
+        completeArr.push(testArr[0])
+        testArr = []
       }
     } else if (i !== 0 && i !== sortByRow.length - 1) {
       console.log(sortByRow[i].row)
+      console.log(sortByRow)
       console.log(`Last row = ${lastRow}`)
       if (sortByRow[i].row === lastRow) {
         testArr.push(sortByRow[i])
@@ -275,3 +287,13 @@ function elemRemove (arr) {
     }
   }
 }
+
+function removeDuplicates (arr) {
+  const x = {}
+  arr.forEach(function (i) {
+    if (!x[i]) {
+      x[i] = true
+    }
+  })
+  return Object.keys(x)
+};

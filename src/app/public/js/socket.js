@@ -155,11 +155,10 @@ function start () {
   })
 
   socket.on('searchComplete', (data) => {
-    debugger
     console.log(data.allEqual)
     if (data.allEqual === true) {
       const scoreHolder = document.getElementById('playerScore')
-      const currentScore = scoreHolder.textContent
+      const currentScore = scoreHolder.innerText
       console.log(currentScore)
       const newScore = data.score + parseInt(currentScore)
       scoreHolder.innerText = newScore

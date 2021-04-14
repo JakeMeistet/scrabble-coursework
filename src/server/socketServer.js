@@ -100,7 +100,7 @@ function initSocketServer (server) {
         '1K', '1L', '2L', '3L', '4L', '1M', '2M', '1N', '2N', '3N', '4N', '5N', '6N', '1O', '2O', '3O', '4O', '5O', '6O', '7O', '8O', '9P', '10P', '1Q',
         '1R', '2R', '3R', '4R', '5R', '6R', '1S', '2S', '3S', '4S', '1T', '2T', '3T', '4T', '5T', '6T', '1U', '2U', '3U', '4U', '1V', '2V', '1W', '2W',
         '1X', '1Y', '2Y', '1Z']
-        //Blanks to be sorted out later '1_', '2_']
+      // Blanks to be sorted out later '1_', '2_']
 
       // https://medium.com/@nitinpatel_20236/how-to-shuffle-correctly-shuffle-an-array-in-javascript-15ea3f84bfb
       for (let i = pieceArr.length - 1; i > 0; i--) {
@@ -177,9 +177,39 @@ function initSocketServer (server) {
     })
 
     let exists = []
-    let previousWords = []
-    socket.on('dictionarySearch', (data) => {
+    const previousWords = []
+    const values = [
+      {letter: 'A', value: 1},
+      {letter: 'B', value: 3},
+      {letter: 'C', value: 3},
+      {letter: 'D', value: 2},
+      {letter: 'E', value: 1},
+      {letter: 'F', value: 1},
+      {letter: 'G', value: 2},
+      {letter: 'H', value: 4},
+      {letter: 'I', value: 1},
+      {letter: 'J', value: 8},
+      {letter: 'K', value: 5},
+      {letter: 'L', value: 1},
+      {letter: 'M', value: 3},
+      {letter: 'N', value: 1},
+      {letter: 'O', value: 1},
+      {letter: 'P', value: 3},
+      {letter: 'Q', value: 10},
+      {letter: 'R', value: 1},
+      {letter: 'S', value: 1},
+      {letter: 'T', value: 1},
+      {letter: 'U', value: 1},
+      {letter: 'V', value: 4},
+      {letter: 'W', value: 4},
+      {letter: 'X', value: 8},
+      {letter: 'Y', value: 4},
+      {letter: 'Z', value: 10},
+      {letter: '_', value: 0}
+    ]
 
+    socket.on('dictionarySearch', (data) => {
+      let score = 0
       for (let i = 0; i < previousWords.length; i++) {
         removeElement(data.allWords, previousWords[i])
       }
@@ -193,33 +223,42 @@ function initSocketServer (server) {
       console.log(allEqual)
 
       if (allEqual === true) {
-          for (let i = 0; i < data.allWords.length; i++) {
-            previousWords.push(data.allWords[i])
+        for (let i = 0; i < data.allWords.length; i++) {
+          previousWords.push(data.allWords[i])
+          const currentWord = data.allWords[i].split('')
+          for (let j = 0; j < currentWord.length; j++) {
+            for (let k = 0; k < values.length; k++) {
+              if (currentWord[j] === values[k].letter) {
+                score += values[k].value
+              } else {
+                continue
+              }
+            }
           }
+        }
+
       } else {
-          console.log('not all words exist')
+        console.log('not all words exist')
       }
+      
+      console.log(score)
 
       removeDuplicates(previousWords)
       console.log(previousWords)
       console.log('previous')
       console.log(previousWords)
       console.log(data.allWords)
-      io.to(socket.id).emit('searchComplete', { allEqual: allEqual, gameId: data.gameId, droppedItems: data.droppedItems, previousWords: previousWords })
+      io.to(socket.id).emit('searchComplete', { allEqual: allEqual, gameId: data.gameId, droppedItems: data.droppedItems, previousWords: previousWords, score: score })
       exists = []
-      
-      
     })
-
-    // socket.on('getPrevious', () => {
-    //   io.to(socket.id).emit('getPrevious', previousWords)
-    // })
 
     socket.on('piecesRemoved', (data) => {
       console.log(data.gameId)
       console.log('gameId above')
       io.to(data.gameId).emit('placePieces', data)
     })
+
+    
   })
 }
 
@@ -272,7 +311,7 @@ function boolCheck (arr) {
   let bool = true
   let i = 0
   while (i < arr.length && bool === true) {
-    if (arr[i].exists === true){
+    if (arr[i].exists === true) {
       bool = true
       i += 1
     } else {

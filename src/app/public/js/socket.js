@@ -125,6 +125,8 @@ function start () {
   })
 
   socket.on('dropSaved', (data) => {
+    console.log('dropSaved')
+    console.log(data.droppedItems)
     checkDropped(data.gameId, data.droppedItems)
   })
 
@@ -153,8 +155,15 @@ function start () {
   })
 
   socket.on('searchComplete', (data) => {
+    debugger
     console.log(data.allEqual)
     if (data.allEqual === true) {
+      const scoreHolder = document.getElementById('playerScore')
+      const currentScore = scoreHolder.textContent
+      console.log(currentScore)
+      const newScore = data.score + parseInt(currentScore)
+      scoreHolder.innerText = newScore
+
       console.log('hello')
       console.log(data.droppedItems.length)
       console.log(data.droppedItems)

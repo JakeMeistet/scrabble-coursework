@@ -24,7 +24,6 @@ function wordSearch (data) {
   let testArr = []
   const completeArr = []
   let lastRow
-  debugger
   for (let i = 0; i < sortByRow.length; i++) {
     if (i === sortByRow.length - 1) {
       if (sortByRow[i].row === lastRow) {
@@ -71,7 +70,7 @@ function wordSearch (data) {
   sortByRow = completeArr
   const wordCount = 0
   const word = []
-  const allWords = []
+  let allWords = []
 
   const colWords = check(sortByCol, word, wordCount, 'column')
   elemRemove(colWords)
@@ -81,6 +80,10 @@ function wordSearch (data) {
   console.log('complete arrays')
   console.log(colWords)
   console.log(rowWords)
+
+  if (allWords.length > 0) {
+    allWords = []
+  }
 
   for (let i = 0; i < colWords.length; i++) {
     if (colWords[i].length >= 2) {

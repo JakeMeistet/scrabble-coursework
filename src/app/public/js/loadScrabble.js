@@ -90,6 +90,7 @@ function userDetails () {
   const details = document.createElement('div')
   const p = document.createElement('p')
   const rules = document.createElement('a')
+  const scoreText = document.createElement('p')
   const scorePara = document.createElement('p')
   const click = document.createElement('p')
   click.className = 'score'
@@ -102,11 +103,16 @@ function userDetails () {
   rules.appendChild(click)
   p.className = 'score'
   p.innerText = `Username: ${name}`
+  scoreText.className = 'score'
+  scoreText.innerText = 'Score:'
+
   scorePara.className = 'score'
-  scorePara.id = 'score'
-  scorePara.innerText = `Score: ${score}`
+  scorePara.id = 'playerScore'
+  scorePara.innerText = score
   details.appendChild(p)
+  details.appendChild(scoreText)
   details.appendChild(scorePara)
+
 }
 
 function pieces (pieceArr, gameId) {

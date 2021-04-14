@@ -208,8 +208,20 @@ function initSocketServer (server) {
       {letter: '_', value: 0}
     ]
 
+    
+    const star = 'H8'
+
+    const special = [
+      {type: 'tripleWord', positions: ['A1', 'H1', 'O1','A8', 'O8','A15', 'H15', 'O15']},
+      {type: 'doubleWord', positions: ['B2', 'N2', 'C3', 'M3', 'D4', 'L4', 'E5', 'K5', 'E11', 'K11', 'D12', 'L12', 'C13', 'M13', 'B14', '14']},
+      {type: 'tripleLetter', positions: ['F2', 'J2', 'B6', 'F6', 'J6', 'N6', 'B10', 'F10', 'J10', 'N10', 'F14', 'J14']},
+      {type: 'doubleLetter', positions: ['D1', 'L1', 'G3', 'I3', 'A4', 'H4', 'O4', 'C7', 'G7', 'I7', 'M7', 'D8', 'L8', 'C9', 'G9', 'I9', 'M9', 'A12', 'H12', 'O12', 'G13', 'I13', 'D15', 'L15']}
+    ]
+
     socket.on('dictionarySearch', (data) => {
       let score = 0
+      console.log('allDropped below')
+      console.log(data.droppedItems)
       for (let i = 0; i < previousWords.length; i++) {
         removeElement(data.allWords, previousWords[i])
       }

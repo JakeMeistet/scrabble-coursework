@@ -235,6 +235,7 @@ function initSocketServer (server) {
       const allEqual = boolCheck(exists)
       console.log(allEqual)
       let scoreChange = 1
+      let count = 0
       if (allEqual === true) {
         for (let i = 0; i < data.allWords.length; i++) {
           previousWords.push(data.allWords[i])
@@ -243,7 +244,7 @@ function initSocketServer (server) {
             for (let k = 0; k < values.length; k++) {
                 if (currentWord[j] === values[k].letter) {
                   for (let l = 0; l < special.length; l++) {
-                    if (special[l].positions.includes(allDroppedLetters[j].dropZone)) {
+                    if (special[l].positions.includes(allDroppedLetters[count].dropZone)) {
                       if (special[l].type === 'doubleLetter'){
                         score += (values[k].value * 2)
                       } else if (special[l].type === 'tripleLetter'){
@@ -252,11 +253,13 @@ function initSocketServer (server) {
                         scoreChange = 3
                       } else if (special[l].type === 'doubleWord'){
                         scoreChange = 2
-                      } else {
-                        score += values[k].value
-                      }
-                    }
+                      } 
+                      count += 1
+                    } else {
+                      continue
+                    }   
                   }
+                  score += values[k].value
                 } else {
                   continue
                 }
@@ -264,6 +267,7 @@ function initSocketServer (server) {
             }
           }
         }
+        count = 0
         score = score * scoreChange
 
       } else {

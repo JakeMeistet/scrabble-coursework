@@ -14,7 +14,8 @@ function initSocketServer (server) {
   })
 
   const io = socket(server)
-
+  let previousWords = []
+  let allDropped = []
   io.on('connection', (socket) => {
     console.log('A user just connected.')
 
@@ -137,7 +138,7 @@ function initSocketServer (server) {
       io.to(data.gameId).emit('waitOnFinish', data)
     })
 
-    let allDropped = []
+    
     socket.on('saveDropped', (data) => {
       for (let i = 0; i < data.droppedItems.length; i++) {
         console.log(data.droppedItems[i])
@@ -177,7 +178,7 @@ function initSocketServer (server) {
     })
 
     let exists = []
-    const previousWords = []
+    
     const values = [
       {letter: 'A', value: 1},
       {letter: 'B', value: 3},
@@ -219,6 +220,7 @@ function initSocketServer (server) {
     ]
 
     socket.on('dictionarySearch', (data) => {
+      
       let score = 0
       console.log('allDropped below')
       console.log(data.droppedItems)
@@ -230,6 +232,7 @@ function initSocketServer (server) {
       for (let i = 0; i < data.allWords.length; i++) {
         exists.push({ word: data.allWords[i], exists: (binarySearch(dictionaryArr, data.allWords[i])) })
       }
+      console.log(data.allWords)
       console.log('check if all equal')
       console.log(exists)
       const allEqual = boolCheck(exists)

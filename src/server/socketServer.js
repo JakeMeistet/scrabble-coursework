@@ -222,6 +222,7 @@ function initSocketServer (server) {
       let score = 0
       console.log('allDropped below')
       console.log(data.droppedItems)
+      const allDroppedLetters = data.droppedItems
       for (let i = 0; i < previousWords.length; i++) {
         removeElement(data.allWords, previousWords[i])
       }
@@ -233,21 +234,37 @@ function initSocketServer (server) {
       console.log(exists)
       const allEqual = boolCheck(exists)
       console.log(allEqual)
-
+      let scoreChange = 1
       if (allEqual === true) {
         for (let i = 0; i < data.allWords.length; i++) {
           previousWords.push(data.allWords[i])
           const currentWord = data.allWords[i].split('')
           for (let j = 0; j < currentWord.length; j++) {
             for (let k = 0; k < values.length; k++) {
-              if (currentWord[j] === values[k].letter) {
-                score += values[k].value
-              } else {
-                continue
-              }
+                if (currentWord[j] === values[k].letter) {
+                  for (let l = 0; l < special.length; l++) {
+                    if (special[l].positions.includes(allDroppedLetters[j].dropZone)) {
+                      if (special[l].type === 'doubleLetter'){
+                        score += (values[k].value * 2)
+                      } else if (special[l].type === 'tripleLetter'){
+                        score += (values[k].value * 3)
+                      } else if (special[l].type === 'tripleWord'){
+                        scoreChange = 3
+                      } else if (special[l].type === 'doubleWord'){
+                        scoreChange = 2
+                      } else {
+                        score += values[k].value
+                      }
+                    }
+                  }
+                } else {
+                  continue
+                }
+              
             }
           }
         }
+        score = score * scoreChange
 
       } else {
         console.log('not all words exist')

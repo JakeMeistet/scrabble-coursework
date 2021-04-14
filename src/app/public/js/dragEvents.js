@@ -61,7 +61,5 @@ function finishGo (gameId) {
   console.log(turnEnd)
   turnEnd.addEventListener('click', () => {
     socket.emit('saveDropped', { droppedItems: droppedItems, gameId: gameId })
-
-    // dropSocket(gameId, count)
   })
 }

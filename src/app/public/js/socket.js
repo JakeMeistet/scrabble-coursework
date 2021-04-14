@@ -157,6 +157,7 @@ function start () {
   socket.on('searchComplete', (data) => {
     console.log(data.allEqual)
     if (data.allEqual === true) {
+      console.log(data.droppedItems)
       const scoreHolder = document.getElementById('playerScore')
       const currentScore = scoreHolder.innerText
       console.log(currentScore)

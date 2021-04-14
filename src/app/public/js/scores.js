@@ -19,31 +19,20 @@ function wordSearch (data) {
   const rowNum = 0
   sortByCol.sort(sortObjArr('column', false, parseInt))
   sortByRow.sort(compareRows)
-  console.log('here')
-  console.log(sortByRow)
   let testArr = []
   const completeArr = []
   let lastRow
   for (let i = 0; i < sortByRow.length; i++) {
     if (i === sortByRow.length - 1) {
-      if (sortByRow[i].row === lastRow) {
-        testArr.push(sortByRow[i])
-        console.log('finish')
-        testArr.sort(sortObjArr('column', false, parseInt))
-        console.log(testArr)
-        for (let j = 0; j < testArr.length; j++) {
-          completeArr.push(testArr[j])
-          console.log(completeArr)
-        }
-        testArr = []
-      } else {
-        testArr.push(sortByRow[i])
-        completeArr.push(testArr[0])
-        testArr = []
+      testArr.push(sortByRow[i])
+      console.log('finish')
+      testArr.sort(sortObjArr('column', false, parseInt))
+      for (let j = 0; j < testArr.length; j++) {
+        completeArr.push(testArr[j])
+        console.log(completeArr)
       }
     } else if (i !== 0 && i !== sortByRow.length - 1) {
       console.log(sortByRow[i].row)
-      console.log(sortByRow)
       console.log(`Last row = ${lastRow}`)
       if (sortByRow[i].row === lastRow) {
         testArr.push(sortByRow[i])
@@ -70,7 +59,7 @@ function wordSearch (data) {
   sortByRow = completeArr
   const wordCount = 0
   const word = []
-  let allWords = []
+  const allWords = []
 
   const colWords = check(sortByCol, word, wordCount, 'column')
   elemRemove(colWords)
@@ -80,10 +69,6 @@ function wordSearch (data) {
   console.log('complete arrays')
   console.log(colWords)
   console.log(rowWords)
-
-  if (allWords.length > 0) {
-    allWords = []
-  }
 
   for (let i = 0; i < colWords.length; i++) {
     if (colWords[i].length >= 2) {
@@ -290,13 +275,3 @@ function elemRemove (arr) {
     }
   }
 }
-
-function removeDuplicates (arr) {
-  const x = {}
-  arr.forEach(function (i) {
-    if (!x[i]) {
-      x[i] = true
-    }
-  })
-  return Object.keys(x)
-};

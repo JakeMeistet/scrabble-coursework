@@ -2,9 +2,6 @@ const socket = require('socket.io')
 const Crypto = require('crypto')
 const fs = require('fs')
 const colour = require('colour')
-const { execSync } = require('child_process')
-const e = require('express')
-const { Console } = require('console')
 
 function initSocketServer (server) {
   colour.setTheme({
@@ -12,10 +9,10 @@ function initSocketServer (server) {
     running: 'blue',
     error: 'red'
   })
-
+  // let previousWords = []
+  // let allDropped = []
   const io = socket(server)
-  let previousWords = []
-  let allDropped = []
+
   io.on('connection', (socket) => {
     console.log('A user just connected.')
 
@@ -102,7 +99,8 @@ function initSocketServer (server) {
         '1R', '2R', '3R', '4R', '5R', '6R', '1S', '2S', '3S', '4S', '1T', '2T', '3T', '4T', '5T', '6T', '1U', '2U', '3U', '4U', '1V', '2V', '1W', '2W',
         '1X', '1Y', '2Y', '1Z']
       // Blanks to be sorted out later '1_', '2_']
-
+      let previousWords = []
+      let allDropped = []
       // https://medium.com/@nitinpatel_20236/how-to-shuffle-correctly-shuffle-an-array-in-javascript-15ea3f84bfb
       for (let i = pieceArr.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * i)
@@ -113,7 +111,7 @@ function initSocketServer (server) {
       const lookUp = io.sockets.adapter.rooms.get(data.gameId)
       const arr = Array.from(lookUp)
       console.log('test')
-      io.to(arr[0]).emit('p1Pieces', { gameId: data.gameId, pieceArr: pieceArr })
+      io.to(arr[0]).emit('p1Pieces', { gameId: data.gameId, pieceArr: pieceArr, previousWords: previousWords, allDropped: allDropped })
     })
 
     socket.on('p1PiecesDone', (data) => {
@@ -135,28 +133,30 @@ function initSocketServer (server) {
       console.log(data.pieceArr.length)
       pieceArr = data.pieceArr
       console.log(pieceArr)
-      io.to(data.gameId).emit('waitOnFinish', data)
+      // let previousWords = []
+      // let allDropped = []
+      io.to(data.gameId).emit('waitOnFinish', {pieceArr: data.pieceArr, gameId: data.gameId, previousWords: data.previousWords, allDropped: data.allDropped})
     })
 
     
     socket.on('saveDropped', (data) => {
       for (let i = 0; i < data.droppedItems.length; i++) {
         console.log(data.droppedItems[i])
-        console.log(allDropped[i])
-        allDropped.push(data.droppedItems[i])
+        console.log(data.allDropped[i])
+        data.allDropped.push(data.droppedItems[i])
       }
       const map = {}
       const tempArr = []
-      allDropped.forEach(element => {
+      data.allDropped.forEach(element => {
         if (!map[JSON.stringify(element)]) {
           map[JSON.stringify(element)] = true
           tempArr.push(element)
         }
       })
-      allDropped = tempArr
+      data.allDropped = tempArr
       console.log('UISHUFHGUIDH')
-      console.log(allDropped)
-      io.to(socket.id).emit('dropSaved', { allDropped: allDropped, droppedItems: data.droppedItems, gameId: data.gameId })
+      console.log(data.allDropped)
+      io.to(socket.id).emit('dropSaved', { allDropped: data.allDropped, droppedItems: data.droppedItems, gameId: data.gameId, allDropped: data.allDropped, previousWords: data.previousWords })
     })
 
     socket.on('addPiece', (element) => {
@@ -174,7 +174,7 @@ function initSocketServer (server) {
     const dictionaryArr = dictionary.split('\r\n')
     socket.on('checkDropped', (data) => {
       console.log(dictionaryArr.length)
-      io.to(socket.id).emit('checkDropped', { gameId: data.gameId, droppedItems: data.droppedItems, allDropped: allDropped, dictionaryArr: dictionaryArr })
+      io.to(socket.id).emit('checkDropped', { gameId: data.gameId, droppedItems: data.droppedItems, allDropped: data.allDropped, dictionaryArr: dictionaryArr, previousWords: data.previousWords })
     })
 
     let exists = []
@@ -225,8 +225,8 @@ function initSocketServer (server) {
       console.log('allDropped below')
       console.log(data.droppedItems)
       const allDroppedLetters = data.droppedItems
-      for (let i = 0; i < previousWords.length; i++) {
-        removeElement(data.allWords, previousWords[i])
+      for (let i = 0; i < data.previousWords.length; i++) {
+        removeElement(data.allWords, data.previousWords[i])
       }
 
       for (let i = 0; i < data.allWords.length; i++) {
@@ -241,7 +241,7 @@ function initSocketServer (server) {
       let count = 0
       if (allEqual === true) {
         for (let i = 0; i < data.allWords.length; i++) {
-          previousWords.push(data.allWords[i])
+          data.previousWords.push(data.allWords[i])
           const currentWord = data.allWords[i].split('')
           for (let j = 0; j < currentWord.length; j++) {
             for (let k = 0; k < values.length; k++) {
@@ -279,12 +279,12 @@ function initSocketServer (server) {
       
       console.log(score)
 
-      removeDuplicates(previousWords)
-      console.log(previousWords)
+      removeDuplicates(data.previousWords)
+      console.log(data.previousWords)
       console.log('previous')
-      console.log(previousWords)
+      console.log(data.previousWords)
       console.log(data.allWords)
-      io.to(socket.id).emit('searchComplete', { allEqual: allEqual, gameId: data.gameId, droppedItems: data.droppedItems, previousWords: previousWords, score: score })
+      io.to(socket.id).emit('searchComplete', { allEqual: allEqual, gameId: data.gameId, droppedItems: data.droppedItems, previousWords: data.previousWords, score: score })
       exists = []
     })
 

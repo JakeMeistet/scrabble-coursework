@@ -113,21 +113,21 @@ function start () {
   })
 
   socket.on('p1Pieces', (data) => {
-    socket.emit('p1PiecesDone', { gameId: data.gameId, pieceArr: pieces(data.pieceArr, data.gameId) })
+    socket.emit('p1PiecesDone', { gameId: data.gameId, pieceArr: pieces(data.pieceArr, data.gameId), allDropped: data.allDropped, previousWords: data.previousWords })
   })
 
   socket.on('p2Pieces', (data) => {
-    socket.emit('p2PiecesDone', { gameId: data.gameId, pieceArr: pieces(data.pieceArr, data.gameId) })
+    socket.emit('p2PiecesDone', { gameId: data.gameId, pieceArr: pieces(data.pieceArr, data.gameId), allDropped: data.allDropped, previousWords: data.previousWords })
   })
 
   socket.on('waitOnFinish', (data) => {
-    finishGo(data.gameId)
+    finishGo(data.gameId, data.allDropped, data.previousWords)
   })
 
   socket.on('dropSaved', (data) => {
     console.log('dropSaved')
     console.log(data.droppedItems)
-    checkDropped(data.gameId, data.droppedItems)
+    checkDropped(data.gameId, data.droppedItems, data.allDropped, data.previousWords)
   })
 
   socket.on('addPiece', (data) => {
@@ -283,6 +283,6 @@ function replacePieces (element) {
   socket.emit('addPiece', element)
 }
 
-function searchSocket (allWords, droppedItems, gameId) {
-  socket.emit('dictionarySearch', { allWords: allWords, gameId: gameId, droppedItems: droppedItems })
+function searchSocket (allWords, droppedItems, gameId, allDropped, previousWords) {
+  socket.emit('dictionarySearch', { allWords: allWords, gameId: gameId, droppedItems: droppedItems, allDropped: allDropped, previousWords: previousWords })
 }

@@ -88,11 +88,11 @@ function wordSearch (data) {
   console.log(allWords)
   console.log('arrays')
   placement = []
-  searchSocket(allWords, data.droppedItems, data.gameId)
+  searchSocket(allWords, data.droppedItems, data.gameId, data.allDropped, data.previousWords)
 }
 
-function checkDropped (gameId, droppedItems) {
-  socket.emit('checkDropped', { gameId: gameId, droppedItems: droppedItems })
+function checkDropped (gameId, droppedItems, allDropped, previousWords) {
+  socket.emit('checkDropped', {gameId: gameId, droppedItems: droppedItems, allDropped: allDropped, previousWords: previousWords})
 }
 
 function check (placement, word, wordCount, check) {

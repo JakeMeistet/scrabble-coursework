@@ -113,15 +113,15 @@ function start () {
   })
 
   socket.on('p1Pieces', (data) => {
-    socket.emit('p1PiecesDone', { gameId: data.gameId, pieceArr: pieces(data.pieceArr, data.gameId), allDropped: data.allDropped, previousWords: data.previousWords })
+    socket.emit('p1PiecesDone', { gameId: data.gameId, pieceArr: pieces(data.pieceArr, data.gameId)})
   })
 
   socket.on('p2Pieces', (data) => {
-    socket.emit('p2PiecesDone', { gameId: data.gameId, pieceArr: pieces(data.pieceArr, data.gameId), allDropped: data.allDropped, previousWords: data.previousWords })
+    socket.emit('p2PiecesDone', { gameId: data.gameId, pieceArr: pieces(data.pieceArr, data.gameId)})
   })
 
   socket.on('waitOnFinish', (data) => {
-    finishGo(data.gameId, data.allDropped, data.previousWords)
+    finishGo(data.gameId)
   })
 
   socket.on('dropSaved', (data) => {

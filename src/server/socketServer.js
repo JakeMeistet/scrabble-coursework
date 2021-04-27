@@ -91,7 +91,7 @@ function initSocketServer (server) {
       console.log(data.gameId)
       io.to(arr[0]).emit('loadBoard', data)
     })
-
+    
     socket.on('loadPieces', (data) => {
       const pieceArr = ['1A', '2A', '3A', '4A', '5A', '6A', '7A', '8A', '1B', '2B', '1C', '2C', '1D', '2D', '3D', '4D', '1E', '2E', '3E', '4E', '5E',
         '6E', '7E', '8E', '9E', '10E', '11E', '12E', '1F', '2F', '1G', '2G', '3G', '1H', '2H', '1I', '2I', '3I', '4I', '5I', '6I', '7I', '8I', '9I', '1J',
@@ -99,19 +99,18 @@ function initSocketServer (server) {
         '1R', '2R', '3R', '4R', '5R', '6R', '1S', '2S', '3S', '4S', '1T', '2T', '3T', '4T', '5T', '6T', '1U', '2U', '3U', '4U', '1V', '2V', '1W', '2W',
         '1X', '1Y', '2Y', '1Z']
       // Blanks to be sorted out later '1_', '2_']
-      let previousWords = []
-      let allDropped = []
+
       // https://medium.com/@nitinpatel_20236/how-to-shuffle-correctly-shuffle-an-array-in-javascript-15ea3f84bfb
       for (let i = pieceArr.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * i)
-        const tempval = pieceArr[i]
+        const temp = pieceArr[i]
         pieceArr[i] = pieceArr[j]
-        pieceArr[j] = tempval
+        pieceArr[j] = temp
       }
       const lookUp = io.sockets.adapter.rooms.get(data.gameId)
       const arr = Array.from(lookUp)
       console.log('test')
-      io.to(arr[0]).emit('p1Pieces', { gameId: data.gameId, pieceArr: pieceArr, previousWords: previousWords, allDropped: allDropped })
+      io.to(arr[0]).emit('p1Pieces', { gameId: data.gameId, pieceArr: pieceArr})
     })
 
     socket.on('p1PiecesDone', (data) => {
@@ -133,13 +132,12 @@ function initSocketServer (server) {
       console.log(data.pieceArr.length)
       pieceArr = data.pieceArr
       console.log(pieceArr)
-      // let previousWords = []
-      // let allDropped = []
-      io.to(data.gameId).emit('waitOnFinish', {pieceArr: data.pieceArr, gameId: data.gameId, previousWords: data.previousWords, allDropped: data.allDropped})
+      io.to(data.gameId).emit('waitOnFinish', {pieceArr: data.pieceArr, gameId: data.gameId})
     })
 
-    
+
     socket.on('saveDropped', (data) => {
+
       for (let i = 0; i < data.droppedItems.length; i++) {
         console.log(data.droppedItems[i])
         console.log(data.allDropped[i])
@@ -153,10 +151,16 @@ function initSocketServer (server) {
           tempArr.push(element)
         }
       })
-      data.allDropped = tempArr
+      while (data.allDropped.length > 0) {
+        data.allDropped.pop();
+      }
+      for (let i = 0; i < tempArr.length; i++) {
+        data.allDropped.push(tempArr[i])
+      }
+
       console.log('UISHUFHGUIDH')
       console.log(data.allDropped)
-      io.to(socket.id).emit('dropSaved', { allDropped: data.allDropped, droppedItems: data.droppedItems, gameId: data.gameId, allDropped: data.allDropped, previousWords: data.previousWords })
+      io.to(socket.id).emit('dropSaved', { allDropped: data.allDropped, droppedItems: data.droppedItems, gameId: data.gameId, previousWords: data.previousWords })
     })
 
     socket.on('addPiece', (element) => {
@@ -224,6 +228,7 @@ function initSocketServer (server) {
       let score = 0
       console.log('allDropped below')
       console.log(data.droppedItems)
+      console.log(data.allDropped)
       const allDroppedLetters = data.droppedItems
       for (let i = 0; i < data.previousWords.length; i++) {
         removeElement(data.allWords, data.previousWords[i])

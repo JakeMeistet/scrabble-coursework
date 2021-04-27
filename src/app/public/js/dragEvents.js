@@ -56,10 +56,12 @@ function dropDeactivate (event) {
   event.target.classList.remove('drop-target')
 }
 
-function finishGo (gameId, allDropped, previousWords) {
+const previousWords = []
+const allDropped = []
+function finishGo (gameId) {
   const turnEnd = document.getElementById('finishBtn')
   console.log(turnEnd)
   turnEnd.addEventListener('click', () => {
-    socket.emit('saveDropped', { droppedItems: droppedItems, gameId: gameId, previousWords: previousWords, allDropped: allDropped })
+    socket.emit('saveDropped', { droppedItems: droppedItems, gameId: gameId, previousWords: previousWords, allDropped: allDropped})
   })
 }

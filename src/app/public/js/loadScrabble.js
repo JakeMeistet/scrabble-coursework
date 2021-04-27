@@ -112,7 +112,6 @@ function userDetails () {
   details.appendChild(p)
   details.appendChild(scoreText)
   details.appendChild(scorePara)
-
 }
 
 function pieces (pieceArr, gameId) {

@@ -92,7 +92,7 @@ function wordSearch (data) {
 }
 
 function checkDropped (gameId, droppedItems, allDropped, previousWords) {
-  socket.emit('checkDropped', {gameId: gameId, droppedItems: droppedItems, allDropped: allDropped, previousWords: previousWords})
+  socket.emit('checkDropped', { gameId: gameId, droppedItems: droppedItems, allDropped: allDropped, previousWords: previousWords})
 }
 
 function check (placement, word, wordCount, check) {

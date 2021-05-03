@@ -27,7 +27,8 @@ function loadScrabble() {
     box.id = coordArr[y] + row;
 
     /*  These functions are very inefficient, yes though were done a while ago and I wanted to focus on getting the game working, planned on coming
-    back to fix these and make them far better, if unchanged then I never got round to changing this in the time.  */
+    back to fix these and make them far better, if unchanged then I never got round to changing this in the time.
+    - These if statements though do determine whether the board piece is a special tile, if so it gives the necessary class  */
 
     if (i === 0 || i === 7 || i === 14 || i === 105 || i === 112 || i === 119 || i === 210 || i === 217 || i === 224) {
       if (i === 112) {
@@ -56,11 +57,13 @@ function loadScrabble() {
   userDetails();
 }
 
+/*  This function creates the initial flexboxes which hold the gameboard and the user's tiles and information
+This is mainly used for the basic structure of the page */
 function flexCreate() {
   const head = document.getElementById('head');
   const heading = document.createElement('h1');
   heading.className = 'title2';
-  heading.textContent = 'Scrabble by Jake Bailey';
+  heading.textContent = 'Scrabble';
   head.appendChild(heading);
 
   const form = document.getElementById('form');
@@ -144,11 +147,17 @@ function pieces(pieceArr, gameId) {
     const text = document.createElement('p');
     const piece = document.createElement('div');
     const drop = document.createElement('div');
-
+    /*  Gets a random tile from the tile 'bag' and then generates that tile under the user's current tiles.
+    - The tile bag is randomised before this happens  */
     const random = getRandomPiece(0, pieceArr.length, pieceArr);
+    /*  This spit is necessary because the value from pieceArr is a number and the letter
+    this is simply because it allows for each tile to have a unique ID under this whole value
+    the split gets the letter  */
     const data = random[0].split('');
     let letter = null;
     console.log(data);
+    /* This is necessary because some are double digit numbers and some are single digit
+    as there are more than 9 of some letters  */
     if (data.length === 3) {
       letter = data[2];
     } else {
@@ -174,6 +183,8 @@ function pieces(pieceArr, gameId) {
   return pieceArr;
 }
 
+/*  Essentially a random number generator to select a 
+random piece from the 'bag' of tiles  */
 function getRandomPiece(min, max, arr) {
   const ranNum = Math.floor(Math.random() * (max - min) + min);
   const piece = arr[ranNum];
@@ -182,6 +193,8 @@ function getRandomPiece(min, max, arr) {
   return ret;
 }
 
+/*  This funciton is simply used to remove elements from an array
+this is used on multiple occasions  */
 function removeElement(arr, elem) {
   const index = arr.indexOf(elem);
   if (index > -1) {

@@ -178,10 +178,9 @@ function initSocketServer(server) {
     socket.on('checkDropped', (data) => {
       console.log(dictionaryArr.length);
       io.to(socket.id).emit('checkDropped', { gameId: data.gameId, droppedItems: data.droppedItems, allDropped: data.allDropped, dictionaryArr: dictionaryArr, previousWords: data.previousWords });
-    })
+    });
 
     let exists = [];
-    
     const values = [
       { letter: 'A', value: 1 },
       { letter: 'B', value: 3 },
@@ -342,7 +341,7 @@ function boolCheck(arr) {
   while (i < arr.length && bool === true) {
     if (arr[i].exists === true) {
       bool = true;
-      i += 1
+      i += 1;
     } else {
       bool = false;
     }

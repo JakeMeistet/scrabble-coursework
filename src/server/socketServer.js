@@ -137,7 +137,7 @@ function initSocketServer (server) {
 
 
     socket.on('saveDropped', (data) => {
-
+      console.log(data.allDropped)
       for (let i = 0; i < data.droppedItems.length; i++) {
         console.log(data.droppedItems[i])
         console.log(data.allDropped[i])

@@ -57,7 +57,7 @@ function dropDeactivate (event) {
 }
 
 const previousWords = []
-const allDropped = []
+const allDropped = [{ tile: '', dropZone: ''}]
 function finishGo (gameId) {
   const turnEnd = document.getElementById('finishBtn')
   console.log(turnEnd)

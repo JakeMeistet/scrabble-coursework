@@ -1,6 +1,11 @@
+/*  Currently all client-side js files are imported into index.html and therefore all functions can be called
+from any of the client side js files no matter which file they are in, I know this is harder to keep track of
+though I began this way and again will change this once the core game is in place  */
 
 function loadScrabble() {
-  // Loop to generate the gameboard to start the game
+  /*  This loop generated the gameboard and assigns unique coordinates to each dropZone on the board
+  these are the same coordinates as in official scrabble A - O and 1 - 15  */
+
   let row = 1;
   const coordArr = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O'];
   let y = 0;
@@ -8,7 +13,7 @@ function loadScrabble() {
     const grid = document.getElementById('game-board-id');
     const box = document.createElement('div');
     const text = document.createElement('p');
-
+    /*  Simply generates all the boxes on the board, giving each all of their relevant ids and classes  */
     if (i === 0) {
       console.log(y);
     } else {
@@ -20,6 +25,9 @@ function loadScrabble() {
       }
     }
     box.id = coordArr[y] + row;
+
+    /*  These functions are very inefficient, yes though were done a while ago and I wanted to focus on getting the game working, planned on coming
+    back to fix these and make them far better, if unchanged then I never got round to changing this in the time.  */
 
     if (i === 0 || i === 7 || i === 14 || i === 105 || i === 112 || i === 119 || i === 210 || i === 217 || i === 224) {
       if (i === 112) {
@@ -83,6 +91,9 @@ function flexCreate() {
   loadScrabble();
 }
 
+
+/*  Function used to generate the user details flexbox on the right of the board
+this will include the user's name, gameId, score and all of the users current playable tiles  */
 function userDetails() {
   const name = localStorage.getItem('username');
   const score = 0;
@@ -97,6 +108,8 @@ function userDetails() {
   click.innerText = 'Rules';
   details.className = 'details';
   flex.appendChild(details);
+  /*  This simply links to the rules on the scrabble website
+  - Just to note, my scrabble game is 2 player only  */
   rules.href = 'https://scrabble.hasbro.com/en-us/rules';
   rules.target = '_blank';
   details.appendChild(rules);
@@ -105,7 +118,6 @@ function userDetails() {
   p.innerText = `Username: ${name}`;
   scoreText.className = 'score';
   scoreText.innerText = 'Score:';
-
   scorePara.className = 'score';
   scorePara.id = 'playerScore';
   scorePara.innerText = score;
@@ -114,6 +126,11 @@ function userDetails() {
   details.appendChild(scorePara);
 }
 
+/*  This function generates the user's tiles at the beginning of the game
+Though it may appear the function is never called, it is called from  the socket.js file
+- This functions will be called twice to generate each user's tiles
+- Websockets determine when this is called
+- gameId is the lobbyId for use with socket.io  */
 function pieces(pieceArr, gameId) {
   console.log(pieceArr);
   console.log(pieceArr.length);

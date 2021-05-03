@@ -1,5 +1,5 @@
 
-const socket = io('ws://localhost/');
+const socket = io('ws://localhost:8080/');
 
 function start() {
   const username = document.getElementById('username');

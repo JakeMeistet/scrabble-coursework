@@ -1,9 +1,14 @@
-
+/*  The wordSearch function is used to search through the board pieces to find straight lines
+by this I mean, the tiles that have been placed, in a straight line horizontally and vertically
+to determine which words to run through the dictionary to check whether valid or not  */
 function wordSearch (data) {
   const allDroppedSorted = data.allDropped.sort(compare);
   const sortByCol = [];
   let sortByRow = [];
 
+  /*  This is used to set the values of the arrays sortByCol and sortByRow
+  these arrays are arrays of objects containing row, column and tile with
+  tile being the letter and the others, the board placements (coords)  */
   for (let i = 0; i < allDroppedSorted.length; i++) {
     const coords = allDroppedSorted[i].dropZone.split('');
     const tiles = allDroppedSorted[i].tile.split('');
@@ -16,41 +21,48 @@ function wordSearch (data) {
       sortByRow[i] = { row: allDroppedSorted[i].dropZone.split('')[0], column: (allDroppedSorted[i].dropZone.split('')[1] + allDroppedSorted[i].dropZone.split('')[2]), tile: tiles };
     }
   }
-  const rowNum = 0;
+  /*  The two arrays are sorted using certain comparison algorithms
+  sortByCol - sorts the array by column value in ascending order
+  sortByRow - sorts the array by row value in alphabetical ascending order */
   sortByCol.sort(sortObjArr('column', false, parseInt));
   sortByRow.sort(compareRows);
-  let testArr = [];
+  let tempArr = [];
   const completeArr = [];
   let lastRow;
+  /*  This will loop over the sortByRow array, getting each value and sorting
+  it by column in ascending order, this is required to ensure that words can
+  be found correctly. If not, the pieces may not be in the correct order after
+  being sorted by row alphabetically */
   for (let i = 0; i < sortByRow.length; i++) {
     if (i === sortByRow.length - 1) {
-      testArr.push(sortByRow[i]);
+      tempArr.push(sortByRow[i]);
       console.log('finish');
-      testArr.sort(sortObjArr('column', false, parseInt));
-      for (let j = 0; j < testArr.length; j++) {
-        completeArr.push(testArr[j]);
+      // Here the tempArr is now sorted by column
+      tempArr.sort(sortObjArr('column', false, parseInt));
+      for (let j = 0; j < tempArr.length; j++) {
+        completeArr.push(tempArr[j]);
         console.log(completeArr);
       }
     } else if (i !== 0 && i !== sortByRow.length - 1) {
       console.log(sortByRow[i].row);
       console.log(`Last row = ${lastRow}`);
       if (sortByRow[i].row === lastRow) {
-        testArr.push(sortByRow[i]);
-        console.log(testArr);
+        tempArr.push(sortByRow[i]);
+        console.log(tempArr);
         lastRow = sortByRow[i].row;
       } else {
-        testArr.sort(sortObjArr('column', false, parseInt));
-        for (let j = 0; j < testArr.length; j++) {
-          completeArr.push(testArr[j]);
+        tempArr.sort(sortObjArr('column', false, parseInt));
+        for (let j = 0; j < tempArr.length; j++) {
+          completeArr.push(tempArr[j]);
           console.log(completeArr);
         }
-        testArr = [];
-        testArr.push(sortByRow[i]);
+        tempArr = [];
+        tempArr.push(sortByRow[i]);
         lastRow = sortByRow[i].row;
       }
     } else {
       lastRow = sortByRow[i].row;
-      testArr.push(sortByRow[i]);
+      tempArr.push(sortByRow[i]);
     }
   }
   console.log(sortByRow);
@@ -61,6 +73,9 @@ function wordSearch (data) {
   const word = [];
   const allWords = [];
 
+  /*  The two arrays are now used to check for words in the columnd and
+  rows, these will then be held in their own arrays (colWords and rowWords)
+  then, duplicate elements are removed from both  */
   const colWords = check(sortByCol, word, wordCount, 'column');
   elemRemove(colWords);
   const rowWords = check(sortByRow, word, wordCount, 'row');
@@ -70,6 +85,7 @@ function wordSearch (data) {
   console.log(colWords);
   console.log(rowWords);
 
+  // Here the colWords and rowWords arrays are combined to make the allWords array
   for (let i = 0; i < colWords.length; i++) {
     if (colWords[i].length >= 2) {
       allWords.push(colWords[i]);
@@ -88,13 +104,19 @@ function wordSearch (data) {
   console.log(allWords);
   console.log('arrays');
   placement = [];
-  searchSocket(allWords, data.droppedItems, data.gameId, data.allDropped, data.previousWords)
+  // searchSocket is called to emit a socket to begin the dictionary search
+  searchSocket(allWords, data.droppedItems, data.gameId, data.allDropped, data.previousWords);
 }
 
+// Emits the socket to initiate the word search to scrape the board for words
 function checkDropped(gameId, droppedItems, allDropped, previousWords) {
   socket.emit('checkDropped', { gameId: gameId, droppedItems: droppedItems, allDropped: allDropped, previousWords: previousWords });
 }
 
+/*  Function used to get words from the placed pieces, by row and by column
+the relevant data is passed into the function (sortByCol and sortByRow) which
+allows the function to run through the sorted arrays and get words by checking for gaps
+in the row or column */
 function check(placement, word, wordCount, check) {
   word = [];
   let tile = null;
@@ -105,7 +127,6 @@ function check(placement, word, wordCount, check) {
   let nextRow = null;
   let nextColumn = null;
 
-  console.log('rowSort');
   for (let i = 0; i < placement.length; i++) {
     console.log(wordCount);
     tile = placement[i].tile;
@@ -198,9 +219,10 @@ function check(placement, word, wordCount, check) {
   return word;
 }
 
+// compareRow comparing algorithm for the sorting, used to sort by row
 function compareRows(a, b) {
   const index = 0;
-  // converting to uppercase to have case-insensitive comparison
+  // allows for it to be case insensitive
   const row1 = a.row.charCodeAt(index);
   const row2 = b.row.charCodeAt(index);
 
@@ -214,6 +236,7 @@ function compareRows(a, b) {
   return comparison;
 }
 
+// Another compare function to sort the all dropped array to allDroppedSorted (in ascending order)
 function compare(a, b) {
   const dropZoneA = a.dropZone;
   const dropZoneB = b.dropZone;
@@ -226,6 +249,7 @@ function compare(a, b) {
   return comparison;
 }
 
+// The final compare function to sort by column, I was having a few issues with sorting previously, would aim to use less compare functions
 function sortObjArr(field, reverse, primer) {
   const key = primer
     ? function (x) {
@@ -242,6 +266,7 @@ function sortObjArr(field, reverse, primer) {
   };
 }
 
+// Simply checks if a variable is undefined or not to prevent an error
 function undefinedCheck(x) {
   if (x === undefined) {
     x = '';
@@ -251,6 +276,7 @@ function undefinedCheck(x) {
   }
 }
 
+// Used to check if there is a gap between tiles placed along the rows which use the alphabet up to O
 function alphabetCheck(currentRow, previousRow) {
   const alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
   const position = [];
@@ -266,6 +292,7 @@ function alphabetCheck(currentRow, previousRow) {
   return (position[0] === position[1] - 1);
 }
 
+// Function used to remove an element if the array length is les than 2 or the current element is not '' (prevents errors)
 function elemRemove(arr) {
   for (let i = 0; i < arr.length; i++) {
     if (arr[i].length < 2 || arr[i] === '') {

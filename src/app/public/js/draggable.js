@@ -56,7 +56,7 @@ interact('.drag-drop').draggable({
     // translate the element
     event.target.style.webkitTransform =
     event.target.style.transform =
-      `translate(${x} px, ${y} px)`;
+      'translate(' + x + 'px, ' + y + 'px)';
 
     // update the posiion attributes
     event.target.setAttribute('data-x', x);

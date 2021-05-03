@@ -36,10 +36,10 @@ The host has the ability to start the game, when start is pressed, the board and
 
 ## Known Issues
 
-Currently the array of allDropped pieces and all words placed is not shared between clients, meaning the game logic is not functional with multiplayer
-though if you set up a game as above and just keep playing on the one user just repeating turns, currently you will see the scores and game logic do work.
+[ ] Currently the array of allDropped pieces and all words placed is not shared between clients, meaning the game logic is not functional with multiplayer
+    though if you set up a game as above and just keep playing on the one user just repeating turns, currently you will see the scores and game logic do work.
 
-Need to implement starting from the middle and only allowing pieces to be continued from another, not just randomly on the board (I think this won't get done,
-would rather get the necessary game mechanics there as most people will know not to play anywhere on the board (this is not good for longjevity))
+[ ] Need to implement starting from the middle and only allowing pieces to be continued from another, not just randomly on the board (I think this won't get done,
+    would rather get the necessary game mechanics there as most people will know not to play anywhere on the board (this is not good for longjevity)).
 
-Alternating turns also needs to be implemented
+[ ] Alternating turns also needs to be implemented.

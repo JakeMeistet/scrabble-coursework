@@ -108,6 +108,3 @@ dist
 
 #VSCode
 .vscode/
-
-#ESLint
-.eslintrc.yml

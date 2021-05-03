@@ -1,4 +1,0 @@
-extends: portsoc
-root: true
-env:
-  browser: true

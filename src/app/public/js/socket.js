@@ -1,6 +1,13 @@
 
+/*  This file contains most of the socket.io code for the client side
+here I start a connection to 'ws://localhost:8080/ (port 8080) */
 const socket = io('ws://localhost:8080/');
 
+/*  The start function is called directly from the index.html file when the body loads
+This will generate the username and wait for the submit button to be clicked
+this page will only be shown to new users, not returning users.
+- Returning users data is stores on localStorage within the browser so
+if the user was to clear this data they would appear as a new user  */
 function start() {
   const username = document.getElementById('username');
   const submit = document.getElementById('submit');
@@ -8,6 +15,8 @@ function start() {
   console.log(submit);
 
   const pastUid = localStorage.getItem('uid');
+  /*  Here is the check for a past user, if it's a new user then it will listen for submit to be clicked
+  else, the past player socket is emitted and then the lobby page will be loaded  */
   if (pastUid === null) {
     const submit = document.getElementById('submit');
     submit.addEventListener('click', () => {
@@ -19,13 +28,16 @@ function start() {
       });
     });
   } else {
-    const credentials = { username: localStorage.getItem('username'), uid: pastUid }
+    const credentials = { username: localStorage.getItem('username'), uid: pastUid };
     socket.emit('pastPlayer', credentials);
     socket.on('pastPlayer', (newCredentials) => {
       lobbyPage(socket);
     });
   }
 
+  /*  This is to prevent a new lobby with a random ID being made using the join button
+  if this socket is received the user inputted a lobby ID and tried to join a lobby that
+  doesn't exist, hence the 'No such lobby' test is displayed */
   socket.on('noLobby', (gameId) => {
     const login = document.getElementById('loginPage');
     const fail = document.createElement('p');
@@ -35,6 +47,8 @@ function start() {
     login.appendChild(fail);
   });
 
+  /*  The function will run when the 'lobbyJoined socket is received
+  the lobby page will be displayed to the host  */
   socket.on('lobbyJoined', (data) => {
     const login = document.getElementById('loginPage');
     login.innerHTML = '';
@@ -44,6 +58,9 @@ function start() {
     login.appendChild(lobby);
   });
 
+  /*  The function will run when the 'lobbyJoined socket is received
+  the lobby page will be displayed to the second player and the lobby page
+  will be updated for the host  */
   socket.on('playerJoined', (data) => {
     const login = document.getElementById('loginPage');
     login.innerHTML = '';
@@ -59,6 +76,9 @@ function start() {
     login.appendChild(playerJoin);
   });
 
+  /*  When a lobby that a user has tried to join has 2 players connected this
+  function will run, letting the user know they must create or join another lobby
+  because the one they are trying to join is full. I have currently limited the game to 2 player only. */
   socket.on('fullLobby', (gameId) => {
     const login = document.getElementById('loginPage');
     const fail = document.createElement('p');
@@ -68,6 +88,9 @@ function start() {
     login.appendChild(fail);
   });
 
+  /*  This function will run when the 'host' socket is received from the socket server
+  it will simply update the host's lobby page, giving it a start button and updating the user
+  list.  */
   socket.on('host', (data) => {
     const login = document.getElementById('loginPage');
     const host = document.createElement('p');
@@ -83,8 +106,11 @@ function start() {
     login.appendChild(startBtn);
 
     socket.emit('p2', ({ host: localStorage.getItem('username'), gameId: data.gameId }));
-  })
+  });
 
+  /*  This updates the user list for p2 with both of
+  the user's names in the list and emits the socket begin
+  load as the game is ready to be started  */
   socket.on('p2', (data) => {
     const login = document.getElementById('loginPage');
     const p2 = document.createElement('p');
@@ -95,6 +121,9 @@ function start() {
     socket.emit('beginLoad', data);
   });
 
+  /*  When the startGame socket is received, the page will hang
+  until the host clicks the start game button and then the game will begin
+  loading for each user, starting with the host then doing player 2's  */
   socket.on('startGame', (data) => {
     const startBtn = document.getElementById('start');
     startBtn.addEventListener('click', () => {
@@ -102,6 +131,7 @@ function start() {
     });
   });
 
+  //  The below two load the boards for players 1 and 2
   socket.on('loadBoard', (data) => {
     flexCreate();
     socket.emit('loadPieces', data);
@@ -112,6 +142,7 @@ function start() {
     socket.emit('loadPieces2', data);
   });
 
+  //  The below two load the pieces/game tiles for players 1 and 2
   socket.on('p1Pieces', (data) => {
     socket.emit('p1PiecesDone', { gameId: data.gameId, pieceArr: pieces(data.pieceArr, data.gameId) });
   });
@@ -120,16 +151,24 @@ function start() {
     socket.emit('p2PiecesDone', { gameId: data.gameId, pieceArr: pieces(data.pieceArr, data.gameId) });
   });
 
+  /* Here the app will call the finishGo function to wait on the user
+  to finish their go and then run through all the game logic  */
   socket.on('waitOnFinish', (data) => {
     finishGo(data.gameId);
   });
 
+  /*  This is the beginning of when the dropped pieces are saved
+  so they can be made into words, checked and ran through the 
+  dictionary */
   socket.on('dropSaved', (data) => {
     console.log('dropSaved');
     console.log(data.droppedItems);
     checkDropped(data.gameId, data.droppedItems, data.allDropped, data.previousWords);
   });
 
+  /*  The function here adds trhe pieces back when a player
+  has played their turn and it was all valid. It will place
+  a max of 7 pieces back in the user's deck  */
   socket.on('addPiece', (data) => {
     const dropBox = document.getElementById(data.element);
     const text = document.createElement('p');
@@ -150,10 +189,15 @@ function start() {
     piece.appendChild(text);
   });
 
+  // The beginning of where words are created from the tiles dropped by calling the wordSearch function
   socket.on('checkDropped', (data) => {
     wordSearch(data);
   });
 
+  /*  When the socket 'searchComplete' is received from the server
+  using the allEqual value, if it is true the element is removed from
+  the user's board and then will be replaced on the lobby for all players,
+  else there is an incorrect word and the user must re-play their go  */
   socket.on('searchComplete', (data) => {
     console.log(data.allEqual);
     if (data.allEqual === true) {
@@ -197,6 +241,9 @@ function start() {
     }
   });
 
+  /*  As mentioned above, the pieces are now removed and here
+  they are replaced on the lobby (rather than just on the one client)
+  so that all users can see the piece that has been placed. */
   socket.on('placePieces', (data) => {
     console.log(data.droppedItems);
     for (let i = 0; i < data.droppedItems.length; i++) {
@@ -229,11 +276,14 @@ function start() {
       droppedPiece.appendChild(p);
       dropCoords.classList.add('occupied');
     }
-
+    // droppedItems is reset for the next go
     droppedItems = [];
   });
 }
 
+/*  This function generat es the lobby page for the user
+it includes the textbox, and a create and join button
+this allows a user to either create or join a lobby  */
 function lobbyPage(socket) {
   const login = document.getElementById('loginPage');
 
@@ -261,28 +311,35 @@ function lobbyPage(socket) {
   joinBtn.className = 'btn';
   login.appendChild(joinBtn);
 
+  /*  These event listeners are used to determine what to do after this page
+  it will either create a lobby when the create button is pressed or it will join
+  the lobby input in the box when the join button is clicked  */
   createBtn.addEventListener('click', () => { createLobby(socket); });
   joinBtn.addEventListener('click', () => { joinLobby(socket, textBox.value); });
 }
 
+// Emits the socket to create a lobby
 function createLobby(socket) {
   socket.emit('createLobby');
 }
 
+// Gets the username from localStorage and emits the socket to join a lobby
 function joinLobby (socket, gameId) {
   const username = localStorage.getItem('username');
   socket.emit('joinLobby', { gameId: gameId, username: username });
 }
 
-function dropSocket(gameId, count) {
-  socket.emit('itemDropped', { gameId, droppedItems, count });
-}
+// This is called 
+// function dropSocket(gameId, count) {
+//   socket.emit('itemDropped', { gameId, droppedItems, count });
+// }
 
+// Replaces the pieces that were removed from the game board when a go is valid
 function replacePieces(element) {
-  console.log(element + 'test1');
   socket.emit('addPiece', element);
 }
 
+// searchSocket will emit the dictionarySearch socket to initiate a search for the words in the dictionary
 function searchSocket(allWords, droppedItems, gameId, allDropped, previousWords) {
   socket.emit('dictionarySearch', { allWords: allWords, gameId: gameId, droppedItems: droppedItems, allDropped: allDropped, previousWords: previousWords });
 }

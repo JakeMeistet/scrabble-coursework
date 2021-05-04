@@ -1,10 +1,15 @@
-/* Adjusts page to fit screensize */
+/* I had original plans to make this adjustable
+based on the screen size, however I decided that
+for the scope of this project I would rather have
+the game working and everything necessary done to 
+then come back to this if necessary near the end if
+I have rthe time */
 @viewport {
   width: device-width ;
   zoom: 1.0 ;
 }
 
-/* @media screen and (min-width: 1101px) { */
+/* Drag drop styling (tiles) */
 .drag-drop, .no-drop {
   display: inline-block;
   width: 35px;
@@ -25,6 +30,7 @@
   transition: background-color 0.3s;
 }
 
+/* The main game board grid styling */
 .game-board{ 
   display: grid;
   width: 600px; height: 600px;
@@ -38,8 +44,8 @@
   padding-top: 6px;
 }
 
+/* The dark pink dropzone styling */
 .box-dark-pink {
-  /* border: 2px solid #B48D51; */
   border: 1px solid black;
   background-color: hotpink;
   text-align: center;
@@ -50,8 +56,8 @@
   padding-top: 7px;
 }
 
+/* The light pink dropzone styling */
 .box-light-pink {
-  /* border: 1px solid #B48D51; */
   border: 1px solid black;
   background-color: lightpink;
   text-align: center;
@@ -61,8 +67,8 @@
   padding-top: 7px;
 }
 
+/* The dark blue dropzone styling */
 .box-dark-blue {
-  /* border: 1px solid #B48D51; */
   border: 1px solid black;
   background-color: blue;
   color: white;
@@ -73,8 +79,8 @@
   padding-top: 7px;
 }
 
+/* The light blue dropzone styling */
 .box-light-blue {
-  /* border: 1px solid #B48D51; */
   border: 1px solid black;
   background-color: lightblue;
   text-align: center;
@@ -84,6 +90,7 @@
   padding-top: 7px;
 }
 
+/* Blank dropzone styling  */
 .box {
   background-color: white;
   border: 1px solid black;

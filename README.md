@@ -2,17 +2,9 @@
 
 This is the coursework set for Application Programming, it will be a web application game of scrabble
 
-## Installation
-
-Use the package manager [npm](https://www.npmjs.com/get-npm) to install relevant packages
-
-```bash
-npm run setup
-```
-
 ## Usage
 
-And run start
+Run the below command
 
 ```bash
 npm start

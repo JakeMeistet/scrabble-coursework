@@ -68,8 +68,8 @@ function dropDeactivate(event) {
 }
 
 //  This is an issue to be fixed, not knowing where to declare these shared arrays
-const previousWords = [];
-const allDropped = [];
+// const previousWords = [];
+// const allDropped = [];
 
 /*  This function is called once all the board is generated and waits for the user to finish
 their turn by pressing the finish turn button, then the game continues  */
@@ -77,6 +77,6 @@ function finishGo(gameId) {
   const turnEnd = document.getElementById('finishBtn');
   console.log(turnEnd);
   turnEnd.addEventListener('click', () => {
-    socket.emit('saveDropped', { droppedItems: droppedItems, gameId: gameId, previousWords: previousWords, allDropped: allDropped});
+    socket.emit('saveDropped', { droppedItems: droppedItems, gameId: gameId });
   });
 }

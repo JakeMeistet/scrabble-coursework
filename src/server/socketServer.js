@@ -184,31 +184,34 @@ function initSocketServer(server) {
     to fix) but once shared it will hold all dropped pieces so that the logic
     in which scrapes words from the board using tiles already placed (which is necessary)
     and calculating scores will all work to plan  */
+
+    const allDropped = [];
+    const previousWords = [];
     socket.on('saveDropped', (data) => {
       for (let i = 0; i < data.droppedItems.length; i++) {
         console.log(data.droppedItems[i]);
-        console.log(data.allDropped[i]);
-        data.allDropped.push(data.droppedItems[i]);
+        console.log(allDropped[i]);
+        allDropped.push(data.droppedItems[i]);
       }
       const map = {};
       const tempArr = [];
-      data.allDropped.forEach(element => {
+      allDropped.forEach(element => {
         if (!map[JSON.stringify(element)]) {
           map[JSON.stringify(element)] = true;
           tempArr.push(element);
         }
       });
-      while (data.allDropped.length > 0) {
-        data.allDropped.pop();
+      while (allDropped.length > 0) {
+        allDropped.pop();
       }
       for (let i = 0; i < tempArr.length; i++) {
-        data.allDropped.push(tempArr[i]);
+        allDropped.push(tempArr[i]);
       }
 
       console.log('testHere');
-      console.log(data.allDropped);
+      console.log(allDropped);
       // 'dropSaved' is emitted to the user along with all necessary data to confirm the data has been saved successfully
-      io.to(socket.id).emit('dropSaved', { allDropped: data.allDropped, droppedItems: data.droppedItems, gameId: data.gameId, previousWords: data.previousWords });
+      io.to(socket.id).emit('dropSaved', { allDropped: allDropped, droppedItems: data.droppedItems, gameId: data.gameId, previousWords: previousWords });
     });
 
     /*  This function will be called when the turn is successful and the user needs more

@@ -77,6 +77,6 @@ function finishGo(gameId) {
   const turnEnd = document.getElementById('finishBtn');
   console.log(turnEnd);
   turnEnd.addEventListener('click', () => {
-    socket.emit('getLobbyArr', { gameId: gameId, droppedItems: droppedItems });
+    socket.emit('saveDropped', { droppedItems: droppedItems, gameId: gameId });
   });
 }

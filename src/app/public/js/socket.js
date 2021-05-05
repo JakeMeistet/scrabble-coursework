@@ -163,7 +163,7 @@ function start() {
   socket.on('dropSaved', (data) => {
     console.log('dropSaved');
     console.log(data.droppedItems);
-    checkDropped(data.gameId, data.droppedItems, data.allDropped, data.previousWords);
+    checkDropped(data.gameId, data.droppedItems, data.allDropped);
   });
 
   /*  The function here adds trhe pieces back when a player
@@ -199,45 +199,50 @@ function start() {
   the user's board and then will be replaced on the lobby for all players,
   else there is an incorrect word and the user must re-play their go  */
   socket.on('searchComplete', (data) => {
-    console.log(data.allEqual);
-    if (data.allEqual === true) {
-      console.log(data.droppedItems);
-      const scoreHolder = document.getElementById('playerScore');
-      const currentScore = scoreHolder.innerText;
-      console.log(currentScore);
-      const newScore = data.score + parseInt(currentScore);
-      scoreHolder.innerText = newScore;
+    if (data.bool === true) {
+      console.log(data.allEqual);
+      if (data.allEqual === true) {
+        console.log(data.droppedItems);
+        const scoreHolder = document.getElementById('playerScore');
+        const currentScore = scoreHolder.innerText;
+        console.log(currentScore);
+        const newScore = data.score + parseInt(currentScore);
+        scoreHolder.innerText = newScore;
 
-      console.log('hello');
-      console.log(data.droppedItems.length);
-      console.log(data.droppedItems);
-      for (let i = 0; i < data.droppedItems.length; i++) {
-        const droppedItem = document.getElementById(data.droppedItems[i].tile);
-        console.log(droppedItem);
-        if (droppedItem !== null) {
-          droppedItem.remove();
-        } else {
-          continue;
+        console.log('hello');
+        console.log(data.droppedItems.length);
+        console.log(data.droppedItems);
+        for (let i = 0; i < data.droppedItems.length; i++) {
+          const droppedItem = document.getElementById(data.droppedItems[i].tile);
+          console.log(droppedItem);
+          if (droppedItem !== null) {
+            droppedItem.remove();
+          } else {
+            continue;
+          }
         }
-      }
-      let count = 0;
-      for (let i = 0; i < 7; i++) {
-        const id = i + 'dropBox';
+        let count = 0;
+        for (let i = 0; i < 7; i++) {
+          const id = i + 'dropBox';
 
-        const dropBox = document.getElementById(i + 'dropBox');
-        console.log(dropBox.childNodes);
-        if (dropBox.childNodes.length === 0) {
-          replacePieces(id);
-          count += 1;
-        } else {
-          console.log('Parent full');
+          const dropBox = document.getElementById(i + 'dropBox');
+          console.log(dropBox.childNodes);
+          if (dropBox.childNodes.length === 0) {
+            replacePieces(id);
+            count += 1;
+          } else {
+            console.log('Parent full');
+          }
         }
+        console.log(data);
+        console.log('dataAbove');
+        socket.emit('piecesRemoved', { allEqual: data.allEqual, droppedItems: data.droppedItems, gameId: data.gameId });
+      } else {
+        console.log('A word is incorrect');
+        droppedItems = [];
       }
-      console.log(data);
-      console.log('dataAbove');
-      socket.emit('piecesRemoved', { allEqual: data.allEqual, droppedItems: data.droppedItems, gameId: data.gameId });
     } else {
-      console.log('A word is incorrect');
+      console.log('Start at H8');
     }
   });
 
@@ -257,7 +262,7 @@ function start() {
       droppedPiece.style.position = 'absolute';
       dropCenter = {
         x: dropRect.left + dropRect.width / 2,
-        y: dropRect.top + dropRect.height / 2
+        y: dropRect.top + dropRect.height / 2,
       };
       droppedPiece.style.top = (dropRect.top - 4) + 'px';
       droppedPiece.style.left = (dropRect.left + 1) + 'px';
@@ -278,10 +283,6 @@ function start() {
     }
     // droppedItems is reset for the next go
     droppedItems = [];
-  });
-
-  socket.on('lobbyArr', (data) => {
-    socket.emit('saveDropped', { droppedItems: data.droppedItems, gameId: data.gameId, allDropped: data.allDropped, previousWords: data.previousWords });
   });
 }
 
@@ -333,7 +334,7 @@ function joinLobby (socket, gameId) {
   socket.emit('joinLobby', { gameId: gameId, username: username });
 }
 
-// This is called 
+// This is called
 // function dropSocket(gameId, count) {
 //   socket.emit('itemDropped', { gameId, droppedItems, count });
 // }
@@ -344,7 +345,6 @@ function replacePieces(element) {
 }
 
 // searchSocket will emit the dictionarySearch socket to initiate a search for the words in the dictionary
-function searchSocket(allWords, droppedItems, gameId, allDropped, previousWords) {
-  socket.emit('dictionarySearch', { allWords: allWords, gameId: gameId, droppedItems: droppedItems, allDropped: allDropped, previousWords: previousWords });
+function searchSocket(allWords, droppedItems, gameId, allDropped) {
+  socket.emit('dictionarySearch', { gameId: gameId, droppedItems: droppedItems, allDropped: allDropped, allWords: allWords });
 }
-

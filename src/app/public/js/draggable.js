@@ -1,4 +1,4 @@
-const droppedItems = [];
+let droppedItems = [];
 let startPos = null;
 
 /*  This sets out all the 'rules' and defines the element with class .drag-drop

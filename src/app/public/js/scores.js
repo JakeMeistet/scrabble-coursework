@@ -1,7 +1,7 @@
 /*  The wordSearch function is used to search through the board pieces to find straight lines
 by this I mean, the tiles that have been placed, in a straight line horizontally and vertically
 to determine which words to run through the dictionary to check whether valid or not  */
-function wordSearch (data) {
+function wordSearch(data) {
   const allDroppedSorted = data.allDropped.sort(compare);
   const sortByCol = [];
   let sortByRow = [];
@@ -73,6 +73,10 @@ function wordSearch (data) {
   const word = [];
   const allWords = [];
 
+  if (allWords.length > 0) {
+    allWords.length = 0;
+  }
+
   /*  The two arrays are now used to check for words in the columnd and
   rows, these will then be held in their own arrays (colWords and rowWords)
   then, duplicate elements are removed from both  */
@@ -105,12 +109,12 @@ function wordSearch (data) {
   console.log('arrays');
   placement = [];
   // searchSocket is called to emit a socket to begin the dictionary search
-  searchSocket(allWords, data.droppedItems, data.gameId, data.allDropped, data.previousWords);
+  searchSocket(allWords, data.droppedItems, data.gameId, data.allDropped);
 }
 
 // Emits the socket to initiate the word search to scrape the board for words
-function checkDropped(gameId, droppedItems, allDropped, previousWords) {
-  socket.emit('checkDropped', { gameId: gameId, droppedItems: droppedItems, allDropped: allDropped, previousWords: previousWords });
+function checkDropped(gameId, droppedItems, allDropped) {
+  socket.emit('checkDropped', { gameId: gameId, droppedItems: droppedItems, allDropped: allDropped });
 }
 
 /*  Function used to get words from the placed pieces, by row and by column

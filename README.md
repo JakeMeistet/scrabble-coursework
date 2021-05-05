@@ -33,7 +33,9 @@ If ticked, fixed.
 - [x] Currently the array of allDropped pieces and all words placed is not shared between clients, meaning the game logic is not functional with multiplayer
     though if you set up a game as above and just keep playing on the one user just repeating turns, currently you will see the scores and game logic do work.
 
-- [ ] Need to implement starting from the middle and only allowing pieces to be continued from another, not just randomly on the board (I think this won't get done,
+- [ ] Some issues with words in the shared array if a word is incorrect, issue to be fixed, word detection, is being a bit funny, not sure what this is right now.
+
+- [x] Need to implement starting from the middle and only allowing pieces to be continued from another, not just randomly on the board (I think this won't get done,
     would rather get the necessary game mechanics there as most people will know not to play anywhere on the board (this is not good for longjevity)).
 
 - [ ] Alternating turns also needs to be implemented.

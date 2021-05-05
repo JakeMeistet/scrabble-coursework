@@ -24,7 +24,7 @@ function initSocketServer(server) {
   io.of('/').adapter.on('create-room', (room) => {
     if (room.length <= 8) {
       console.log(`[ROOM] Game room ${room} was created`.running);
-      boardState[room] = { allDropped: [], previousWords: [] };
+      boardState[room] = { allDropped: [], previousWords: [], round: 0 };
     }
   });
 
@@ -303,41 +303,30 @@ function initSocketServer(server) {
       console.log(allEqual);
       let scoreChange = 1;
       let count = 0;
+
+      let bool = false;
       if (allEqual === true) {
-        /*  Could potentially be more efficient I feel, though this will determine
-        whether pieces are played on speciale points and therefore works out the score
-        after these loops, the score is determined for that play.  */
-        for (let i = 0; i < data.allWords.length; i++) {
-          board.previousWords.push(data.allWords[i]);
-          const currentWord = data.allWords[i].split('');
-          for (let j = 0; j < currentWord.length; j++) {
-            for (let k = 0; k < values.length; k++) {
-              if (currentWord[j] === values[k].letter) {
-                for (let l = 0; l < special.length; l++) {
-                  if (special[l].positions.includes(allDroppedLetters[count].dropZone)) {
-                    if (special[l].type === 'doubleLetter') {
-                      score += (values[k].value * 2);
-                    } else if (special[l].type === 'tripleLetter') {
-                      score += (values[k].value * 3);
-                    } else if (special[l].type === 'tripleWord') {
-                      scoreChange = 3;
-                    } else if (special[l].type === 'doubleWord') {
-                      scoreChange = 2;
-                    }
-                    count += 1;
-                  } else {
-                    continue;
-                  }
-                }
-                score += values[k].value;
-              } else {
-                continue;
-              }
+        if (boardState[data.gameId].round === 0) {
+          let i = 0;
+          console.log(boardState[data.gameId].allDropped.length);
+          while (bool === false && i < boardState[data.gameId].allDropped.length) {
+            console.log(i);
+            if (boardState[data.gameId].allDropped[i].dropZone === 'H8') {
+              bool = true;
+            } else {
+              i += 1;
+              bool = false;
             }
           }
+          console.log(bool)
+          if (bool === true) {
+            scoreFunc(data, board, special, allDroppedLetters, count, values, score, scoreChange);
+          } else {
+            console.log('Start on the centre star (H8)');
+          }
+        } else {
+          scoreFunc(data, board, special, allDroppedLetters, count, values, score, scoreChange);
         }
-        count = 0;
-        score = score * scoreChange;
       } else {
         // None of the above will run if the play is invalid because it includes a word which doesn't exist
         console.log('[LOG]  not all words exist'.log);
@@ -354,7 +343,7 @@ function initSocketServer(server) {
       /*  Socket is emitted to continue as the search was complete, the game will continue if it was a valid
       move, if not nothing will happen and the score will remain unchanged and the user will have to continue their
       turn till they get a valid word.  */
-      io.to(socket.id).emit('searchComplete', { allEqual: allEqual, gameId: data.gameId, droppedItems: data.droppedItems, previousWords: board.previousWords, score: score });
+      io.to(socket.id).emit('searchComplete', { allEqual: allEqual, gameId: data.gameId, droppedItems: data.droppedItems, previousWords: board.previousWords, score: score, round: boardState[data.gameId].round, bool: bool });
     });
 
     // Removes draggable pieces and emits a socket to place permanent pieces on the board
@@ -366,6 +355,43 @@ function initSocketServer(server) {
   });
 }
 
+function scoreFunc(data, board, special, allDroppedLetters, count, values, score, scoreChange) {
+  boardState[data.gameId].round += 1;
+  /*  Could potentially be more efficient I feel, though this will determine
+  whether pieces are played on speciale points and therefore works out the score
+  after these loops, the score is determined for that play.  */
+  for (let i = 0; i < data.allWords.length; i++) {
+    board.previousWords.push(data.allWords[i]);
+    const currentWord = data.allWords[i].split('');
+    for (let j = 0; j < currentWord.length; j++) {
+      for (let k = 0; k < values.length; k++) {
+        if (currentWord[j] === values[k].letter) {
+          for (let l = 0; l < special.length; l++) {
+            if (special[l].positions.includes(allDroppedLetters[count].dropZone)) {
+              if (special[l].type === 'doubleLetter') {
+                score += (values[k].value * 2);
+              } else if (special[l].type === 'tripleLetter') {
+                score += (values[k].value * 3);
+              } else if (special[l].type === 'tripleWord') {
+                scoreChange = 3;
+              } else if (special[l].type === 'doubleWord') {
+                scoreChange = 2;
+              }
+              count += 1;
+            } else {
+              continue;
+            }
+          }
+          score += values[k].value;
+        } else {
+          continue;
+        }
+      }
+    }
+  }
+  count = 0;
+  score = score * scoreChange;
+}
 
 
 /*  Function used to get a random piece from the pieceArr

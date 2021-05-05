@@ -279,6 +279,10 @@ function start() {
     // droppedItems is reset for the next go
     droppedItems = [];
   });
+
+  socket.on('lobbyArr', (data) => {
+    socket.emit('saveDropped', { droppedItems: data.droppedItems, gameId: data.gameId, allDropped: data.allDropped, previousWords: data.previousWords });
+  });
 }
 
 /*  This function generat es the lobby page for the user
@@ -343,3 +347,4 @@ function replacePieces(element) {
 function searchSocket(allWords, droppedItems, gameId, allDropped, previousWords) {
   socket.emit('dictionarySearch', { allWords: allWords, gameId: gameId, droppedItems: droppedItems, allDropped: allDropped, previousWords: previousWords });
 }
+

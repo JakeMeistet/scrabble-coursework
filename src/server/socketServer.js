@@ -7,6 +7,7 @@ const Crypto = require('crypto');
 const fs = require('fs');
 const colour = require('colour');
 
+
 /*  This function initialises the socket server and contains all necessary code 
 for which the socket server uses for online multiplayer  */
 function initSocketServer(server) {
@@ -21,11 +22,22 @@ function initSocketServer(server) {
 
   const io = socket(server);
 
+  io.of('/').adapter.on('create-room', (room) => {
+    console.log(`Game room ${room} was created`.red);
+    // const allDropped = [];
+    // const previousWords = [];
+  });
+
+  io.of('/').adapter.on('join-room', (room, id) => {
+    console.log(`Socket: ${id} \nJoined the room: ${room}`.blue);
+  });
+
   /*  When the socket server recieved the socket 'connection'
   this means a user has connected and the user can then either create or join a game lobby
   The user's ip, username and credentials will also be displayed in the console  */
   io.on('connection', (socket) => {
     console.log('A user just connected.');
+
     // Just handles a user disconnect console logs this event
     socket.on('disconnect', () => {
       console.log('A user has disconnected.');
@@ -178,15 +190,20 @@ function initSocketServer(server) {
       console.log(pieceArr);
       io.to(data.gameId).emit('waitOnFinish', { pieceArr: data.pieceArr, gameId: data.gameId });
     });
+ 
+    socket.on('getLobbyArr', (data) => {
+      const allDropped = [];
+      const previousWords = [];
+      io.to(data.gameId).emit('lobbyArr', { allDropped: allDropped, previousWords: previousWords, gameId: data.gameId, droppedItems: data.droppedItems });
+    });
 
     /*  This is where the dropped pieces are saved to an array
     this array SHOULD be shared between both users (currently a bug I am trying
     to fix) but once shared it will hold all dropped pieces so that the logic
     in which scrapes words from the board using tiles already placed (which is necessary)
-    and calculating scores will all work to plan  */
-
+    and calculating scores will all work to plan
+    - It now works! */
     const allDropped = [];
-    const previousWords = [];
     socket.on('saveDropped', (data) => {
       for (let i = 0; i < data.droppedItems.length; i++) {
         console.log(data.droppedItems[i]);
@@ -211,7 +228,7 @@ function initSocketServer(server) {
       console.log('testHere');
       console.log(allDropped);
       // 'dropSaved' is emitted to the user along with all necessary data to confirm the data has been saved successfully
-      io.to(socket.id).emit('dropSaved', { allDropped: allDropped, droppedItems: data.droppedItems, gameId: data.gameId, previousWords: previousWords });
+      io.in(socket.id).emit('dropSaved', { allDropped: allDropped, droppedItems: data.droppedItems, gameId: data.gameId, previousWords: data.previousWords });
     });
 
     /*  This function will be called when the turn is successful and the user needs more
@@ -373,6 +390,8 @@ function initSocketServer(server) {
     });
   });
 }
+
+
 
 /*  Function used to get a random piece from the pieceArr
 this is used when the user's pieces/tiles are first generated

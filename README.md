@@ -4,7 +4,7 @@ This is the coursework set for Application Programming, it will be a web applica
 
 ## Usage
 
-Run the below command which will run, npm i, navigate to the relevant directory and start the server.
+Run the below command which will install any packages, navigate to the relevant directory and start the server.
 
 ```bash
 npm start

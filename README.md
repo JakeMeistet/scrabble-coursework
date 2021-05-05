@@ -4,13 +4,11 @@ This is the coursework set for Application Programming, it will be a web applica
 
 ## Usage
 
-Run the below command
+Run the below command which will run, npm i, navigate to the relevant directory and start the server.
 
 ```bash
 npm start
 ```
-
-The webserver will be hosted on localhost port 80 (Change to 8080 to submit)
 
 ## The Game
 
@@ -26,6 +24,20 @@ Once in you can create or join a lobby, the games are currently limited to two p
 
 The host has the ability to start the game, when start is pressed, the board and tiles are generated ready for the host to make the first move, then play till tiles run out, scores will be calculated and a winner will be decided at the end of the game.
 
+## The Design
+
+I decided to keep a very clean, simple and easy to use design for this project.
+
+As you can see I implemented a lobby system for online multiplayer, utilising socket.io which makes it simple to start and join a 2 player game of scrabble, simply by sharing the code with another, clicking join and you are in. 
+
+The host is able to start the game, and then it begins. The pieces are displayed on the right, and the board in the middle. Using the Interactjs API for snapping and drag drop, the tiles are dragabble and droppable onto the board for each user.
+
+The tile 'bag' uses a shared array (pieceArr) on the server between both clients so that when new tiles are generated after a user takes their go, they are all being taken from the same array i.e. bag.
+
+The actual board is white, with the coloured special tiles and the pieces are a more traditional scrabble colour. So that the user knows they are hovering over a dropzone on the board, there will be styling feedback where the boarders of the dropzone will be thicker whilst hovering over. Once dropped, the pieces will snap to the dropzone.
+
+To finish your turn, click the finish button at the bottom right.
+
 ## Known Issues
 
 If ticked, fixed.
@@ -35,7 +47,23 @@ If ticked, fixed.
 
 - [ ] Some issues with words in the shared array if a word is incorrect, issue to be fixed, word detection, is being a bit funny, not sure what this is right now.
 
+
+
+## Features to be implemented
+
+If ticked, done.
+
 - [x] Need to implement starting from the middle and only allowing pieces to be continued from another, not just randomly on the board (I think this won't get done,
     would rather get the necessary game mechanics there as most people will know not to play anywhere on the board (this is not good for longjevity)).
 
-- [ ] Alternating turns also needs to be implemented.
+- [ ] Up to 4 players like actual scrabble
+
+- [ ] Make the board generation far more efficient
+
+- [ ] Alternating turns
+
+- [ ] Skip button
+
+- [ ] Spectators
+
+- [ ] Hints

@@ -6,9 +6,10 @@ const socket = require('socket.io');
 const Crypto = require('crypto');
 const fs = require('fs');
 const colour = require('colour');
+const boardState = {};
 
 
-/*  This function initialises the socket server and contains all necessary code 
+/*  This function initialises the socket server and contains all necessary code
 for which the socket server uses for online multiplayer  */
 function initSocketServer(server) {
   // A basic colour theme for teminal colours
@@ -16,35 +17,42 @@ function initSocketServer(server) {
     startup: 'rainbow',
     running: 'blue',
     error: 'red',
+    log: 'cyan',
   });
-  // let previousWords = [] (Still figuring this out)
-  // let allDropped = []
-
   const io = socket(server);
 
   io.of('/').adapter.on('create-room', (room) => {
-    console.log(`Game room ${room} was created`.red);
-    // const allDropped = [];
-    // const previousWords = [];
+    if (room.length <= 8) {
+      console.log(`[ROOM] Game room ${room} was created`.running);
+      boardState[room] = { allDropped: [], previousWords: [] };
+    }
   });
 
   io.of('/').adapter.on('join-room', (room, id) => {
-    console.log(`Socket: ${id} \nJoined the room: ${room}`.blue);
+    if (room.length <= 8) {
+      console.log(`[ROOM] Socket: ${id} Joined the room: ${room}`.running);
+    }
+  });
+
+  io.of('/').adapter.on('delete-room', (room, id) => {
+    if (room.length <= 8) {
+      console.log(`[ROOM] Room ${room} has been deleted`.running);
+      delete boardState[room];
+    }
   });
 
   /*  When the socket server recieved the socket 'connection'
   this means a user has connected and the user can then either create or join a game lobby
   The user's ip, username and credentials will also be displayed in the console  */
   io.on('connection', (socket) => {
-    console.log('A user just connected.');
+    console.log('[LOG]  A user just connected.'.log);
 
     // Just handles a user disconnect console logs this event
     socket.on('disconnect', () => {
-      console.log('A user has disconnected.');
+      console.log('[LOG]  A user has disconnected.'.log);
     });
     const uid = Crypto.randomBytes(32).toString('hex');
     const ip = socket.request.connection.remoteAddress;
-    console.log(ip);
 
     /*  Different events occur whether the user has been on the game before or not:
     newPlayer - this is if a user has not played the game before,
@@ -56,15 +64,12 @@ function initSocketServer(server) {
 
     A user's uid and username is stored on localStorage within the browser  */
     socket.on('newPlayer', (username) => {
-      console.log(username);
       const credentials = { username: username, uid: uid, ip: ip };
-      console.log(credentials);
       io.to(socket.id).emit('newPlayer', credentials);
     });
 
     socket.on('pastPlayer', (credentials) => {
       const newCredentials = { username: credentials.username, uid: credentials.uid, ip: ip };
-      console.log(credentials);
       io.to(socket.id).emit('pastPlayer', newCredentials);
     });
 
@@ -75,10 +80,7 @@ function initSocketServer(server) {
     socket.on('createLobby', () => {
       const gameId = Crypto.randomBytes(4).toString('hex').toUpperCase();
       const socketId = socket.id;
-      console.log(gameId);
-      console.log(socketId);
       socket.join(gameId);
-      console.log(io.sockets.adapter.rooms);
       io.to(gameId).emit('lobbyJoined', { gameId: gameId, socketId: socketId });
     });
 
@@ -89,23 +91,15 @@ function initSocketServer(server) {
     only join a lobby if there is only 1 other client connected/in that lobby
     as this scrabble game is currently only set up as 2 player not 3 or 4 also  */
     socket.on('joinLobby', (data) => {
-      console.log(data);
       const lookUp = io.sockets.adapter.rooms.get(data.gameId);
-      console.log(data.gameId);
-      console.log(lookUp);
       if (lookUp === undefined) {
         io.to(socket.id).emit('noLobby', data.gameId);
       } else {
         if (lookUp.size === 2) {
           io.to(socket.id).emit('fullLobby', data.gameId);
         } else {
-          console.log(data.gameId);
           socket.join(data.gameId);
-          console.log(io.sockets.adapter.rooms);
-          console.log(lookUp.size);
           const arr = Array.from(lookUp);
-          console.log(arr[0]);
-          console.log(arr[1]);
           /*  playerJoined is emitted to the lobby to show the connected users
           and host is emitted to the user who created the lobby as they can now
           start the game  */
@@ -125,12 +119,14 @@ function initSocketServer(server) {
     /*  This begins the load sequence for loading the gameboard, tiles and general layout
     for each of the players. This starts for player 1 (the host of the game) and then preceeds to player 2  */
     socket.on('beginLoad', (data) => {
+      console.log('[LOG]  Begin Load'.log);
       const lookUp = io.sockets.adapter.rooms.get(data.gameId);
       const arr = Array.from(lookUp);
       io.to(arr[0]).emit('startGame', data);
     });
 
     socket.on('startGame', (data) => {
+      console.log(`[LOG]  Start Game: ${data.gameId}`.log);
       const lookUp = io.sockets.adapter.rooms.get(data.gameId);
       const arr = Array.from(lookUp);
       console.log(data.gameId);
@@ -159,25 +155,25 @@ function initSocketServer(server) {
       }
       const lookUp = io.sockets.adapter.rooms.get(data.gameId);
       const arr = Array.from(lookUp);
-      console.log('test');
       // Player 1's pieces are loaded first, then going onto player 2
       io.to(arr[0]).emit('p1Pieces', { gameId: data.gameId, pieceArr: pieceArr });
     });
 
     // Once p1's pieces are done, p2's board is loaded and then p2's pieces
     socket.on('p1PiecesDone', (data) => {
-      console.log(data);
-      console.log(data.pieceArr);
-      console.log(data.pieceArr.length);
+      console.log('[LOG]  p1PiecesLoaded'.log);
       const lookUp = io.sockets.adapter.rooms.get(data.gameId);
       const arr = Array.from(lookUp);
+      console.log('[LOG]  p1BoardLoaded'.log);
       io.to(arr[1]).emit('loadBoard2', data);
     });
 
     // Pieces
     socket.on('loadPieces2', (data) => {
+      console.log('[LOG]  p2PiecesLoaded'.log);
       const lookUp = io.sockets.adapter.rooms.get(data.gameId);
       const arr = Array.from(lookUp);
+      console.log('[LOG]  p2BoardLoaded'.log);
       io.to(arr[1]).emit('p2Pieces', data);
     });
 
@@ -185,16 +181,8 @@ function initSocketServer(server) {
     'waitOnFinish' is emitted to start the players turn, once the turn has finished,
     the program continues  */
     socket.on('p2PiecesDone', (data) => {
-      console.log(data.pieceArr.length);
       pieceArr = data.pieceArr;
-      console.log(pieceArr);
       io.to(data.gameId).emit('waitOnFinish', { pieceArr: data.pieceArr, gameId: data.gameId });
-    });
- 
-    socket.on('getLobbyArr', (data) => {
-      const allDropped = [];
-      const previousWords = [];
-      io.to(data.gameId).emit('lobbyArr', { allDropped: allDropped, previousWords: previousWords, gameId: data.gameId, droppedItems: data.droppedItems });
     });
 
     /*  This is where the dropped pieces are saved to an array
@@ -203,32 +191,28 @@ function initSocketServer(server) {
     in which scrapes words from the board using tiles already placed (which is necessary)
     and calculating scores will all work to plan
     - It now works! */
-    const allDropped = [];
     socket.on('saveDropped', (data) => {
+      const board = boardState[data.gameId];
       for (let i = 0; i < data.droppedItems.length; i++) {
-        console.log(data.droppedItems[i]);
-        console.log(allDropped[i]);
-        allDropped.push(data.droppedItems[i]);
+        board.allDropped.push(data.droppedItems[i]);
       }
       const map = {};
       const tempArr = [];
-      allDropped.forEach(element => {
+      board.allDropped.forEach(element => {
         if (!map[JSON.stringify(element)]) {
           map[JSON.stringify(element)] = true;
           tempArr.push(element);
         }
       });
-      while (allDropped.length > 0) {
-        allDropped.pop();
+      while (board.allDropped.length > 0) {
+        board.allDropped.pop();
       }
       for (let i = 0; i < tempArr.length; i++) {
-        allDropped.push(tempArr[i]);
+        board.allDropped.push(tempArr[i]);
       }
 
-      console.log('testHere');
-      console.log(allDropped);
       // 'dropSaved' is emitted to the user along with all necessary data to confirm the data has been saved successfully
-      io.in(socket.id).emit('dropSaved', { allDropped: allDropped, droppedItems: data.droppedItems, gameId: data.gameId, previousWords: data.previousWords });
+      io.in(socket.id).emit('dropSaved', { allDropped: board.allDropped, droppedItems: data.droppedItems, gameId: data.gameId });
     });
 
     /*  This function will be called when the turn is successful and the user needs more
@@ -236,17 +220,15 @@ function initSocketServer(server) {
     and gets a random tile again. This will be repeated a maximum of 7 times per round but is
     dependent on how many tiles the user has placed on their go.  */
     socket.on('addPiece', (element) => {
-      console.log('addPiece');
-      console.log(element);
+      console.log(`[LOG]  addPiece: ${element}`.log);
       const random = getRandomPiece(0, pieceArr.length, pieceArr);
-      console.log(pieceArr.length);
       /*  Check the array length, keeps adding the pieces if the array length is greater than
       0, else there is no more tiles left, this is logged, but this stops any more tiles being
       added as there is none left  */
       if (pieceArr.length > 0) {
         io.to(socket.id).emit('addPiece', { element: element, piece: random[0] });
       } else {
-        console.log('No remaining tiles');
+        console.log('[LOG]  No remaining tiles'.log);
       }
     });
     /*  Reads the dictionary.txt file and splitts the file by line
@@ -256,8 +238,7 @@ function initSocketServer(server) {
     /*  This function will run when the checkDropped socket is received
     it will emit a checkDropped socket with all the relevent data to search  */
     socket.on('checkDropped', (data) => {
-      console.log(dictionaryArr.length);
-      io.to(socket.id).emit('checkDropped', { gameId: data.gameId, droppedItems: data.droppedItems, allDropped: data.allDropped, dictionaryArr: dictionaryArr, previousWords: data.previousWords });
+      io.to(socket.id).emit('checkDropped', { gameId: data.gameId, droppedItems: data.droppedItems, allDropped: data.allDropped, dictionaryArr: dictionaryArr });
     });
 
     /*  exists is later used as an array of objects relating to each word and whether it exists or not
@@ -308,21 +289,16 @@ function initSocketServer(server) {
     '- Searches through the dictionaryArr using a binary search to determine
     whether the pieces placed for a valid word or not. */
     socket.on('dictionarySearch', (data) => {
+      const board = boardState[data.gameId];
       let score = 0;
-      console.log('allDropped below');
-      console.log(data.droppedItems);
-      console.log(data.allDropped);
       const allDroppedLetters = data.droppedItems;
-      for (let i = 0; i < data.previousWords.length; i++) {
-        removeElement(data.allWords, data.previousWords[i]);
+      for (let i = 0; i < board.previousWords.length; i++) {
+        removeElement(data.allWords, board.previousWords[i]);
       }
 
       for (let i = 0; i < data.allWords.length; i++) {
         exists.push({ word: data.allWords[i], exists: (binarySearch(dictionaryArr, data.allWords[i])) });
       }
-      console.log(data.allWords);
-      console.log('check if all equal');
-      console.log(exists);
       const allEqual = boolCheck(exists);
       console.log(allEqual);
       let scoreChange = 1;
@@ -332,7 +308,7 @@ function initSocketServer(server) {
         whether pieces are played on speciale points and therefore works out the score
         after these loops, the score is determined for that play.  */
         for (let i = 0; i < data.allWords.length; i++) {
-          data.previousWords.push(data.allWords[i]);
+          board.previousWords.push(data.allWords[i]);
           const currentWord = data.allWords[i].split('');
           for (let j = 0; j < currentWord.length; j++) {
             for (let k = 0; k < values.length; k++) {
@@ -364,22 +340,21 @@ function initSocketServer(server) {
         score = score * scoreChange;
       } else {
         // None of the above will run if the play is invalid because it includes a word which doesn't exist
-        console.log('not all words exist');
+        console.log('[LOG]  not all words exist'.log);
       }
 
-      console.log(score);
+      console.log(`[LOG]  ${socket.id} score: ${score}`.log);
       /*  duplicates are removed from the previous words array as words may only
       be played once  */
-      removeDuplicates(data.previousWords);
-      console.log(data.previousWords);
+      removeDuplicates(board.previousWords);
+      console.log(board.previousWords);
       console.log('previous');
-      console.log(data.previousWords);
+      console.log(board.previousWords);
       console.log(data.allWords);
       /*  Socket is emitted to continue as the search was complete, the game will continue if it was a valid
       move, if not nothing will happen and the score will remain unchanged and the user will have to continue their
       turn till they get a valid word.  */
-      io.to(socket.id).emit('searchComplete', { allEqual: allEqual, gameId: data.gameId, droppedItems: data.droppedItems, previousWords: data.previousWords, score: score });
-      exists = [];
+      io.to(socket.id).emit('searchComplete', { allEqual: allEqual, gameId: data.gameId, droppedItems: data.droppedItems, previousWords: board.previousWords, score: score });
     });
 
     // Removes draggable pieces and emits a socket to place permanent pieces on the board

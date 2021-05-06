@@ -53,10 +53,15 @@ function onDrop(event) {
   event.relatedTarget.classList.remove('can-drop');
   event.target.classList.add('occupied');
   event.relatedTarget.classList.add('dropped-tile');
+  const data = { tile: event.relatedTarget.classList[0], dropZone: event.target.classList[1] };
   if (event.target.classList[0] !== 'drop-box') {
-    const data = { tile: event.relatedTarget.classList[0], dropZone: event.target.classList[1] };
     droppedItems.push(data);
     console.log(droppedItems);
+    console.log('add');
+  } else {
+    removeElement(droppedItems, data);
+    console.log(droppedItems);
+    console.log('remove');
   }
 }
 

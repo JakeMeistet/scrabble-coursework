@@ -3,8 +3,12 @@ by this I mean, the tiles that have been placed, in a straight line horizontally
 to determine which words to run through the dictionary to check whether valid or not  */
 function wordSearch(data) {
   const allDroppedSorted = data.allDropped.sort(compare);
-  const sortByCol = [];
+  console.log(allDroppedSorted);
+  console.log('above is alldropsort');
+  let sortByCol = [];
   let sortByRow = [];
+  sortByCol = [];
+  sortByRow = [];
 
   /*  This is used to set the values of the arrays sortByCol and sortByRow
   these arrays are arrays of objects containing row, column and tile with
@@ -71,11 +75,7 @@ function wordSearch(data) {
   sortByRow = completeArr;
   const wordCount = 0;
   const word = [];
-  const allWords = [];
-
-  if (allWords.length > 0) {
-    allWords.length = 0;
-  }
+  let allWords = [];
 
   /*  The two arrays are now used to check for words in the columnd and
   rows, these will then be held in their own arrays (colWords and rowWords)
@@ -90,6 +90,10 @@ function wordSearch(data) {
   console.log(rowWords);
 
   // Here the colWords and rowWords arrays are combined to make the allWords array
+  if (allWords.length > 0) {
+    allWords = [];
+  }
+
   for (let i = 0; i < colWords.length; i++) {
     if (colWords[i].length >= 2) {
       allWords.push(colWords[i]);

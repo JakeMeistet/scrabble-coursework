@@ -45,7 +45,7 @@ If ticked, fixed.
 - [x] Currently the array of allDropped pieces and all words placed is not shared between clients, meaning the game logic is not functional with multiplayer
     though if you set up a game as above and just keep playing on the one user just repeating turns, currently you will see the scores and game logic do work.
 
-- [ ] Some issues with words in the shared array if a word is incorrect, issue to be fixed, word detection, is being a bit funny, not sure what this is right now.
+- [x] Some issues with words in the shared array if a word is incorrect, issue to be fixed, word detection, is being a bit funny, not sure what this is right now.
 
 
 

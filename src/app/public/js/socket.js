@@ -199,7 +199,7 @@ function start() {
   the user's board and then will be replaced on the lobby for all players,
   else there is an incorrect word and the user must re-play their go  */
   socket.on('searchComplete', (data) => {
-    if (data.bool === true) {
+    if (data.bool === true || data.round > 0) {
       console.log(data.allEqual);
       if (data.allEqual === true) {
         console.log(data.droppedItems);

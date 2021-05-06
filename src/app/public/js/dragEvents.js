@@ -63,6 +63,7 @@ function onDrop(event) {
     console.log(droppedItems);
     console.log('remove');
   }
+  console.log(droppedItems);
 }
 
 /*  This function is called when a target is no longer being dragged
@@ -80,11 +81,14 @@ function dropDeactivate(event) {
 their turn by pressing the finish turn button, then the game continues  */
 function finishGo(gameId) {
   const turnEnd = document.getElementById('finishBtn');
+  console.log(droppedItems)
   console.log(turnEnd);
   turnEnd.addEventListener('click', () => {
     socket.emit('saveDropped', { droppedItems: droppedItems, gameId: gameId });
   });
 
+  /*  This is used to generate the skip button for both users in the game
+  this button will allow the user to skip their turn by replacing their pieces  */
   const skip = document.getElementById('skipBtn');
   skip.addEventListener('click', () => {
     const pieces = [];
@@ -96,6 +100,6 @@ function finishGo(gameId) {
     }
     console.log('this is skip');
     console.log(pieces);
-    socket.emit('skip', pieces);
+    socket.emit('skip', { pieces: pieces, gameId: gameId });
   });
 }

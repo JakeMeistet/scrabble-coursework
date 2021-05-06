@@ -6,6 +6,7 @@ const socket = require('socket.io');
 const Crypto = require('crypto');
 const fs = require('fs');
 const colour = require('colour');
+const { Console } = require('console');
 const boardState = {};
 
 
@@ -318,31 +319,38 @@ function initSocketServer(server) {
               bool = false;
             }
           }
-          console.log(bool)
+          console.log(bool);
           if (bool === true) {
-            scoreFunc(data, board, special, allDroppedLetters, count, values, score, scoreChange);
+            boardState[data.gameId].round += 1;
+            score = scoreFunc(data, board, special, allDroppedLetters, count, values, score, scoreChange);
           } else {
             console.log('Start on the centre star (H8)');
           }
         } else {
-          scoreFunc(data, board, special, allDroppedLetters, count, values, score, scoreChange);
+          boardState[data.gameId].round += 1;
+          score = scoreFunc(data, board, special, allDroppedLetters, count, values, score, scoreChange);
         }
       } else {
         // None of the above will run if the play is invalid because it includes a word which doesn't exist
+        for (let i = 0; i < data.allWords.length; i++) {
+          exists.pop();
+        }
         console.log('[LOG]  not all words exist'.log);
+        for (let i = 0; i < allDroppedLetters.length; i++) {
+          boardState[data.gameId].allDropped.pop();
+          console.log('[LOG] Removing incorrect letters'.log);
+        }
       }
 
       console.log(`[LOG]  ${socket.id} score: ${score}`.log);
       /*  duplicates are removed from the previous words array as words may only
       be played once  */
       removeDuplicates(board.previousWords);
-      console.log(board.previousWords);
-      console.log('previous');
-      console.log(board.previousWords);
-      console.log(data.allWords);
       /*  Socket is emitted to continue as the search was complete, the game will continue if it was a valid
       move, if not nothing will happen and the score will remain unchanged and the user will have to continue their
       turn till they get a valid word.  */
+      console.log(allEqual);
+      console.log(exists);
       io.to(socket.id).emit('searchComplete', { allEqual: allEqual, gameId: data.gameId, droppedItems: data.droppedItems, previousWords: board.previousWords, score: score, round: boardState[data.gameId].round, bool: bool });
     });
 
@@ -367,6 +375,9 @@ function scoreFunc(data, board, special, allDroppedLetters, count, values, score
       for (let k = 0; k < values.length; k++) {
         if (currentWord[j] === values[k].letter) {
           for (let l = 0; l < special.length; l++) {
+            if (count > allDroppedLetters.length) {
+              break;
+            }
             if (special[l].positions.includes(allDroppedLetters[count].dropZone)) {
               if (special[l].type === 'doubleLetter') {
                 score += (values[k].value * 2);
@@ -377,7 +388,11 @@ function scoreFunc(data, board, special, allDroppedLetters, count, values, score
               } else if (special[l].type === 'doubleWord') {
                 scoreChange = 2;
               }
-              count += 1;
+              if (count === (allDroppedLetters.length - 1)) {
+                break;
+              } else {
+                count += 1;
+              }
             } else {
               continue;
             }
@@ -391,6 +406,8 @@ function scoreFunc(data, board, special, allDroppedLetters, count, values, score
   }
   count = 0;
   score = score * scoreChange;
+  console.log(`Score ${score}`);
+  return score;
 }
 
 

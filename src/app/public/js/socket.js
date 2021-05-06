@@ -326,7 +326,7 @@ function lobbyPage(socket) {
   const textBox = document.createElement('input');
   textBox.id = 'lobbyId';
   textBox.className = 'credentials';
-  textBox.placeholder = 'Enter Lobby Id';
+  textBox.placeholder = 'Enter Lobby Id to Join';
   login.appendChild(textBox);
 
   const createBtn = document.createElement('button');

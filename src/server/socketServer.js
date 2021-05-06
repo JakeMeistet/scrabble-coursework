@@ -281,9 +281,6 @@ function initSocketServer(server) {
       { letter: '_', value: 0 },
     ];
 
-    // To be implemented later as a way to force the user to start the game at the centre
-    const star = 'H8';
-
     // Declares the coordinates on the board for all of the special positions in an array of objects
     const special = [
       { type: 'tripleWord', positions: ['A1', 'H1', 'O1', 'A8', 'O8', 'A15', 'H15', 'O15'] },
@@ -340,7 +337,7 @@ function initSocketServer(server) {
       } else {
         // None of the above will run if the play is invalid because it includes a word which doesn't exist
         for (let i = 0; i < data.allWords.length; i++) {
-          console.log(exists)
+          console.log(exists);
           exists.pop();
         }
         console.log('[LOG]  not all words exist'.log);

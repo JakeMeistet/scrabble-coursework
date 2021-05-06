@@ -64,7 +64,7 @@ If ticked, done.
 
 - [ ] Alternating turns
 
-- [ ] Skip button
+- [x] Skip button
 
 - [ ] Spectators
 

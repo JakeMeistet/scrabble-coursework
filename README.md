@@ -30,7 +30,7 @@ I decided to keep a very clean, simple and easy to use design for this project.
 
 As you can see I implemented a lobby system for online multiplayer, utilising socket.io which makes it simple to start and join a 2 player game of scrabble, simply by sharing the code with another, clicking join and you are in. 
 
-The host is able to start the game, and then it begins. The pieces are displayed on the right, and the board in the middle. Using the Interactjs API for snapping and drag drop, the tiles are dragabble and droppable onto the board for each user.
+The host is able to start the game, and then it begins. The pieces are displayed on the right, and the board in the middle. Using the [Interactjs] https://interactjs.io/ API for snapping and drag drop, the tiles are dragabble and droppable onto the board for each user.
 
 The tile 'bag' uses a shared array (pieceArr) on the server between both clients so that when new tiles are generated after a user takes their go, they are all being taken from the same array i.e. bag.
 

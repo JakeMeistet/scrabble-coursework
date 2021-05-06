@@ -149,6 +149,7 @@ function start() {
 
   socket.on('p2Pieces', (data) => {
     socket.emit('p2PiecesDone', { gameId: data.gameId, pieceArr: pieces(data.pieceArr, data.gameId) });
+    alternate('no-drop', true, 'drag-drop');
   });
 
   /* Here the app will call the finishGo function to wait on the user
@@ -158,7 +159,8 @@ function start() {
   });
 
   /*  This is the beginning of when the dropped pieces are saved
-  so they can be made into words, checked and ran through the 
+  so they can be made into words, checked and ran through the*
+
   dictionary */
   socket.on('dropSaved', (data) => {
     console.log('dropSaved');
@@ -180,8 +182,8 @@ function start() {
     } else {
       letter = strData[1];
     }
-    piece.classList.add(data.piece);
     piece.id = data.piece;
+    piece.className = data.piece;
     piece.classList.add('drag-drop');
     text.className = 'inner-text';
     text.innerText = letter;
@@ -236,7 +238,7 @@ function start() {
         }
         console.log(data);
         console.log('dataAbove');
-        socket.emit('piecesRemoved', { allEqual: data.allEqual, droppedItems: data.droppedItems, gameId: data.gameId });
+        socket.emit('piecesRemoved', { allEqual: data.allEqual, droppedItems: data.droppedItems, gameId: data.gameId })
       } else {
         console.log('A word is incorrect');
         droppedItems = [];
@@ -246,7 +248,16 @@ function start() {
     }
   });
 
-  socket.on('skip', () => {
+  socket.on('alternateRemove', () => {
+    alternate('no-drop', true, 'drag-drop');
+  });
+
+  socket.on('alternate', (id) => {
+    console.log(id);
+    alternate('drag-drop', false, 'no-drop');
+  });
+
+  socket.on('skip', (data) => {
     for (let i = 0; i < 7; i++) {
       const id = i + 'dropBox';
       const dropBox = document.getElementById(i + 'dropBox');
@@ -257,6 +268,7 @@ function start() {
         console.log('Parent full');
       }
     }
+    socket.emit('skipAlternate', data);
   });
 
   /*  As mentioned above, the pieces are now removed and here
@@ -342,7 +354,7 @@ function createLobby(socket) {
 }
 
 // Gets the username from localStorage and emits the socket to join a lobby
-function joinLobby (socket, gameId) {
+function joinLobby(socket, gameId) {
   const username = localStorage.getItem('username');
   socket.emit('joinLobby', { gameId: gameId, username: username });
 }
@@ -360,4 +372,21 @@ function replacePieces(element) {
 // searchSocket will emit the dictionarySearch socket to initiate a search for the words in the dictionary
 function searchSocket(allWords, droppedItems, gameId, allDropped) {
   socket.emit('dictionarySearch', { gameId: gameId, droppedItems: droppedItems, allDropped: allDropped, allWords: allWords });
+}
+
+function alternate(drop, bool, removeDrop) {
+  for (let i = 0; i < 7; i++) {
+    const dropBox = `${i}dropBox`;
+    console.log(dropBox);
+    const current = document.getElementById(dropBox);
+    console.log(current);
+    const child = current.childNodes[0];
+    console.log(child);
+    child.classList.remove(removeDrop);
+    child.classList.add(drop);
+  }
+  const skipBtn = document.getElementById('skipBtn');
+  skipBtn.disabled = bool;
+  const finishBtn = document.getElementById('finishBtn');
+  finishBtn.disabled = bool;
 }

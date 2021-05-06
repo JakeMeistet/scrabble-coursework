@@ -98,7 +98,6 @@ function finishGo(gameId) {
       pieces.push(child.id);
       dropBox.removeChild(child);
     }
-    console.log('this is skip');
     console.log(pieces);
     socket.emit('skip', { pieces: pieces, gameId: gameId });
   });

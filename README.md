@@ -55,16 +55,17 @@ If ticked, fixed.
 
 If ticked, done.
 
-- [x] Need to implement starting from the middle and only allowing pieces to be continued from another, not just randomly on the board (I think this won't get done,
-    would rather get the necessary game mechanics there as most people will know not to play anywhere on the board (this is not good for longjevity)).
+- [x] Need to implement starting from the centre
+
+- [ ] Make users have to place next to a placed tile
 
 - [ ] Up to 4 players like actual scrabble
 
 - [ ] Make the board generation far more efficient
 
-- [ ] Alternating turns
+- [x] Alternating turns
 
-- [ ] Skip button
+- [x] Skip button
 
 - [ ] Spectators
 

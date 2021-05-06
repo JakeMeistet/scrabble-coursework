@@ -84,4 +84,18 @@ function finishGo(gameId) {
   turnEnd.addEventListener('click', () => {
     socket.emit('saveDropped', { droppedItems: droppedItems, gameId: gameId });
   });
+
+  const skip = document.getElementById('skipBtn');
+  skip.addEventListener('click', () => {
+    const pieces = [];
+    for (let i = 0; i < 7; i++) {
+      const dropBox = document.getElementById(`${i}dropBox`);
+      const child = dropBox.childNodes[0];
+      pieces.push(child.id);
+      dropBox.removeChild(child);
+    }
+    console.log('this is skip');
+    console.log(pieces);
+    socket.emit('skip', pieces);
+  });
 }

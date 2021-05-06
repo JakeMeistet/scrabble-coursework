@@ -180,6 +180,13 @@ function pieces(pieceArr, gameId) {
   finishTurn.className = 'btn2';
   finishTurn.innerText = 'Finish Turn';
   pieces.append(finishTurn);
+
+  const skipTurn = document.createElement('button');
+  skipTurn.id = 'skipBtn';
+  skipTurn.className = 'btn2';
+  skipTurn.innerText = 'Skip Turn';
+  pieces.append(skipTurn);
+
   return pieceArr;
 }
 

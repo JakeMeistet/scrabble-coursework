@@ -246,6 +246,19 @@ function start() {
     }
   });
 
+  socket.on('skip', () => {
+    for (let i = 0; i < 7; i++) {
+      const id = i + 'dropBox';
+      const dropBox = document.getElementById(i + 'dropBox');
+      console.log(dropBox.childNodes);
+      if (dropBox.childNodes.length === 0) {
+        replacePieces(id);
+      } else {
+        console.log('Parent full');
+      }
+    }
+  });
+
   /*  As mentioned above, the pieces are now removed and here
   they are replaced on the lobby (rather than just on the one client)
   so that all users can see the piece that has been placed. */

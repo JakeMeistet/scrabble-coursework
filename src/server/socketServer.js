@@ -242,6 +242,13 @@ function initSocketServer(server) {
       io.to(socket.id).emit('checkDropped', { gameId: data.gameId, droppedItems: data.droppedItems, allDropped: data.allDropped, dictionaryArr: dictionaryArr });
     });
 
+    socket.on('skip', (pieces) => {
+      for (let i = 0; i < pieces.length; i++) {
+        pieceArr.push(pieces[i]);
+      }
+      io.to(socket.id).emit('skip');
+    });
+
     /*  exists is later used as an array of objects relating to each word and whether it exists or not
     values holds each letter and its value in the game of scrabble in an array of objects  */
     let exists = [];

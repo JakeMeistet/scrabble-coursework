@@ -6,7 +6,6 @@ const socket = require('socket.io');
 const Crypto = require('crypto');
 const fs = require('fs');
 const colour = require('colour');
-const { Console } = require('console');
 const boardState = {};
 
 
@@ -194,6 +193,7 @@ function initSocketServer(server) {
     - It now works! */
     socket.on('saveDropped', (data) => {
       const board = boardState[data.gameId];
+      console.log(data.droppedItems)
       for (let i = 0; i < data.droppedItems.length; i++) {
         board.allDropped.push(data.droppedItems[i]);
       }
@@ -242,11 +242,11 @@ function initSocketServer(server) {
       io.to(socket.id).emit('checkDropped', { gameId: data.gameId, droppedItems: data.droppedItems, allDropped: data.allDropped, dictionaryArr: dictionaryArr });
     });
 
-    socket.on('skip', (pieces) => {
-      for (let i = 0; i < pieces.length; i++) {
-        pieceArr.push(pieces[i]);
+    socket.on('skip', (data) => {
+      for (let i = 0; i < data.pieces.length; i++) {
+        pieceArr.push(data.pieces[i]);
       }
-      io.to(socket.id).emit('skip');
+      io.to(socket.id).emit('skip', data);
     });
 
     /*  exists is later used as an array of objects relating to each word and whether it exists or not
@@ -319,6 +319,7 @@ function initSocketServer(server) {
           console.log(boardState[data.gameId].allDropped.length);
           while (bool === false && i < boardState[data.gameId].allDropped.length) {
             console.log(i);
+            console.log(boardState[data.gameId].allDropped);
             if (boardState[data.gameId].allDropped[i].dropZone === 'H8') {
               bool = true;
             } else {
@@ -340,6 +341,7 @@ function initSocketServer(server) {
       } else {
         // None of the above will run if the play is invalid because it includes a word which doesn't exist
         for (let i = 0; i < data.allWords.length; i++) {
+          console.log(exists)
           exists.pop();
         }
         console.log('[LOG]  not all words exist'.log);
@@ -363,12 +365,42 @@ function initSocketServer(server) {
 
     // Removes draggable pieces and emits a socket to place permanent pieces on the board
     socket.on('piecesRemoved', (data) => {
+      const lookUp = io.sockets.adapter.rooms.get(data.gameId);
+      const arr = Array.from(lookUp);
       console.log(data.gameId);
       console.log('gameId above');
       io.to(data.gameId).emit('placePieces', data);
+      for (let i = 0; i < 2; i++) {
+        if (arr[i] !== socket.id) {
+          console.log(arr);
+          console.log(`[LOG]  Socket ${arr[i]} alternating`.log);
+          console.log(socket.id);
+          io.to(arr[i]).emit('alternate', arr[i]);
+        } else {
+          io.to(socket.id).emit('alternateRemove');
+        }
+      }
+    });
+
+    socket.on('skipAlternate', (data) => {
+      const lookUp = io.sockets.adapter.rooms.get(data.gameId);
+      const arr = Array.from(lookUp);
+      console.log(data.gameId);
+      console.log('gameId above');
+      for (let i = 0; i < 2; i++) {
+        if (arr[i] !== socket.id) {
+          console.log(arr);
+          console.log(`[LOG]  Socket ${arr[i]} alternating`.log);
+          console.log(socket.id);
+          io.to(arr[i]).emit('alternate', arr[i]);
+        } else {
+          io.to(socket.id).emit('alternateRemove');
+        }
+      }
     });
   });
 }
+
 
 function scoreFunc(data, board, special, allDroppedLetters, count, values, score, scoreChange) {
   boardState[data.gameId].round += 1;

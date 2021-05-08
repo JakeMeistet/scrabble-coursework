@@ -159,9 +159,7 @@ function start() {
   });
 
   /*  This is the beginning of when the dropped pieces are saved
-  so they can be made into words, checked and ran through the*
-
-  dictionary */
+  so they can be made into words, checked and ran through the dictionary */
   socket.on('dropSaved', (data) => {
     console.log('dropSaved');
     console.log(data.droppedItems);
@@ -248,6 +246,8 @@ function start() {
     }
   });
 
+  /*  The below two functions begin when they receive the alternate sockets and will call
+  the alternate function to change each user's tiles/buttons to begin their turn. */
   socket.on('alternateRemove', () => {
     alternate('no-drop', true, 'drag-drop');
   });
@@ -359,11 +359,6 @@ function joinLobby(socket, gameId) {
   socket.emit('joinLobby', { gameId: gameId, username: username });
 }
 
-// This is called
-// function dropSocket(gameId, count) {
-//   socket.emit('itemDropped', { gameId, droppedItems, count });
-// }
-
 // Replaces the pieces that were removed from the game board when a go is valid
 function replacePieces(element) {
   socket.emit('addPiece', element);
@@ -374,6 +369,8 @@ function searchSocket(allWords, droppedItems, gameId, allDropped) {
   socket.emit('dictionarySearch', { gameId: gameId, droppedItems: droppedItems, allDropped: allDropped, allWords: allWords });
 }
 
+/*  The function below is used to change classes of the tiles and disable/enable the finish/skip buttons.
+This is used to alternate turns between the users, to take their turn */
 function alternate(drop, bool, removeDrop) {
   for (let i = 0; i < 7; i++) {
     const dropBox = `${i}dropBox`;

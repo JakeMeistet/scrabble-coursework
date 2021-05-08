@@ -359,7 +359,8 @@ function initSocketServer(server) {
       io.to(socket.id).emit('searchComplete', { allEqual: allEqual, gameId: data.gameId, droppedItems: data.droppedItems, previousWords: board.previousWords, score: score, round: boardState[data.gameId].round, bool: bool });
     });
 
-    // Removes draggable pieces and emits a socket to place permanent pieces on the board
+    /*  Removes draggable pieces and emits a socket to place permanent pieces on the board.
+    An alternate is triggered also to alternate the users turns between player 1 and 2.  */
     socket.on('piecesRemoved', (data) => {
       const lookUp = io.sockets.adapter.rooms.get(data.gameId);
       const arr = Array.from(lookUp);
@@ -378,6 +379,9 @@ function initSocketServer(server) {
       }
     });
 
+    /*  This will run when the skipAlternate socket is emitted from the client (when skip is pressed).
+    This will log that an alternate is occurring and will emit the 'alternate' or
+    'alternateRemove' socket to the relevant user to disable/enable the buttons/pieces. */
     socket.on('skipAlternate', (data) => {
       const lookUp = io.sockets.adapter.rooms.get(data.gameId);
       const arr = Array.from(lookUp);
@@ -401,7 +405,7 @@ function initSocketServer(server) {
 function scoreFunc(data, board, special, allDroppedLetters, count, values, score, scoreChange) {
   boardState[data.gameId].round += 1;
   /*  Could potentially be more efficient I feel, though this will determine
-  whether pieces are played on speciale points and therefore works out the score
+  whether pieces are played on special points and therefore works out the score
   after these loops, the score is determined for that play.  */
   for (let i = 0; i < data.allWords.length; i++) {
     board.previousWords.push(data.allWords[i]);

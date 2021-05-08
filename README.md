@@ -38,6 +38,10 @@ The actual board is white, with the coloured special tiles and the pieces are a 
 
 To finish your turn, click the fini sh button at the bottom right.
 
+## Implementation Rationale
+
+
+
 ## Known Issues
 
 If ticked, fixed.

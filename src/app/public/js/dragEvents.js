@@ -81,10 +81,14 @@ function dropDeactivate(event) {
 their turn by pressing the finish turn button, then the game continues  */
 function finishGo(gameId) {
   const turnEnd = document.getElementById('finishBtn');
-  console.log(droppedItems)
+  console.log(droppedItems);
   console.log(turnEnd);
   turnEnd.addEventListener('click', () => {
-    socket.emit('saveDropped', { droppedItems: droppedItems, gameId: gameId });
+    if (droppedItems.length !== 0) {
+      socket.emit('saveDropped', { droppedItems: droppedItems, gameId: gameId });
+    } else {
+      console.log('Please pay your turn or skip');
+    }
   });
 
   /*  This is used to generate the skip button for both users in the game

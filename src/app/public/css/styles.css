@@ -3,13 +3,13 @@ based on the screen size, however I decided that
 for the scope of this project I would rather have
 the game working and everything necessary done to 
 then come back to this if necessary near the end if
-I have rthe time */
+I have the time */
 @viewport {
   width: device-width ;
   zoom: 1.0 ;
 }
 
-/* Drag drop styling (tiles) */
+/* Drag drop/no drop styling (tiles) */
 .drag-drop, .no-drop {
   display: inline-block;
   width: 35px;
@@ -97,6 +97,7 @@ I have rthe time */
   padding-top: 7px;
 }
   
+/* Basic styling for the user's personal dropzone (their deck) */
 .drop-box {
   background-color: white;
   border: 1px solid black;
@@ -110,9 +111,10 @@ I have rthe time */
   background-color: white;
   height: auto;
   width: auto;
-
 }
 
+/* Text styling for all of the text on the pages,
+including font sizes, font, font weight etc. */
 h1.title {
     font-family: 'Poppins', sans-serif;
     font-weight: 700;
@@ -176,6 +178,7 @@ p.score {
   text-align: center;
 }
 
+/* Heading and content colours (background) */
 .head {
   background: rgb(8, 61, 119)  ;
 }
@@ -184,6 +187,8 @@ p.score {
     background: rgb(8, 61, 119) ;
 }
 
+/* Styling for the main flexbox of the webpage to allow for a better
+structure. */
 .parent {
     display: flex;
     background-color: transparent;
@@ -197,28 +202,31 @@ p.score {
     margin-left: auto;
   }
   
+/* More flexbox styling */
 .parent > div {
     background-color: transparent;
-    /* margin: 10px; */
     font-size: 30px;
     width: 100%;
     text-align: center;
 
   }
 
-  .parent2 {
-    display: flex;
-    background-color: transparent;
-    flex-flow: row wrap;
-    width: 90%;
-    align-content: center;
-    align-items: flex-start;
-    justify-content: center;
-    justify-items: center;
-    margin-right: auto;
-    margin-left: auto;
-  }
+/* Styling for the second flexbox of the webpage to allow for a better
+structure. */
+.parent2 {
+  display: flex;
+  background-color: transparent;
+  flex-flow: row wrap;
+  width: 90%;
+  align-content: center;
+  align-items: flex-start;
+  justify-content: center;
+  justify-items: center;
+  margin-right: auto;
+  margin-left: auto;
+}
   
+  /* More flexbox styling */
 .parent2 > div {
     background-color: transparent;
     /* margin: 10px; */
@@ -229,6 +237,7 @@ p.score {
 
   }
 
+/* General button syling */
 button {
     background-color: white;
     height: 40px;
@@ -267,6 +276,7 @@ button {
             transform: translate(0px, 0px);
 }
   
+/* Drag drop feedback styling below */
 .drop-active {
   border-color: #aaa;
 }
@@ -282,6 +292,7 @@ button {
   border-color: #966F33;
 }
 
+/* Input textbox styling */
 .credentials {
   height: 30px;
   width: 250px;
@@ -292,6 +303,7 @@ button {
   font-size: 20px;
 }
 
+/* Button for the first two pages */
 .btn {
   height: 35px;
   font-family: 'Poppins', sans-serif;
@@ -299,6 +311,7 @@ button {
   font-size: 20px;
 }
 
+/* Button styling (finish, skip) */
 .btn2 {
   height: 40px;
   font-family: 'Poppins', sans-serif;

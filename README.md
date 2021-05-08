@@ -32,11 +32,11 @@ As you can see I implemented a lobby system for online multiplayer, utilising so
 
 The host is able to start the game, and then it begins. The pieces are displayed on the right, and the board in the middle. Using the [Interactjs](https://interactjs.io/) API for snapping and drag drop, the tiles are dragabble and droppable onto the board for each user.
 
-The tile 'bag' uses a shared array (pieceArr) on the server between both clients so that when new tiles are generated after a user takes their go, they are all being taken from the same array i.e. bag.
+The tile 'bag' uses a shared array (pieceArr) on the server between both clients so that when new tiles are generated after a user takes their go, they are all being taken from the same array i.e. bag.            
 
 The actual board is white, with the coloured special tiles and the pieces are a more traditional scrabble colour. So that the user knows they are hovering over a dropzone on the board, there will be styling feedback where the boarders of the dropzone will be thicker whilst hovering over. Once dropped, the pieces will snap to the dropzone.
 
-To finish your turn, click the finish button at the bottom right.
+To finish your turn, click the fini sh button at the bottom right.
 
 ## Known Issues
 
@@ -57,16 +57,26 @@ If ticked, done.
 
 - [x] Need to implement starting from the centre
 
+- [x] Alternating turns
+
+- [x] Skip button
+
 - [ ] Make users have to place next to a placed tile
 
 - [ ] Up to 4 players like actual scrabble
 
 - [ ] Make the board generation far more efficient
 
-- [x] Alternating turns
-
-- [x] Skip button
+- [ ] Better modularisation of code
 
 - [ ] Spectators
 
 - [ ] Hints
+                                                                                                                                                                                
+## Packages used
+
+- [Interact.js](https://www.npmjs.com/package/interactjs)
+
+- [Express](https://www.npmjs.com/package/express)
+
+- [Socket.io](https://www.npmjs.com/package/socket.io)

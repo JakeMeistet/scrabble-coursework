@@ -7,6 +7,9 @@ const Crypto = require('crypto');
 const fs = require('fs');
 const colour = require('colour');
 const boardState = {};
+// Check server operating system, necessary for some code to work e.g. \r\n vs \n for new line
+const osCheck = process.platform;
+console.log(`[LOG] Server OS: ${osCheck}`);
 
 
 /*  This function initialises the socket server and contains all necessary code
@@ -234,7 +237,12 @@ function initSocketServer(server) {
     /*  Reads the dictionary.txt file and splitts the file by line
     this allows for an array to be created from the split of the string  */
     const dictionary = fs.readFileSync('./dictionary.txt', 'utf-8');
-    const dictionaryArr = dictionary.split('\r\n');
+    let dictionaryArr = [];
+    if (osCheck === 'win32') {
+      dictionaryArr = dictionary.split('\r\n');
+    } else {
+      dictionaryArr = dictionary.split('\n');
+    }
     /*  This function will run when the checkDropped socket is received
     it will emit a checkDropped socket with all the relevent data to search  */
     socket.on('checkDropped', (data) => {
@@ -251,6 +259,7 @@ function initSocketServer(server) {
     /*  exists is later used as an array of objects relating to each word and whether it exists or not
     values holds each letter and its value in the game of scrabble in an array of objects  */
     let exists = [];
+    exists = [];
     const values = [
       { letter: 'A', value: 1 },
       { letter: 'B', value: 3 },
@@ -295,6 +304,7 @@ function initSocketServer(server) {
     socket.on('dictionarySearch', (data) => {
       const board = boardState[data.gameId];
       let score = 0;
+      score = 0;
       const allDroppedLetters = data.droppedItems;
       for (let i = 0; i < board.previousWords.length; i++) {
         removeElement(data.allWords, board.previousWords[i]);
@@ -306,6 +316,7 @@ function initSocketServer(server) {
       const allEqual = boolCheck(exists);
       console.log(allEqual);
       let scoreChange = 1;
+      scoreChange = 1;
       let count = 0;
 
       let bool = false;

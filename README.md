@@ -61,6 +61,8 @@ If ticked, fixed.
 
 - [x] Some issues with words in the shared array if a word is incorrect, issue to be fixed, word detection, is being a bit funny, not sure what this is right now.
 
+- [x] On my locally hosted game, the word detection etc works, I tried hosting on my server, then all words returned false whether they were valid or not, not sure why.
+
 - [ ] On window resize, the placed tiles move out of place, minor issue, probably won't be fixed at the moment due to it not effecting the game all that much.
 
 ## Features to be implemented

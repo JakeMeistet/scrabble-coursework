@@ -40,6 +40,16 @@ To finish your turn, click the fini sh button at the bottom right.
 
 ## Implementation Rationale
 
+In this coursework I chose to take it upon myself to use my previous knowledge on Node.js and Javascript to create an online multiplayer game of Scrabble over local multiplayer or singleplayer. I did this to further my knowledge in the language considering I have previously programmed javascript and used express in the past. 
+
+I used socket.io to allow for online multiplayer using lobbys for different games. Never having used socket.io before, I was learning everything whilst completing my coursework. This proved to be a really effective way to implement simple online multiplayer between 2 players on different devices or different browser windows. It is simple and easy for the user to understand by using an 8 character lobby/game Id which a user could enter to join a game.
+
+The user's details are stored locally on the user's browser within LocalStorage for that page. This simply holds the Username, Uid and their current socketId. I used local storage to store the user's information as it was a simple and easy way to hold user information, without storing in a file server-side, taking up storage on the server and memory in order to search the file and find whether a player had joined before. User IP addresses tend to also be dynamic which means a Uid is the only other feasible way to hold user information on the server.
+
+I chose to use the binary search algorithm to find a word which a user has input because it's time complexity big O(log n). This means that when dealing with a larger set of data, this searching algorithm is very efficient, unlike linear search which has a big O(n), therefore with a linear search, over a large set it will take a much longer amount of time to find an elemtent as it searches each position one at a time, whereas with a binary search, the array is sorted and over a large set, the time doesen't massively increase, cutting down the time to search for the word.
+
+I used the interact.js package to handle my drag drop and snapping rather than using the default javascript drag drop API. I chose to use interact because it allows for a far cleaner drag-drop, as well as allowing me to implement snapping to the dropzone when a piece is dropped. This gives the game an overall cleaner UI in comparison to using the default API.
+
 
 
 ## Known Issues
@@ -52,8 +62,6 @@ If ticked, fixed.
 - [x] Some issues with words in the shared array if a word is incorrect, issue to be fixed, word detection, is being a bit funny, not sure what this is right now.
 
 - [ ] On window resize, the placed tiles move out of place, minor issue, probably won't be fixed at the moment due to it not effecting the game all that much.
-
-
 
 ## Features to be implemented
 

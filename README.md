@@ -104,3 +104,5 @@ If ticked, done.
 - [Express](https://www.npmjs.com/package/express)
 
 - [Socket.io](https://www.npmjs.com/package/socket.io)
+
+- [Color](https://www.npmjs.com/package/color)

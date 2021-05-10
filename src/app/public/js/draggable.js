@@ -20,7 +20,6 @@ interact('.drag-drop').draggable({
   array if necessary as the element is no longer dropped on the gameboard  */
   onstart: function (event) {
     const rect = interact.getElementRect(event.target);
-    console.log(droppedItems);
     if (droppedItems.length !== 0) {
       for (let i = 0; i < droppedItems.length; i++) {
         if (droppedItems[i].tile === event.target.classList[0]) {
@@ -29,7 +28,6 @@ interact('.drag-drop').draggable({
       }
     }
 
-    console.log(droppedItems);
     /*  This will record the center of the first drag
     (the dropzone in which an element leaves)
     - If the draggable element is not dropped in a valid dropzone

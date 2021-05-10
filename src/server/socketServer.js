@@ -7,10 +7,6 @@ const Crypto = require('crypto');
 const fs = require('fs');
 const colour = require('colour');
 const boardState = {};
-// Check server operating system, necessary for some code to work e.g. \r\n vs \n for new line
-const osCheck = process.platform;
-console.log(`[LOG] Server OS: ${osCheck}`);
-
 
 /*  This function initialises the socket server and contains all necessary code
 for which the socket server uses for online multiplayer  */
@@ -24,6 +20,12 @@ function initSocketServer(server) {
   });
   const io = socket(server);
 
+  // Check server operating system, necessary for some code to work e.g. \r\n vs \n for new line
+  const osCheck = process.platform;
+  console.log(`[LOG] Server OS: ${osCheck}`.log);
+
+  /*  Here are functions called when room events occur e.g. create, join etc. In create, the object to store
+  relevant room data is generate and added to the boardState array. */
   io.of('/').adapter.on('create-room', (room) => {
     if (room.length <= 8) {
       console.log(`[ROOM] Game room ${room} was created`.running);
@@ -132,7 +134,6 @@ function initSocketServer(server) {
       console.log(`[LOG]  Start Game: ${data.gameId}`.log);
       const lookUp = io.sockets.adapter.rooms.get(data.gameId);
       const arr = Array.from(lookUp);
-      console.log(data.gameId);
       io.to(arr[0]).emit('loadBoard', data);
     });
 
@@ -238,6 +239,7 @@ function initSocketServer(server) {
     this allows for an array to be created from the split of the string  */
     const dictionary = fs.readFileSync('./dictionary.txt', 'utf-8');
     let dictionaryArr = [];
+    // OS check to use different froms to split at new line, preventing errors on windows/linux
     if (osCheck === 'win32') {
       dictionaryArr = dictionary.split('\r\n');
     } else {
@@ -314,7 +316,6 @@ function initSocketServer(server) {
         exists.push({ word: data.allWords[i], exists: (binarySearch(dictionaryArr, data.allWords[i])) });
       }
       const allEqual = boolCheck(exists);
-      console.log(allEqual);
       let scoreChange = 1;
       scoreChange = 1;
       let count = 0;
@@ -323,10 +324,7 @@ function initSocketServer(server) {
       if (allEqual === true) {
         if (boardState[data.gameId].round === 0) {
           let i = 0;
-          console.log(boardState[data.gameId].allDropped.length);
           while (bool === false && i < boardState[data.gameId].allDropped.length) {
-            console.log(i);
-            console.log(boardState[data.gameId].allDropped);
             if (boardState[data.gameId].allDropped[i].dropZone === 'H8') {
               bool = true;
             } else {
@@ -339,7 +337,7 @@ function initSocketServer(server) {
             boardState[data.gameId].round += 1;
             score = scoreFunc(data, board, special, allDroppedLetters, count, values, score, scoreChange);
           } else {
-            console.log('Start on the centre star (H8)');
+            console.log('[LOG]  Start on the centre star (H8)'.log);
           }
         } else {
           boardState[data.gameId].round += 1;
@@ -348,7 +346,6 @@ function initSocketServer(server) {
       } else {
         // None of the above will run if the play is invalid because it includes a word which doesn't exist
         for (let i = 0; i < data.allWords.length; i++) {
-          console.log(exists);
           exists.pop();
         }
         console.log('[LOG]  not all words exist'.log);
@@ -365,8 +362,6 @@ function initSocketServer(server) {
       /*  Socket is emitted to continue as the search was complete, the game will continue if it was a valid
       move, if not nothing will happen and the score will remain unchanged and the user will have to continue their
       turn till they get a valid word.  */
-      console.log(allEqual);
-      console.log(exists);
       io.to(socket.id).emit('searchComplete', { allEqual: allEqual, gameId: data.gameId, droppedItems: data.droppedItems, previousWords: board.previousWords, score: score, round: boardState[data.gameId].round, bool: bool });
     });
 
@@ -375,14 +370,10 @@ function initSocketServer(server) {
     socket.on('piecesRemoved', (data) => {
       const lookUp = io.sockets.adapter.rooms.get(data.gameId);
       const arr = Array.from(lookUp);
-      console.log(data.gameId);
-      console.log('gameId above');
       io.to(data.gameId).emit('placePieces', data);
       for (let i = 0; i < 2; i++) {
         if (arr[i] !== socket.id) {
-          console.log(arr);
           console.log(`[LOG]  Socket ${arr[i]} alternating`.log);
-          console.log(socket.id);
           io.to(arr[i]).emit('alternate', arr[i]);
         } else {
           io.to(socket.id).emit('alternateRemove');
@@ -396,13 +387,9 @@ function initSocketServer(server) {
     socket.on('skipAlternate', (data) => {
       const lookUp = io.sockets.adapter.rooms.get(data.gameId);
       const arr = Array.from(lookUp);
-      console.log(data.gameId);
-      console.log('gameId above');
       for (let i = 0; i < 2; i++) {
         if (arr[i] !== socket.id) {
-          console.log(arr);
           console.log(`[LOG]  Socket ${arr[i]} alternating`.log);
-          console.log(socket.id);
           io.to(arr[i]).emit('alternate', arr[i]);
         } else {
           io.to(socket.id).emit('alternateRemove');
@@ -456,7 +443,7 @@ function scoreFunc(data, board, special, allDroppedLetters, count, values, score
   }
   count = 0;
   score = score * scoreChange;
-  console.log(`Score ${score}`);
+  console.log(`[LOG]  Score ${score}`.log);
   return score;
 }
 

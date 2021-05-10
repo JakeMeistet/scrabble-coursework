@@ -36,7 +36,7 @@ The tile 'bag' uses a shared array (pieceArr) on the server between both clients
 
 The actual board is white, with the coloured special tiles and the pieces are a more traditional scrabble colour. So that the user knows they are hovering over a dropzone on the board, there will be styling feedback where the boarders of the dropzone will be thicker whilst hovering over. Once dropped, the pieces will snap to the dropzone.
 
-To finish your turn, click the fini sh button at the bottom right.
+To finish your turn, click the finish button at the bottom right or to skip, press skip.
 
 ## Implementation Rationale
 
@@ -50,7 +50,11 @@ I chose to use the binary search algorithm to find a word which a user has input
 
 I used the interact.js package to handle my drag drop and snapping rather than using the default javascript drag drop API. I chose to use interact because it allows for a far cleaner drag-drop, as well as allowing me to implement snapping to the dropzone when a piece is dropped. This gives the game an overall cleaner UI in comparison to using the default API.
 
+Originally I planned for the web app to adjust to screensize, though this was the original plan, I never implemented this due to the amount of information to be stored on the page. I could do this in the future but for now I have left it as it is. I have tested the game on mobile, it works well despite this as you would want to zoom in anyway because no matter what the game would look too small when zoomed out anyway, so you can zoom, drag drop all as it should on mobile, with it still working well. On desktop it also works great. On very large monitors you may wish to zoom but not necessary, I use the game on a 24", 21.5" and 13" 1080p monitor and it looks good on both.
 
+For the game, I used a mixture of the original scrabble colours and my own choice of colours. For the game pieces and special tiles, I used the scrabble colours, however for the main blank board pieces I chose to use white. I originally used a similar but darker shade of the tile colour, but when I dropped the tiles it got very confusing as there was a lot of similar coloured squared, hence I went with white to be able to differenciate between the tiles and the board.
+
+I went with the poppins font for the whole web app because it is a very readable and clean font. It looks appealing to the eye and grants a simple to use and understandable user interface for the user. The blue background was a choice of personal preference as I believe it complements the game's colours well and looks clean and simple for the user.
 
 ## Known Issues
 
@@ -62,8 +66,12 @@ If ticked, fixed.
 - [x] Some issues with words in the shared array if a word is incorrect, issue to be fixed, word detection, is being a bit funny, not sure what this is right now.
 
 - [x] On my locally hosted game, the word detection etc works, I tried hosting on my server, then all words returned false whether they were valid or not, not sure why.
+      This was an issue with linux/windows, using '\n' and '\r\n' for new line in a string.
 
 - [ ] On window resize, the placed tiles move out of place, minor issue, probably won't be fixed at the moment due to it not effecting the game all that much.
+
+- [ ] Word detection works 95% of the time, there is an off chance something goes wrong, I have tested this but can't figure out in time for submission, it's very 
+      inconsistent when it happens as well, hence I cannot pinpoint where this is happening
 
 ## Features to be implemented
 
@@ -74,6 +82,8 @@ If ticked, done.
 - [x] Alternating turns
 
 - [x] Skip button
+
+- [ ] Adjustable to screen size
 
 - [ ] Make users have to place next to a placed tile
 

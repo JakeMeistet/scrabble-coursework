@@ -11,8 +11,6 @@ if the user was to clear this data they would appear as a new user  */
 function start() {
   const username = document.getElementById('username');
   const submit = document.getElementById('submit');
-  console.log(username);
-  console.log(submit);
 
   const pastUid = localStorage.getItem('uid');
   /*  Here is the check for a past user, if it's a new user then it will listen for submit to be clicked
@@ -161,8 +159,7 @@ function start() {
   /*  This is the beginning of when the dropped pieces are saved
   so they can be made into words, checked and ran through the dictionary */
   socket.on('dropSaved', (data) => {
-    console.log('dropSaved');
-    console.log(data.droppedItems);
+    console.log('[LOG]  dropSaved');
     checkDropped(data.gameId, data.droppedItems, data.allDropped);
   });
 
@@ -200,21 +197,16 @@ function start() {
   else there is an incorrect word and the user must re-play their go  */
   socket.on('searchComplete', (data) => {
     if (data.bool === true || data.round > 0) {
-      console.log(data.allEqual);
       if (data.allEqual === true) {
-        console.log(data.droppedItems);
         const scoreHolder = document.getElementById('playerScore');
         const currentScore = scoreHolder.innerText;
-        console.log(currentScore);
+        console.log(`[LOG]  Current Score: ${currentScore}`);
         const newScore = data.score + parseInt(currentScore);
         scoreHolder.innerText = newScore;
 
-        console.log('hello');
-        console.log(data.droppedItems.length);
-        console.log(data.droppedItems);
         for (let i = 0; i < data.droppedItems.length; i++) {
           const droppedItem = document.getElementById(data.droppedItems[i].tile);
-          console.log(droppedItem);
+          console.log(`[LOG]  Recently dropped: ${droppedItem}`);
           if (droppedItem !== null) {
             droppedItem.remove();
           } else {
@@ -226,34 +218,34 @@ function start() {
           const id = i + 'dropBox';
 
           const dropBox = document.getElementById(i + 'dropBox');
-          console.log(dropBox.childNodes);
           if (dropBox.childNodes.length === 0) {
             replacePieces(id);
             count += 1;
           } else {
-            console.log('Parent full');
+            console.log('[LOG]  Parent full');
           }
         }
-        console.log(data);
-        console.log('dataAbove');
         socket.emit('piecesRemoved', { allEqual: data.allEqual, droppedItems: data.droppedItems, gameId: data.gameId })
       } else {
-        console.log('A word is incorrect');
+        console.log('[LOG]  A word is incorrect');
+        window.alert('A word is incorrect');
         droppedItems = [];
       }
     } else {
-      console.log('Start at H8');
+      console.log('[LOG]  Start at H8');
+      window.alert('Start at the centre');
     }
   });
 
   /*  The below two functions begin when they receive the alternate sockets and will call
   the alternate function to change each user's tiles/buttons to begin their turn. */
   socket.on('alternateRemove', () => {
+    console.log('[LOG]  Alternate');
     alternate('no-drop', true, 'drag-drop');
   });
 
   socket.on('alternate', (id) => {
-    console.log(id);
+    console.log(`[LOG]  Alternate: ${id}`);
     alternate('drag-drop', false, 'no-drop');
   });
 
@@ -261,11 +253,10 @@ function start() {
     for (let i = 0; i < 7; i++) {
       const id = i + 'dropBox';
       const dropBox = document.getElementById(i + 'dropBox');
-      console.log(dropBox.childNodes);
       if (dropBox.childNodes.length === 0) {
         replacePieces(id);
       } else {
-        console.log('Parent full');
+        console.log('[LOG]  Parent full');
       }
     }
     socket.emit('skipAlternate', data);
@@ -275,7 +266,6 @@ function start() {
   they are replaced on the lobby (rather than just on the one client)
   so that all users can see the piece that has been placed. */
   socket.on('placePieces', (data) => {
-    console.log(data.droppedItems);
     for (let i = 0; i < data.droppedItems.length; i++) {
       const body = document.body;
       const dropCoords = document.getElementById(data.droppedItems[i].dropZone);
@@ -374,11 +364,8 @@ This is used to alternate turns between the users, to take their turn */
 function alternate(drop, bool, removeDrop) {
   for (let i = 0; i < 7; i++) {
     const dropBox = `${i}dropBox`;
-    console.log(dropBox);
     const current = document.getElementById(dropBox);
-    console.log(current);
     const child = current.childNodes[0];
-    console.log(child);
     child.classList.remove(removeDrop);
     child.classList.add(drop);
   }

@@ -56,14 +56,12 @@ function onDrop(event) {
   const data = { tile: event.relatedTarget.classList[0], dropZone: event.target.classList[1] };
   if (event.target.classList[0] !== 'drop-box') {
     droppedItems.push(data);
-    console.log(droppedItems);
-    console.log('add');
+    console.log(`[LOG]  Dropped Items Add: ${droppedItems}`);
   } else {
     removeElement(droppedItems, data);
-    console.log(droppedItems);
-    console.log('remove');
+    console.log(`[LOG]  Dropped Items Remove: ${droppedItems}`);
   }
-  console.log(droppedItems)
+  console.log(`[LOG]  Dropped Items Complete: ${droppedItems}`);
 }
 
 /*  This function is called when a target is no longer being dragged
@@ -81,13 +79,12 @@ function dropDeactivate(event) {
 their turn by pressing the finish turn button, then the game continues  */
 function finishGo(gameId) {
   const turnEnd = document.getElementById('finishBtn');
-  console.log(droppedItems);
-  console.log(turnEnd);
   turnEnd.addEventListener('click', () => {
     if (droppedItems.length !== 0) {
       socket.emit('saveDropped', { droppedItems: droppedItems, gameId: gameId });
     } else {
-      console.log('Please pay your turn or skip');
+      console.log('[LOG]  Please play your turn or skip');
+      window.alert('Please play your turn or skip');
     }
   });
 
@@ -102,7 +99,6 @@ function finishGo(gameId) {
       pieces.push(child.id);
       dropBox.removeChild(child);
     }
-    console.log(pieces);
     socket.emit('skip', { pieces: pieces, gameId: gameId });
   });
 }

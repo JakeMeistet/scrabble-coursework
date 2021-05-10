@@ -3,8 +3,6 @@ by this I mean, the tiles that have been placed, in a straight line horizontally
 to determine which words to run through the dictionary to check whether valid or not  */
 function wordSearch(data) {
   const allDroppedSorted = data.allDropped.sort(compare);
-  console.log(allDroppedSorted);
-  console.log('above is alldropsort');
   let sortByCol = [];
   let sortByRow = [];
   sortByCol = [];
@@ -20,7 +18,6 @@ function wordSearch(data) {
       sortByCol[i] = { row: allDroppedSorted[i].dropZone.split('')[0], column: allDroppedSorted[i].dropZone.split('')[1], tile: tiles };
       sortByRow[i] = { row: allDroppedSorted[i].dropZone.split('')[0], column: allDroppedSorted[i].dropZone.split('')[1], tile: tiles };
     } else {
-      console.log(tiles);
       sortByCol[i] = { row: allDroppedSorted[i].dropZone.split('')[0], column: (allDroppedSorted[i].dropZone.split('')[1] + allDroppedSorted[i].dropZone.split('')[2]), tile: tiles };
       sortByRow[i] = { row: allDroppedSorted[i].dropZone.split('')[0], column: (allDroppedSorted[i].dropZone.split('')[1] + allDroppedSorted[i].dropZone.split('')[2]), tile: tiles };
     }
@@ -40,25 +37,19 @@ function wordSearch(data) {
   for (let i = 0; i < sortByRow.length; i++) {
     if (i === sortByRow.length - 1) {
       tempArr.push(sortByRow[i]);
-      console.log('finish');
       // Here the tempArr is now sorted by column
       tempArr.sort(sortObjArr('column', false, parseInt));
       for (let j = 0; j < tempArr.length; j++) {
         completeArr.push(tempArr[j]);
-        console.log(completeArr);
       }
     } else if (i !== 0 && i !== sortByRow.length - 1) {
-      console.log(sortByRow[i].row);
-      console.log(`Last row = ${lastRow}`);
       if (sortByRow[i].row === lastRow) {
         tempArr.push(sortByRow[i]);
-        console.log(tempArr);
         lastRow = sortByRow[i].row;
       } else {
         tempArr.sort(sortObjArr('column', false, parseInt));
         for (let j = 0; j < tempArr.length; j++) {
           completeArr.push(tempArr[j]);
-          console.log(completeArr);
         }
         tempArr = [];
         tempArr.push(sortByRow[i]);
@@ -69,9 +60,6 @@ function wordSearch(data) {
       tempArr.push(sortByRow[i]);
     }
   }
-  console.log(sortByRow);
-  console.log(completeArr);
-  console.log('sorted row arr');
   sortByRow = completeArr;
   const wordCount = 0;
   const word = [];
@@ -85,9 +73,7 @@ function wordSearch(data) {
   const rowWords = check(sortByRow, word, wordCount, 'row');
   elemRemove(rowWords);
 
-  console.log('complete arrays');
-  console.log(colWords);
-  console.log(rowWords);
+  console.log(`[LOG]  Complete arrays: ${colWords}, ${rowWords}`);
 
   // Here the colWords and rowWords arrays are combined to make the allWords array
   if (allWords.length > 0) {
@@ -109,8 +95,7 @@ function wordSearch(data) {
     }
   }
 
-  console.log(allWords);
-  console.log('arrays');
+  console.log(`[LOG]  Full array: ${allWords}`);
   placement = [];
   // searchSocket is called to emit a socket to begin the dictionary search
   searchSocket(allWords, data.droppedItems, data.gameId, data.allDropped);
@@ -136,9 +121,7 @@ function check(placement, word, wordCount, check) {
   let nextColumn = null;
 
   for (let i = 0; i < placement.length; i++) {
-    console.log(wordCount);
     tile = placement[i].tile;
-    console.log(placement);
 
     if (i !== 0) {
       previousColumn = placement[i - 1].column;
@@ -151,7 +134,6 @@ function check(placement, word, wordCount, check) {
       nextRow = placement[i + 1].row;
       nextColumn = placement[i + 1].column;
     }
-    console.log(tile);
 
     if (i === 0) {
       if (tile.length === 3) {
@@ -160,9 +142,7 @@ function check(placement, word, wordCount, check) {
         word[wordCount] = tile[1];
       }
     } else {
-      console.log(currentRow - 1);
       word[wordCount] = undefinedCheck(word[wordCount]);
-      console.log('check');
       const rowCheck = (alphabetCheck(currentRow, previousRow));
       const colCheck = (parseInt(currentColumn) !== (parseInt(previousColumn) + 1));
       let checkVal = null;
@@ -193,7 +173,6 @@ function check(placement, word, wordCount, check) {
         if (tile.length === 3) {
           word[wordCount] = word[wordCount] + tile[2];
         } else {
-          console.log(tile[1]);
           word[wordCount] = word[wordCount] + tile[1];
         }
         if (current !== next) {
@@ -201,10 +180,8 @@ function check(placement, word, wordCount, check) {
         }
       } else if (checkVal === true && current === previous) {
         if (tile.length === 3) {
-          console.log(tile[2]);
           word[wordCount] = tile[2];
         } else {
-          console.log(tile[1]);
           word[wordCount] = tile[1];
         }
         if (current !== next) {
@@ -212,18 +189,14 @@ function check(placement, word, wordCount, check) {
         }
       } else {
         if (tile.length === 3) {
-          console.log(tile[2]);
           word[wordCount] = tile[2];
         } else {
-          console.log(tile[1]);
           word[wordCount] = tile[1];
         }
       }
     }
-    console.log(check);
   }
 
-  console.log(word);
   return word;
 }
 

@@ -68,7 +68,7 @@ function flexCreate() {
 
   const form = document.getElementById('form');
   form.remove();
-  console.log('Board Generated - loadScrabble');
+  console.log('[LOG] Board Generated - loadScrabble');
 
   const body = document.getElementById('body');
   let parent = document.createElement('div');
@@ -135,8 +135,7 @@ Though it may appear the function is never called, it is called from  the socket
 - Websockets determine when this is called
 - gameId is the lobbyId for use with socket.io  */
 function pieces(pieceArr, gameId) {
-  console.log(pieceArr);
-  console.log(pieceArr.length);
+  console.log(`Chars Remaining: ${pieceArr.length}`);
   const pieces = document.getElementById('flex-tile');
   const gameIdText = document.createElement('p');
   gameIdText.id = 'gameId';
@@ -154,8 +153,7 @@ function pieces(pieceArr, gameId) {
     this is simply because it allows for each tile to have a unique ID under this whole value
     the split gets the letter  */
     const data = random[0].split('');
-    let letter = null;
-    console.log(data);
+    let letter = null;;
     /* This is necessary because some are double digit numbers and some are single digit
     as there are more than 9 of some letters  */
     if (data.length === 3) {
